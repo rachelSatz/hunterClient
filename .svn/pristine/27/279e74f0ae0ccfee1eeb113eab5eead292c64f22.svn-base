@@ -1,0 +1,12 @@
+export class RecordStatus {
+    Key: string;
+    Value: DetailsRecord;
+}
+
+export class DetailsRecord {
+    recordStatus: number;
+    payErrorType: number;
+    recordStatusText: string;
+    payErrorTypeText: string;
+    remark: string;
+}

@@ -1,0 +1,15 @@
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-process-status-error-message',
+  templateUrl: './process-status-error-message.component.html',
+  styleUrls: ['./process-status-error-message.component.css']
+})
+export class ProcessStatusErrorMessageComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+}

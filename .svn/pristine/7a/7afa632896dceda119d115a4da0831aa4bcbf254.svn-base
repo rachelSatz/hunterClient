@@ -1,0 +1,11 @@
+import { BankBranch } from './bank-branch.model';
+
+export class ProductPayment {
+  accountID: number;
+  bankBranch: BankBranch;
+  path: string;
+  product: string;
+  sum: number;
+  transmissionStatus: string;
+  id: number;
+}

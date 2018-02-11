@@ -1,0 +1,47 @@
+<div class="row table-actions">
+
+  <div class="text-center text-md-left mb-3">
+    <button class="btn btn-primary ml-2" (click)="createNewProcess()">התחל תהליך</button>
+  </div>
+
+  <div class="col-auto">
+    <button class="btn btn-primary" (click)="makeNewPayment()">הוספת תשלום</button>
+    <button class="btn btn-danger">מחק תשלום</button>
+    <button class="btn btn-info">יבוא תשלומים מחודש קודם</button>
+  </div>
+  <div class="col text-left">
+    <button class="table-action-button">
+      <i class="fa fa-file-excel-o"></i>
+    </button>
+    <button class="table-action-button">
+      <i class="fa fa-print"></i>
+    </button>
+  </div>
+</div>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>
+          <mat-checkbox></mat-checkbox>
+        </th>
+        <th>שם עובד</th>
+        <th>ת"ז</th>
+        <th>סוג תקבול</th>
+        <th>מספר קופה בשכר</th>
+        <th>שם קופה בשכר</th>
+        <th>סוג קופה</th>
+        <th>סטטוס</th>
+        <th>שם קופה</th>
+        <th>שנה</th>
+        <th>חודש</th>
+        <th>שכר</th>
+        <th>מס' פוליסה</th>
+        <th>סה"כ</th>
+      </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+  </table>
+</div>

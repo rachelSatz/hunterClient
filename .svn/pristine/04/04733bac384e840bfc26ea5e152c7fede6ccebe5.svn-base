@@ -1,0 +1,40 @@
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
+import { DataTableComponent } from '../../../shared/data-table/data-table.component';
+
+import { UserSessionService} from '../../../shared/_services/user-session.service';
+import { FeedbackService } from '../../_services/http/feedback.service';
+
+import { MONTHS } from '../../../shared/_const/months';
+import { Employer } from '../../../shared/_models/employer.model';
+import { Product } from '../../../shared/_models/product.model';
+
+@Component({
+  selector: 'app-feedback-file-table',
+  templateUrl: './feedback-file-table.component.html',
+  styleUrls: ['../../../shared/data-table/data-table.component.css']
+})
+export class FeedbackFileTableComponent extends DataTableComponent implements OnInit {
+
+  employers: Employer[] = [];
+  product = new Product();
+
+  readonly statusLabels = { 'successful': 'תקין', partial: 'בטיפול', failed: 'שגוי' };
+  readonly months = MONTHS;
+
+  constructor(protected route: ActivatedRoute, private userSession: UserSessionService, private feedbackService: FeedbackService) {
+    super(route);
+  }
+
+  ngOnInit() {
+    this.employers = this.route.snapshot.data['employers'];
+    this.searchCriteria['employerID'] = +this.employers[0].id;
+
+    this.fetchItems();
+  }
+
+  fetchItems(): void {
+    this.feedbackService.getFileFeedbacks(this.userSession.getToken(), this.searchCriteria).then(response => this.setItems(response));
+  }
+}

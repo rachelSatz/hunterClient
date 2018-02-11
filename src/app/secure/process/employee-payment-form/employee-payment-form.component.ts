@@ -1,0 +1,245 @@
+import {Component, Inject, OnInit, ViewChild} from '@angular/core';
+import {trigger, state, style, animate, transition} from '@angular/animations';
+import {FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from '@angular/forms';
+import {Employee} from '../../../shared/_models/employee.model';
+import {EmployeePayment} from '../../../shared/_models/employee-payment.model';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {EmployeeService} from '../../_services/http/employee.service';
+import {UserSessionService} from '../../../shared/_services/user-session.service';
+import {Select2OptionData} from 'ng2-select2';
+import {GeneralHttpService} from '../../_services/http/general-http.service';
+import {Manufacturer} from '../../../shared/_models/manufacturer.model';
+import {Product} from '../../../shared/_models/product.model';
+import {ManualProcessService} from '../../_services/http/manual-process.service';
+import {Process} from '../../../shared/_models/process.model';
+
+
+
+@Component({
+  selector: 'app-employee-payment-form',
+  templateUrl: './employee-payment-form.component.html',
+  styleUrls: ['./employee-payment-form.component.css'],
+  animations: [
+    trigger('slideToggle', [
+      state('inactive', style({
+        height: 0,
+        opacity: '0',
+        display: 'none'
+      })),
+      state('active', style({
+        height: '*',
+        opacity: '1',
+        display: '*'
+      })),
+      transition('inactive => active', animate('400ms ease-in')),
+      transition('active => inactive', animate('400ms ease-out'))
+    ])
+  ]
+})
+export class EmployeePaymentFormComponent implements OnInit {
+
+  @ViewChild("f") newEmployeeForm1: NgForm;
+  @ViewChild("f2") newPaymentForm1: NgForm;
+  newEmployeeForm: FormGroup;
+  newPaymentForm: FormGroup;
+  isClicked = false;
+
+  StatusUpdatedAtDate: Date = new Date();
+  TaarichErechDate: Date;
+
+
+  employeeSelectedValue: string;
+  manufSelectedValue: string;
+  productSelectedValue: string;
+
+  sugTakbulOption: { Key: string, Value: number }[] = [];
+  statusDepositOption: { Key: string, Value: number }[] = [];
+  worksInSalaryOption: { Key: string, Value: number }[] = [];
+  select2Options: Select2Options;
+  employeesSelect2: Select2OptionData[] = [];
+  manufacturersSelect2: Select2OptionData[] = [];
+  productsSelect2: Select2OptionData[] = [];
+
+
+  process: Process;
+  employees: Employee[] = [];
+  manufacturers: Manufacturer[] = [];
+  products: Product[] = [];
+
+  payment: EmployeePayment = new EmployeePayment(); // <EmployeePayment>{};
+  // newEmployee: Employee = <Employee>{};
+
+  searchCriteria = {};
+
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any,
+              public dialogRef: MatDialogRef<EmployeePaymentFormComponent>,
+              private employeeService: EmployeeService,
+              private userSessionService: UserSessionService,
+              private generalService: GeneralHttpService,
+              private manualProcessService: ManualProcessService) {
+    this.process = data.process;
+
+    this.TaarichErechDate = new Date(this.process.year, this.process.month - 1, 1);
+  }
+
+  ngOnInit() {
+    this.payment = new EmployeePayment();
+    this.searchCriteria['employerId'] = this.process.employer.id;
+    this.employeeService.getEmployees(this.userSessionService.getToken(), this.searchCriteria)
+      .then(response => this.setEmployeesData(response));
+
+    this.generalService.getManufacturers(this.userSessionService.getToken())
+      .then(response => this.setManufacturersData(response));
+
+    this.generalService.getProducts(this.userSessionService.getToken())
+      .then(response => this.setProductsData(response));
+
+    this.generalService.getSugTakbulEnum(this.userSessionService.getToken())
+      .then(response => {
+          this.sugTakbulOption = response;
+          console.log(this.sugTakbulOption);
+        }
+      );
+
+    this.generalService.getStatusDepositEnum(this.userSessionService.getToken())
+      .then(response => this.statusDepositOption = response);
+
+    this.generalService.getWorksInSalaryEnum(this.userSessionService.getToken())
+      .then(response => this.worksInSalaryOption = response);
+
+
+    this.initEmpPaymentForm();
+    this.initPaymentForm();
+  }
+
+  setEmployeesData(response: Employee[]): void {
+    this.employees = response;
+    this.employeesSelect2 = this.setEmployeeSelect2Data(response);
+  }
+
+  setManufacturersData(response: Manufacturer[]): void {
+    this.manufacturers = response;
+    this.manufacturersSelect2 = this.setSelect2Data(response, 'בחר יצרן');
+  }
+
+  setProductsData(response: Product[]): void {
+    this.products = response;
+    this.productsSelect2 = this.setSelect2Data(response, 'בחר קופה');
+  }
+
+  onManufValueChanged(value: string): void {
+    this.manufSelectedValue = value;
+    if (value !== '0') {
+      // this.payment.product.manufacturer.id = +value;
+
+      this.generalService.getProductsByManuf(this.userSessionService.getToken(), +value)
+        .then(response => this.setProductsData(response));
+    }
+  }
+
+  onEmployeeValueChanged(value: string): void {
+    this.employeeSelectedValue = value;
+    // this.payment.employee.id = +value;
+
+  }
+
+  onProductValueChanged(value: string): void {
+    this.productSelectedValue = value;
+    // this.payment.product.id = +value;
+
+  }
+
+  private setEmployeeSelect2Data(values: Object[]): Select2OptionData[] {
+    const data = [
+      {id: '0', text: 'בחר עובד'}
+    ];
+    for (let i = 0; i < values.length; i++) {
+      data[i + 1] = {id: values[i]['id'], text: values[i]['firstName'] + ' ' + values[i]['lastName']};
+    }
+    return data;
+  }
+
+  private setSelect2Data(values: Object[], textLabel: string): Select2OptionData[] {
+    const data = [
+      {id: '0', text: textLabel}
+    ];
+    for (let i = 0; i < values.length; i++) {
+      data[i + 1] = {id: values[i]['id'], text: values[i]['name']};
+    }
+    return data;
+  }
+
+
+  onSubmitForm(): void {
+    debugger;
+    if ((this.isClicked === true && this.newEmployeeForm1 != null && !this.newEmployeeForm1.valid) || !this.newPaymentForm1.valid)
+    {return;}
+ 
+
+    if(this.isClicked === true) {
+      this.payment.employee.id = -1;
+    }
+
+    this.payment.DateStatusWorks = this.StatusUpdatedAtDate.toLocaleString('he-IL',{formatMatcher: 'basic'});
+    this.payment.TaarichErech = this.TaarichErechDate.toLocaleString('he-IL',{formatMatcher: 'basic'});
+    this.payment.uplodefile = this.process;
+
+    this.payment.product = this.products.find((product) => {
+      return product.id.toString() === this.productSelectedValue;
+    });
+
+    this.payment.product.manufacturer = this.manufacturers.find((manufacturer) => {
+      return manufacturer.id.toString() === this.manufSelectedValue;
+    });
+
+    if(this.isClicked === false) {
+    this.payment.employee = this.employees.find((employee) => {
+      return employee.id.toString() === this.employeeSelectedValue;
+    });
+  }
+    
+
+    this.manualProcessService.AddPreHafrashot(this.payment, this.userSessionService.getToken())
+      .then(response => {
+        //console.log(response);
+        this.dialogRef.close(response);
+      })
+      .catch(error => console.log(error));
+  }
+
+  createNewEmployeeOnClick(): void {
+    this.isClicked = !this.isClicked;
+  }
+
+  private initEmpPaymentForm(): void {
+    this.newEmployeeForm = new FormGroup({
+      'empFirstName': new FormControl('', [Validators.required]),
+      'empLastName': new FormControl('', [Validators.required]),
+      'empIdentityNum': new FormControl('', Validators.required),
+      'empEmail': new FormControl('', [Validators.required, Validators.pattern('^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$')]),
+      'empPhone': new FormControl('', [Validators.required]),
+    });
+  }
+
+  private initPaymentForm(): void {
+    this.newPaymentForm = new FormGroup({
+      'taarichErech': new FormControl('',[Validators.required]),
+      'statusUpdatedAt': new FormControl('',[Validators.required]),
+      'sugTakbul': new FormControl(1,[Validators.required]),
+      'statusdeposit': new FormControl(1,[Validators.required]),
+      'worksInSalary': new FormControl(1,[Validators.required]),
+      'empty': new FormControl('')
+    });
+
+    this.payment.sugTakbul = 1;
+    this.payment.statusDeposit = 1;
+    this.payment.WorksInSalary = 1;
+
+
+  }
+
+  onCloseClicked(): void {
+    this.dialogRef.close('cancel');
+  }
+}

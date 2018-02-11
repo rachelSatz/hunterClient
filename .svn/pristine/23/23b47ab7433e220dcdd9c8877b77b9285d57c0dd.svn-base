@@ -1,0 +1,37 @@
+import { Component, OnInit } from '@angular/core';
+import { trigger, state, style, animate, transition } from '@angular/animations';
+
+import { Employee } from '../../../shared/_models/employee.model';
+import { Payment } from '../../../shared/_models/payment.model';
+
+@Component({
+  selector: 'app-employee-payment-form',
+  templateUrl: './employee-payment-form.component.html',
+  styleUrls: ['./employee-payment-form.component.css'],
+  animations: [
+    trigger('slideToggle', [
+      state('inactive', style({
+        height: 0,
+        opacity: '0',
+        display: 'none'
+      })),
+      state('active', style({
+        height: '*',
+        opacity: '1',
+        display: '*'
+      })),
+      transition('inactive => active', animate('400ms ease-in')),
+      transition('active => inactive', animate('400ms ease-out'))
+    ])
+  ]
+})
+export class EmployeePaymentFormComponent implements OnInit {
+
+  employees: Employee[] = [];
+  payment: Payment = <Payment>{};
+  newEmployee: Employee = <Employee>{};
+
+  constructor() { }
+
+  ngOnInit() {}
+}

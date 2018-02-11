@@ -1,0 +1,43 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import 'rxjs/add/operator/toPromise';
+
+import { BaseHttpService } from '../../../shared/_services/http/base-http.service';
+
+import { Bank } from '../../../shared/_models/bank.model';
+import { BankBranch } from '../../../shared/_models/bank-branch.model';
+import { Manufacturer } from '../../../shared/_models/manufacturer.model';
+import { Product } from '../../../shared/_models/product.model';
+
+@Injectable()
+export class GeneralHttpService extends BaseHttpService {
+  constructor(private http: HttpClient) {
+    super();
+  }
+
+  getBanks(token: string): Promise<Bank[]> {
+    return this.http.get(this.apiUrl  + '/bank', this.getTokenHeader(token)).toPromise()
+    .then(response => response as Bank[]);
+  }
+
+  getBankBranches(bankID: number, token: string): Promise<BankBranch[]> {
+    return this.http.get(this.apiUrl  + '/bank/' + +bankID + '/branch', this.getTokenHeader(token)).toPromise()
+    .then(response => response as BankBranch[]);
+  }
+
+  getManufacturers(token: string): Promise<Manufacturer[]> {
+    return this.http.get(this.apiUrl  + '/manufacturer', this.getTokenHeader(token)).toPromise()
+    .then(response => response as Manufacturer[]);
+  }
+
+  getProducts(token: string): Promise<Product[]> {
+    return this.http.get(this.apiUrl  + '/product', this.getTokenHeader(token)).toPromise()
+      .then(response => response as Product[]);
+  }
+
+  getProductsByManuf(token: string, manufacturerId: number): Promise<Product[]> {
+    return this.http.get(this.apiUrl  + `/manufacturer/${manufacturerId}/product`, this.getTokenHeader(token)).toPromise()
+      .then(response => response as Product[]);
+  }
+
+}

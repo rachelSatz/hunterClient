@@ -1,0 +1,27 @@
+import { Component, OnInit, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material';
+import { UserSessionService } from '../../../../shared/_services/user-session.service';
+import { ProcessService } from '../../../_services/http/process.service';
+import { EmployeePayment } from '../../../../shared/_models/employee-payment.model';
+
+@Component({
+  selector: 'app-transmissio-comment',
+  templateUrl: './transmissio-comment.component.html',
+  styleUrls: ['./transmissio-comment.component.css']
+})
+export class TransmissioCommentComponent implements OnInit {
+
+  public remark: string;
+
+  constructor(@Inject(MAT_DIALOG_DATA) public payment: EmployeePayment, private userSession: UserSessionService, private processService: ProcessService) {}
+
+  ngOnInit() {
+    debugger;
+    if(this.payment.remark!=="")
+    this.remark = this.payment.remark;
+  }
+
+  SubmitNewComment(){
+    this.processService.postNewComment(this.payment, this.remark, this.userSession.getToken()).then();
+  };
+}

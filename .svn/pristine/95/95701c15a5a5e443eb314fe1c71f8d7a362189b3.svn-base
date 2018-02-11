@@ -1,0 +1,240 @@
+<section mat-dialog-content xmlns="http://www.w3.org/1999/html">
+  <section class="pt-3 pb-3">
+    <p class="title text-center">בחירת עובד</p>
+    <div class="row">
+      <div class="col">
+        <!--<mat-select placeholder="בחר עובד">-->
+          <!--<mat-option *ngFor="let employee of employees" [value]="employee.id">{{ employee.firstName + ' ' + employee.lastName }}</mat-option>-->
+        <!--</mat-select>-->
+
+        <select2 class="" [data]="employeesSelect2" [options]="select2Options" (valueChanged)="onEmployeeValueChanged($event.value)" #select2></select2>
+
+
+
+      </div>
+      <div class="col text-left">
+        <button class="btn btn-primary" (click)="createNewEmployeeOnClick()">
+          {{isClicked ? 'ביטול' : 'צור עובד חדש'}}
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="isClicked">
+    <form [formGroup]="newEmployeeForm" (ngSubmit)="onSubmit(onSubmitForm)">
+    <div class="row">
+      <mat-form-field class="col">
+        <input matInput type="text" formControlName="empFirstName" placeholder="שם פרטי *" [(ngModel)]="payment.employee.firstName">
+        <mat-error *ngIf="newEmployeeForm.controls['empFirstName'].hasError('required')">
+          יש להזין שם פרטי
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="col">
+        <input matInput type="text" formControlName="empLastName" placeholder="שם משפחה *" [(ngModel)]="payment.employee.lastName">
+        <mat-error *ngIf="newEmployeeForm.controls['empLastName'].hasError('required')">
+          יש להזין שם משפחה
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="col">
+        <input matInput type="text" formControlName="empIdentityNum" placeholder="תעודת זהות *" [(ngModel)]="payment.employee.identityNumber">
+        <mat-error *ngIf="newEmployeeForm.controls['empIdentityNum'].hasError('required')">
+          יש להזין תעודת זהות
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="col">
+        <input matInput type="text" formControlName="empEmail" placeholder="אימייל *" [(ngModel)]="payment.employee.email">
+        <mat-error *ngIf="newEmployeeForm.controls['empEmail'].hasError('required')">
+          יש להזין אימייל
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col">
+        <input matInput type="text" formControlName="empPhone" placeholder="טלפון *" [(ngModel)]="payment.employee.phone">
+        <mat-error *ngIf="newEmployeeForm.controls['empPhone'].hasError('required')">
+          יש להזין טלפון
+        </mat-error>
+      </mat-form-field>
+    </div>
+    </form>
+    </div>
+
+  </section>
+  <section class="pt-3 pb-3">
+    <form [formGroup]="newPaymentForm" (ngSubmit)="onSubmit(onSubmitForm)">
+
+    <p class="title text-center">הוספת תשלום</p>
+
+
+    <div class="row">
+      <div class="col">
+        <select2 dir="rtl" class="" [data]="manufacturersSelect2" [options]="select2Options" (valueChanged)="onManufValueChanged($event.value)" #select2></select2>
+      </div>
+      <div class="col">
+        <select2 dir="rtl" class="" [data]="productsSelect2" [options]="select2Options" (valueChanged)="onProductValueChanged($event.value)" #select2></select2>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <mat-form-field class="col">
+        <input matInput type="text" placeholder="שכר" formControlName="empty" [(ngModel)]="payment.Salary">
+        <i class="fa fa-ils" matSuffix></i>
+      </mat-form-field>
+      <mat-form-field class="col">
+        <input matInput type="text" placeholder="מס' פוליסה" formControlName="empty" [(ngModel)]="payment.KodPolisa">
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="col">
+        <input matInput type="text" placeholder="תשלום עובד" formControlName="empty" [(ngModel)]="payment.SumOved">
+        <i class="fa fa-ils" matSuffix></i>
+      </mat-form-field>
+      <mat-form-field class="col">
+        <input matInput type="text" placeholder="תשלום מעביד" formControlName="empty" [(ngModel)]="payment.SumMaasik">
+        <i class="fa fa-ils" matSuffix></i>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="col">
+        <input matInput type="text" placeholder="פיצויים" formControlName="empty" [(ngModel)]="payment.SumPitzuim">
+        <i class="fa fa-ils" matSuffix></i>
+      </mat-form-field>
+      <mat-form-field class="col">
+        <input matInput type="text" placeholder="אובדן כושר עבודה" formControlName="empty" [(ngModel)]="payment.OvdanKosher">
+        <i class="fa fa-ils" matSuffix></i>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="col">
+        <input matInput type="text" placeholder='אכ"ע עובד' formControlName="empty" [(ngModel)]="payment.SumTagmulimPrat">
+        <i class="fa fa-ils" matSuffix></i>
+      </mat-form-field>
+      <mat-form-field class="col">
+        <input matInput type="text" placeholder="תגמולים" formControlName="empty" [(ngModel)]="payment.SumTagmulim">
+        <i class="fa fa-ils" matSuffix></i>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="col">
+        <input matInput type="text" placeholder="שונות עובד" formControlName="empty" [(ngModel)]="payment.ShonotOved">
+        <i class="fa fa-ils" matSuffix></i>
+      </mat-form-field>
+      <mat-form-field class="col">
+        <input matInput type="text" placeholder="שונות מעביד" formControlName="empty" [(ngModel)]="payment.ShonotMaasik">
+        <i class="fa fa-ils" matSuffix></i>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="col">
+        <input matInput type="text" placeholder="סך תשלום פטור עובד" formControlName="empty" [(ngModel)]="payment.ExemptSumOved">
+        <i class="fa fa-ils" matSuffix></i>
+      </mat-form-field>
+      <mat-form-field class="col">
+        <input matInput type="text" placeholder="סך תשלום פטור מעביד" formControlName="empty" [(ngModel)]="payment.ExemptSumMaasik">
+        <i class="fa fa-ils" matSuffix></i>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="col">
+        <input matInput type="text" placeholder="סך תשלום פטור לפיצויים" formControlName="empty" [(ngModel)]="payment.ExemptSumLepizuyim">
+        <i class="fa fa-ils" matSuffix></i>
+      </mat-form-field>
+      <mat-form-field class="col">
+        <input matInput type="text" placeholder="סך תשלום פטור אובדן כושר" formControlName="empty" [(ngModel)]="payment.ExemptSumTagmulim">
+        <i class="fa fa-ils" matSuffix></i>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="col">
+        <input matInput type="text" placeholder='סך תשלום פטור אכ"ע עובד' formControlName="empty" [(ngModel)]="payment.ExemptSumTagmulimPrat">
+        <i class="fa fa-ils" matSuffix></i>
+      </mat-form-field>
+      <mat-form-field class="col">
+        <input matInput type="text" placeholder="סך תשלום פטור תגמולים" formControlName="empty" [(ngModel)]="payment.ExemptSumOvdanKosherAvoda">
+        <i class="fa fa-ils" matSuffix></i>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="col">
+        <input matInput type="text" placeholder="סך תשלום פטור שונות עובד" formControlName="empty" [(ngModel)]="payment.ExemptSumShonotOved">
+        <i class="fa fa-ils" matSuffix></i>
+      </mat-form-field>
+      <mat-form-field class="col">
+        <input matInput type="text" placeholder="סך תשלום פטור שונות מעביד" formControlName="empty" [(ngModel)]="payment.ExemptSumShonotMaasik">
+        <i class="fa fa-ils" matSuffix></i>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <!--<mat-form-field class="col">-->
+        <!--<input matInput type="text" placeholder="סוג תקבול" [(ngModel)]="payment.sugTakbul">-->
+        <!--<i class="fa fa-ils" matSuffix></i>-->
+      <!--</mat-form-field>-->
+      <mat-form-field class="col">
+        <mat-select placeholder="סוג תקבול" formControlName="sugTakbul" [(value)]="payment.sugTakbul">
+          <mat-option *ngFor="let sug of sugTakbulOption" [value]="sug.Value">
+            {{ sug.Key }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="col">
+        <!--<input matInput type="text" placeholder="מעמד הפקה בקופה" [(ngModel)]="payment.statusdeposit">-->
+        <mat-select placeholder="מעמד הפקה בקופה" formControlName="statusdeposit" [(value)]="payment.statusDeposit">
+          <mat-option *ngFor="let status of statusDepositOption" [value]="status.Value">
+            {{ status.Key }}
+          </mat-option>
+        </mat-select>
+
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="col">
+        <!--<input matInput type="text" placeholder="תאריך עדכון סטטוס" [(ngModel)]="payment.statusUpdatedAt">-->
+
+        <input matInput [matDatepicker]="pickerStatusUpdatedAt" formControlName="statusUpdatedAt" placeholder="תאריך עדכון סטטוס" [(value)]="StatusUpdatedAtDate">
+        <mat-datepicker-toggle matSuffix [for]="pickerStatusUpdatedAt"></mat-datepicker-toggle>
+        <mat-datepicker #pickerStatusUpdatedAt></mat-datepicker>
+
+      </mat-form-field>
+      <mat-form-field class="col">
+        <!--<input matInput type="text" placeholder="סטטוס עובד בחודש" [(ngModel)]="payment.StatusWorksInSalary">-->
+
+        <mat-select placeholder="סטטוס עובד בחודש" formControlName="worksInSalary" [(value)]="payment.WorksInSalary">
+          <mat-option *ngFor="let status of worksInSalaryOption" [value]="status.Value">
+            {{ status.Key }}
+          </mat-option>
+        </mat-select>
+
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="col">
+        <input matInput type="text" placeholder="ימי עבודה בחודש" formControlName="empty" [(ngModel)]="payment.WorkingDaysMonthly">
+
+      </mat-form-field>
+       <mat-form-field class="col">
+        <input matInput type="text" placeholder="חלקיות משרה %" formControlName="empty" [(ngModel)]="payment.Partjobs">
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="col">
+        <!--<input matInput type="text" placeholder="תאריך ייחוס" [(ngModel)]="payment.TaarichErech">-->
+          <input matInput [matDatepicker]="pickerTaarichErech" formControlName="taarichErech"  placeholder="תאריך ייחוס" [(value)]="TaarichErechDate">
+          <mat-datepicker-toggle matSuffix [for]="pickerTaarichErech"></mat-datepicker-toggle>
+          <mat-datepicker #pickerTaarichErech></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+
+</form>
+  </section>
+
+
+
+
+</section>
+
+<section class="justify-content-end" mat-dialog-actions>
+  <!--<button class="btn btn-primary" mat-dialog-close (click)="onSubmitForm()" [disabled]="isClicked &&  empPaymentForm.invalid">שמור</button>-->
+  <button class="btn btn-primary" (click)="onSubmitForm()" [disabled]="isClicked &&  empPaymentForm.invalid">שמור</button>
+</section>

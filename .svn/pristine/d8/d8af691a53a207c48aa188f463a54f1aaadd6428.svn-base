@@ -1,0 +1,97 @@
+<p class="mb-5 title">היזונים חוזרים - לפי עובד</p>
+<div class="data-table">
+  <div class="table-actions">
+    <div>
+      <mat-form-field class="ml-3">
+        <mat-select placeholder="בחר מעסיק" [(ngModel)]="searchCriteria['employerID']" (selectionChange)="search()">
+          <mat-option *ngFor="let employer of employers" [value]="employer.id">{{ employer.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field class="ml-3">
+        <mat-select placeholder="בחר סטטוס" [(ngModel)]="searchCriteria['statusId']" (selectionChange)="search()">
+          <mat-option [value]="-1">הכל</mat-option>
+          <!--<mat-option value="successful">נפרעו</mat-option>-->
+          <!--<mat-option value="partial">נפרעו חלקית</mat-option>-->
+          <!--<mat-option value="failed">לא נפרעו</mat-option>-->
+          <mat-option *ngFor="let status of statuses" [value]="status.id">{{ status.text }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="ml-3">
+        <mat-select placeholder="בחר סוג מוצר" [(ngModel)]="searchCriteria['productTypeId']" (selectionChange)="search()">
+          <mat-option [value]="-1">הכל</mat-option>
+          <mat-option *ngFor="let product of products" [value]="product.id">{{ product.text }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <select2 class="ml-3" [data]="manufacturers" [options]="select2Options" (valueChanged)="setSearch('manufacturerId', $event.value)"></select2>
+
+      <!--<mat-form-field class="ml-3">-->
+        <!--<mat-select placeholder="בחר חברה מנהלת" [(ngModel)]="searchCriteria['manufacturerID']" (selectionChange)="search()">-->
+          <!--<mat-option [value]="-1">הכל</mat-option>-->
+          <!--<mat-option *ngFor="let manufacturer of manufacturers" [value]="manufacturer.id">{{ manufacturer.text }}</mat-option>-->
+        <!--</mat-select>-->
+      <!--</mat-form-field>-->
+      <mat-form-field class="ml-3">
+        <mat-select placeholder="בחר שנה" [(ngModel)]="searchCriteria.year" (selectionChange)="search()">
+          <mat-option [value]="currentYear">{{ currentYear }}</mat-option>
+          <mat-option [value]="currentYear - 1">{{ currentYear - 1 }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select placeholder="בחר חודש" [ngModel]="searchCriteria['month']" (selectionChange)="setMonths($event.value)">
+          <mat-option [value]="-1">כל החודשים</mat-option>
+          <mat-option *ngFor="let month of months; let i = index" [value]="i + 1">{{ month }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!--<mat-form-field class="ml-3">-->
+        <!--<input matInput placeholder="חיפוש" type="text" [(ngModel)]="searchCriteria['q']" (keyup)="search($event.keyCode)">-->
+        <!--<i matSuffix class="fa fa-search"></i>-->
+      <!--</mat-form-field>-->
+
+
+      <select2 class="" [data]="employees" [options]="select2Options" (valueChanged)="setSearch('employeeID', $event.value)" #select2></select2>
+
+    </div>
+    <div class="mt-3 mb-3">
+      <mat-slide-toggle [(ngModel)]="searchCriteria['showNegative']" color="primary" (change)="search()">{{ searchCriteria['showNegative'] ? 'חיובי' : 'שלילי' }}</mat-slide-toggle>
+    </div>
+  </div>
+  <table class="table table-bordered table-striped data-table">
+    <thead>
+    <tr>
+      <th>שם עובד</th>
+      <th>תעודת זהות</th>
+      <th>חברה מנהלת</th>
+      <th>סוג מוצר</th>
+      <th>חודש שכר</th>
+      <th>מספר באוצר</th>
+      <th>סכום</th>
+      <th>סטטוס</th>
+      <th>פרטים</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of items">
+      <td>{{ item.employee.firstName + ' ' + item.employee.lastName }}</td>
+      <td>{{ item.employee.identityNumber }}</td>
+      <td>{{item.product.manufacturer.name}}</td>
+      <td>{{getStatusLabel(item.product.productType,'productType')}}</td>
+      <td>{{getMonthLable(item.TaarichErech)}}</td>
+      <td>{{item.product.id}}</td>
+      <td>{{item.SumTotal}}</td>
+      <td class="text-center">
+        <span class="badge" [ngClass]="{ 'badge-success': item.status === 1 , 'badge-warning':
+        item.status === 4, 'badge-danger': item.status === 3, 'badge-info': item.status == 2, 'badge-secondary': item.status == 0 }">{{getStatusLabel(item.status,'status')}}</span>
+      </td>
+      <td class="text-center row-actions">
+        <i class="fa fa-exclamation-circle" (click)="openDetailsDialog(item)"></i>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <app-pagination [data]="paginationData" (isLinkClicked)="paginateItems()" *ngIf="items.length > 0"></app-pagination>
+</div>
+

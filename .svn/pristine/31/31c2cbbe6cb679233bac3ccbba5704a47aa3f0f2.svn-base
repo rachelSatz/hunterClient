@@ -1,0 +1,15 @@
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-rejected-employee',
+  templateUrl: './rejected-employee.component.html',
+  styleUrls: ['../../../shared/data-table/data-table.component.css']
+})
+export class RejectedEmployeeComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+}

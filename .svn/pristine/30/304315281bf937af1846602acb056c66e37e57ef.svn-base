@@ -1,0 +1,35 @@
+import {Component, Inject, OnInit} from '@angular/core';
+import {FileFeedback} from '../../../shared/_models/file-feedback.model';
+import {MAT_DIALOG_DATA} from '@angular/material';
+import {Select2OptionData} from "ng2-select2";
+import {ContactService} from "../../_services/http/contact.service";
+import {UserSessionService} from "../../../shared/_services/user-session.service";
+import {Contact} from "../../../shared/_models/contact.model";
+
+@Component({
+  selector: 'app-feedback-file-application',
+  templateUrl: './feedback-file-application.component.html',
+  styleUrls: ['./feedback-file-application.component.css']
+})
+export class FeedbackFileApplicationComponent implements OnInit {
+  contacts:  Contact[] = [];
+  files:  Select2OptionData[] = [];
+  file2: File = <File>{};
+  feedback: FileFeedback;
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any,
+              private contactService: ContactService,
+              private userSession: UserSessionService) {
+    this.feedback = data.feedback;
+  }
+
+  setContacts(ids: number[]): void {
+  }
+
+  ngOnInit() {
+    this.contactService.getContacts(this.userSession.getToken())
+      .then(response => {
+        this.contacts = response;
+      });
+  }
+
+}

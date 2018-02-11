@@ -1,0 +1,41 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import 'rxjs/add/operator/toPromise';
+
+import { BaseHttpService } from '../../../shared/_services/http/base-http.service';
+
+import { Employer } from '../../../shared/_models/employer.model';
+
+@Injectable()
+export class EmployerService extends BaseHttpService {
+  constructor(private http: HttpClient) {
+    super();
+  }
+
+  readonly endPoint = this.apiUrl + '/employer';
+
+  getEmployer(id: number, token: string): Promise<Employer> {
+    return this.http.get(this.endPoint + '/' + id, this.getTokenHeader(token)).toPromise()
+      .then(response => response as Employer);
+  }
+
+  getEmployers(token: string): Promise<Employer[]> {
+    return this.http.get(this.endPoint, this.getTokenHeader(token)).toPromise()
+    .then(response => response as Employer[]);
+  }
+
+  newEmployer(employer: Employer, token: string): Promise<Employer> {
+    return this.http.post(this.endPoint, employer, this.getTokenHeader(token)).toPromise()
+    .then(response => response as Employer);
+  }
+
+  updateEmployer(id: number, token: string): Promise<Employer> {
+    return this.http.put(this.endPoint  + '/' + id, this.getTokenHeader(token)).toPromise()
+    .then(response => response as Employer);
+  }
+
+  deleteEmployer(id: number, token: string): Promise<{ responseCode: number }> {
+    return this.http.delete(this.endPoint, this.getTokenHeader(token)).toPromise()
+    .then(response => response as { responseCode: number });
+  }
+}

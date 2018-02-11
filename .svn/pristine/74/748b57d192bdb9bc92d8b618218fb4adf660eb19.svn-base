@@ -1,0 +1,60 @@
+<div>
+  <mat-spinner *ngIf="spin" class="mr-auto ml-auto"></mat-spinner>
+</div>
+
+<div>
+  <button class="btn btn-primary" (click)="closeAll()">בצע נעילת עיבוד</button>
+</div>
+
+<div class="data-table">
+  <!--<div class="data-table-actions">-->
+    <!--<select2 [data]="products" [value]="0" [options]="select2Options" (valueChanged)="setSearch('eventID', $event.value)"></select2>-->
+    <!--<select2 class="mr-3" [data]="employees" [options]="select2Options" (valueChanged)="setSearch('employeeID', $event.value)" #select2></select2>-->
+    <!--<mat-form-field class="mr-3">-->
+      <!--<mat-select placeholder="בחר סינון" [(ngModel)]="searchCriteria['filterID']" (selectionChange)="search()">-->
+        <!--<mat-option *ngFor="let filter of filters" [value]="filter.id">{{ filter.text }}</mat-option>-->
+      <!--</mat-select>-->
+    <!--</mat-form-field>-->
+    <!--<mat-form-field class="mr-3">-->
+      <!--<input matInput type="text" placeholder="חיפוש כללי" (change)="search()" [(ngModel)]="searchCriteria['search']">-->
+    <!--</mat-form-field>-->
+  <!--</div>-->
+  <table class="table table-bordered table-striped">
+    <thead>
+    <tr>
+      <th>שם יצרן</th>
+      <th>בנק</th>
+      <th>סניף</th>
+      <th>חשבון</th>
+      <th>סכום</th>
+      <th>סטטוס שידור</th>
+      <th>הורד אקסל</th>
+    </tr>
+    </thead>
+    <tbody>
+    <ng-container *ngIf="!isSearching">
+      <tr *ngFor="let item of paginatedItems">
+        <td>{{ item.product }}</td>
+        <td>{{ item.bankBranch.bank.text }}</td>
+        <td>{{ item.bankBranch.text }}</td>
+        <td>{{ item.bankBranch.bank.number }}</td>
+        <td>{{ item.sum }}</td>
+        <td>{{ item.transmissionStatus }}</td>
+        <td>
+          <i class="fa fa-download pointer" (click)="downloadFile(item.id)"></i>
+        </td>
+      </tr>
+    </ng-container>
+    <tr *ngIf="items.length === 0">
+      <td colspan="20">לא נמצאו תוצאות.</td>
+    </tr>
+    <tr *ngIf="isSearching">
+      <td colspan="20">
+        <mat-spinner class="mr-auto ml-auto"></mat-spinner>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <app-pagination [data]="paginationData" (isLinkClicked)="paginateItems()" *ngIf="items.length > 0"></app-pagination>
+</div>
+

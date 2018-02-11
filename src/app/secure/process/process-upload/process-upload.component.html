@@ -1,0 +1,78 @@
+<div id="processUploadForm" class="container py-3">
+  <div class="d-flex align-items-center mb-3 upload-step-title">
+    <i class="fa fa-chevron-right previous-step-btn" *ngIf="activeUploadStep > 1" (click)="activeUploadStep = activeUploadStep - 1"></i>
+    <p class="h3" [ngClass]="{ 'text-center': activeUploadStep === 1 }">{{ getTitle() }}</p>
+  </div>
+  <form #f="ngForm" (ngSubmit)="uploadFile(f.valid)" *ngIf="activeUploadStep === 1">
+    <div class="row justify-content-between mb-3 mt-5">
+      <mat-form-field class="col-12 col-sm ml-5">
+        <input matInput name="addToProcessName" type="text" placeholder="שם תהליך" [(ngModel)]="process.addToProcessName">
+      </mat-form-field>
+      <mat-form-field class="col-12 col-sm mr-5">
+        <mat-select name="employer" placeholder="שם מעסיק" [(ngModel)]="process.employer" #employerInput="ngModel" required>
+          <mat-option *ngFor="let employer of employers" [value]="employer">{{ employer.name }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="employerInput.errors && f.submitted">יש לבחור מעסיק.</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="row justify-content-between my-4">
+      <mat-form-field class="col-12 col-sm ml-5">
+        <mat-select name="month" placeholder="בחר חודש" [(ngModel)]="process.month" #monthSelect="ngModel" required>
+          <mat-option *ngFor="let month of months; let i = index" [value]="i + 1">{{ month }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="monthSelect.errors && f.submitted">יש לבחור חודש.</mat-error>
+      </mat-form-field>
+      <mat-form-field class="col-12 col-sm mr-5">
+        <mat-select name="year" placeholder="בחר שנה" [(ngModel)]="process.year" #yearSelect="ngModel" required>
+          <mat-option [value]="currentYear">{{ currentYear }}</mat-option>
+          <mat-option [value]="currentYear - 1">{{ currentYear - 1 }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="yearSelect.errors && f.submitted">יש לבחור שנה.</mat-error>
+      </mat-form-field>
+    </div>
+    <ng-container *ngIf="selectedUploadMethod === 'excel'">
+      <div class="row" [@fadeIn]="selectedUploadMethod === 'excel' ? 'active' : 'inactive'">
+        <mat-form-field class="col-12 col-sm-5">
+          <mat-select name="codeFile" placeholder="קוד קובץ" [(ngModel)]="process.codeFile" #codeSelect="ngModel" required>
+            <mat-option [value]="'positive'">חיובי</mat-option>
+            <mat-option [value]="'negative'">שלילי</mat-option>
+          </mat-select>
+          <mat-error *ngIf="codeSelect.errors && f.submitted">יש לבחור קוד קובץ.</mat-error>
+        </mat-form-field>
+        <mat-form-field class="col-12 col-sm-5">
+          <input matInput type="number" name="sum" placeholder="סכום" [(ngModel)]="process.totalPaymentFile" #sumInput="ngModel" required>
+          <mat-error *ngIf="sumInput.errors && f.submitted">יש לבחור סכום.</mat-error>
+        </mat-form-field>
+      </div>
+    </ng-container>
+  </form>
+  <ng-container *ngIf="activeUploadStep === 2">
+    <div id="selectFileContainer" class="narrow-width" ng2FileDrop>
+      <img src="/assets/img/icons/cloud-backup.svg" class="icon-lg mb-1">
+      <p class="h5 grey-color">בחר קובץ להעלאה</p>
+      <p class="h6 grey-color">או גרור קבצים לכאן</p>
+    </div>
+    <p class="bold text-center mt-3">
+      <span class="grey-color">ליצירת תהליך ידני</span>
+      <span class="link">לחץ כאן</span>
+    </p>
+  </ng-container>
+  <div class="d-flex justify-content-between mt-5 narrow-width" *ngIf="activeUploadStep === 3">
+    <button class="btn btn-primary">כן</button>
+    <button class="btn btn-primary" (click)="activeUploadStep = 4">לא</button>
+  </div>
+  <ng-container *ngIf="activeUploadStep === 4">
+    <p class="h4 text-center">
+      <span class="grey-color">לקבלת הנחיית תשלום במייל</span>
+      <span class="bold link pointer" (click)="openTransitionDialog()">לחץ כאן</span>
+    </p>
+    <p class="h5 mb-5 text-center grey-color">או המתן לאפשרות הורדת הקובץ</p>
+    <div class="col col-md-6 m-auto">
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      <p class="mt-1 f-12 grey-color">ניתן לצאת ממסך זה ולחזור לאחר הטעינה ממסך התהליכים.</p>
+    </div>
+  </ng-container>
+  <div class="text-center text-md-left" *ngIf="activeUploadStep < 3">
+    <button type="submit" class="btn btn-primary" (click)="activeUploadStep = activeUploadStep + 1">המשך</button>
+  </div>
+</div>

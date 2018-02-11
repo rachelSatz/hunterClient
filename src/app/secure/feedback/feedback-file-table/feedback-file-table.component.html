@@ -1,0 +1,112 @@
+<p class="mb-5 title">היזונים חוזרים - לפי קובץ</p>
+<div class="data-table">
+  <div class="table-actions">
+    <div>
+      <mat-form-field class="ml-3">
+        <mat-select placeholder="בחר מעסיק" [(ngModel)]="searchCriteria['employerID']" (selectionChange)="newSearch()">
+          <mat-option *ngFor="let employer of employers" [value]="employer.id">{{ employer.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field class="ml-3">
+        <mat-select placeholder="בחר סטטוס" [(ngModel)]="searchCriteria['statusID']" (selectionChange)="search()">
+          <mat-option [value]="-1">הכל</mat-option>
+          <mat-option *ngFor="let status of statuses" [value]="status.id">{{ status.text }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="ml-3">
+        <mat-select style="text-align: right;" placeholder="בחר חברה מנהלת" [(ngModel)]="searchCriteria['manufacturerID']" (selectionChange)="search()">
+          <mat-option [value]="-1">הכל</mat-option>
+          <mat-option *ngFor="let manufacturer of manufacturers" [value]="manufacturer.id">{{ manufacturer.text }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="ml-3">
+        <mat-select placeholder="בחר שנה" [(ngModel)]="searchCriteria['year']" (selectionChange)="setYear($event.value)">
+          <mat-option [value]="currentYear">{{ currentYear }}</mat-option>
+          <mat-option [value]="currentYear - 1">{{ currentYear - 1 }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+
+ <!-- old_multi_select -->
+      <!-- <mat-form-field>
+        <mat-select multiple placeholder="בחר חודש" [ngModel]="searchCriteria['months']" (selectionChange)="setMonths($event.value)">
+          <mat-option value="full">כל החודשים</mat-option>
+          <mat-option *ngFor="let month of months;let i = index" [value]="i+1">{{ month }}</mat-option>
+        </mat-select>
+      </mat-form-field> -->
+      
+      <mat-form-field class="mr-3">
+        <mat-select [(ngModel)]="searchCriteria.months" (selectionChange)="setMonths($event.value)" placeholder="חודש" multiple>
+          <div class="clear-selection">
+            <span (click)="selectAllMonths()">כל החודשים</span>
+            <span class="link" *ngIf="searchCriteria.months && searchCriteria.months.length > 0" (click)="searchCriteria.months = []">נקה הכל</span>
+          </div>
+          <mat-option *ngFor="let month of months; let i = index" [value]="i + 1">{{ month }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+
+
+
+
+      <select2 class="ml-3" [data]="processes" [value]="selectedValue" [options]="select2Options" (valueChanged)="setSearch('processId', $event.value)"></select2>
+
+    </div>
+  </div>
+  <table class="table table-bordered table-striped">
+    <thead>
+    <tr>
+      <th>שם תהליך</th>
+      <th>שם יצרן</th>
+      <th>מספר קופה בשכר</th>
+      <th>סוג</th>
+      <th>חשבון בנק</th>
+      <th>תאריך שידור</th>
+      <th>סכום תשלום</th>
+      <th>קובץ שנשלח</th>
+      <th>תקינות טכנית</th>
+      <th>היזון מסכם</th>
+      <th>סטטוס טיפול</th>
+      <th>פירוט עובדים</th>
+      <th>הערות</th>
+      <th>פרטים</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of items">
+      <td>{{ item.process.addToProcessName }}</td>
+      <td>{{ item.manufacturer.name }}</td>
+      <!--<td class="text-center">-->
+        <!--<i class="fa fa-exclamation-circle row-icon" (click)="openDetailsDialog(item)"></i>-->
+      <!--</td>-->
+      <td>{{ getproductTypeLable(item.productType) }}</td>
+      <!--product.labels['types'][product.productType[item.productType]] }}-->
+      <td>{{getPayTypeLabel(item.payType)}}</td>
+      <td>{{ item.accountNumber }}</td>
+      <td>{{item.SendStatusDate | date: 'dd/MM/yyyy'}}</td>
+      <td>{{item.sumFile | number}}</td>
+      <td>
+        <span class="word-break">{{ item.fileName }}</span>
+      </td>
+      <td>{{ item.firstStatusText }}</td>
+      <td>{{ item.xmlReturnStatusText }}</td>
+      <td>{{ item.manualStatusUpdateText }}</td>
+      <td><a (click)="handleEmployeeInfoClick(item.id)">הצג</a>  </td>
+      <td>{{item.remarkManual}}</td>
+
+      <td class="text-center row-actions">
+        <i class="fa fa-exclamation-circle" (click)="openDetailsDialog(item)"></i>
+      </td>
+      <!--<td class="text-center">-->
+        <!--<i class="fa fa-exclamation-circle row-icon" (click)="openDetailsDialog(item)"></i>-->
+      <!--</td>-->
+      <!--<td class="text-center row-actions">-->
+        <!--<i class="fa fa-exclamation-circle" (click)="openDetailsDialog(item)"></i>-->
+      <!--</td>-->
+    </tr>
+    </tbody>
+  </table>
+  <app-pagination [data]="paginationData" (isLinkClicked)="paginateItems()" *ngIf="items.length > 0"></app-pagination>
+</div>

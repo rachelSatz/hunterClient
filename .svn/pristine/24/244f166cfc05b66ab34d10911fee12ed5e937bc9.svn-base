@@ -1,0 +1,48 @@
+import {Component, OnInit, Input} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {MatDialog} from '@angular/material';
+
+import {DataTableComponent} from '../../../shared/data-table/data-table.component';
+import {EmployeePaymentFormComponent} from '../employee-payment-form/employee-payment-form.component';
+
+import {Employer} from '../../../shared/_models/employer.model';
+import {ManualProcessService} from "../../_services/http/manual-process.service";
+import {UserSessionService} from "../../../shared/_services/user-session.service";
+
+@Component({
+  selector: 'app-employee-payments-table',
+  templateUrl: './employee-payments-table.component.html',
+  styleUrls: ['./employee-payments-table.component.css']
+})
+export class EmployeePaymentsTableComponent extends DataTableComponent implements OnInit {
+
+  @Input() employer: Employer;
+
+  constructor(protected route: ActivatedRoute,
+              private dialog: MatDialog,
+              private manualProcessService: ManualProcessService,
+              private userSessionService: UserSessionService) {
+    super(route);
+  }
+
+  ngOnInit() {
+  }
+
+  makeNewPayment(): void {
+    const dialogRef = this.dialog.open(EmployeePaymentFormComponent, {
+      width: '700px',
+      disableClose: true,
+      data: {
+        employer: this.employer
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+
+    });
+  }
+
+  createNewProcess(): void {
+    this.manualProcessService.newManualProcess({CustomerNames: 'newp', year: 2018, month: 1},
+      this.userSessionService.getToken()).then(response => console.log(response));
+  }
+}

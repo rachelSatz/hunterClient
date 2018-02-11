@@ -1,0 +1,24 @@
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Select2OptionData} from 'ng2-select2';
+
+@Component({
+  selector: 'app-feedback-employee-application',
+  templateUrl: './feedback-employee-application.component.html',
+  styleUrls: ['./feedback-employee-application.component.css']
+})
+export class FeedbackEmployeeApplicationComponent implements OnInit {
+  @Output() closeApplication = new EventEmitter<number>();
+  @Input() headerText: string;
+  contacts:  Select2OptionData[] = [];
+  files:  Select2OptionData[] = [];
+  file2: File = <File>{};
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+  onCloseClicked(): void {
+    this.closeApplication.emit(0);
+  }
+
+}

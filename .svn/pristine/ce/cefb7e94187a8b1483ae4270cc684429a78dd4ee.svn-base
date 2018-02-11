@@ -1,0 +1,22 @@
+import { Component, Inject } from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialog} from '@angular/material';
+
+import { EmployeeFeedback } from '../../../shared/_models/employee-feedback.model';
+
+@Component({
+  selector: 'app-feedback-employee-table-details',
+  templateUrl: './feedback-employee-table-details.component.html',
+  styleUrls: ['./feedback-employee-table-details.component.css']
+})
+export class FeedbackEmployeeTableDetailsComponent {
+
+  dialogStep = 0;
+  feedback: EmployeeFeedback;
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialog) {
+    this.feedback = data.feedback;
+  }
+
+  setDialogStep(step: number): void {
+    this.dialogStep = step;
+  }
+}

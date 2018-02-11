@@ -1,0 +1,26 @@
+import {Component, Inject, OnInit} from '@angular/core';
+import {FileFeedback} from '../../../shared/_models/file-feedback.model';
+import {MAT_DIALOG_DATA} from '@angular/material';
+import {Select2OptionData} from "ng2-select2";
+
+@Component({
+  selector: 'app-feedback-file-application',
+  templateUrl: './feedback-file-application.component.html',
+  styleUrls: ['./feedback-file-application.component.css']
+})
+export class FeedbackFileApplicationComponent implements OnInit {
+
+
+  contacts:  Select2OptionData[] = [];
+  files:  Select2OptionData[] = [];
+  file2: File = <File>{};
+  feedback: FileFeedback;
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
+    this.feedback = data.feedback;
+    console.log(this.feedback);
+  }
+
+  ngOnInit() {
+  }
+
+}

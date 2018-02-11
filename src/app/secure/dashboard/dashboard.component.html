@@ -1,0 +1,84 @@
+<div class="relative">
+  <div id="newProcess">
+    <button id="newProcessButton" class="btn btn-success">+</button>
+    <p class="mt-1 bold">סליקה חדשה</p>
+  </div>
+  <div class="container">
+        <section id="header" class="d-flex justify-content-between align-items-center">
+          <p class="h2 blue">ברוך הבא, {{ selectedEmployer.name }}</p>
+          <div>
+            <mat-form-field class="ml-5">
+              <mat-select [(ngModel)]="selectedEmployer" placeholder="בחר מעסיק" (selectionChange)="setEmployer($event.value)">
+                <mat-option *ngFor="let employer of employers" [value]="employer">{{ employer.name }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput [matDatepicker]="picker" placeholder="בחר חודש" [(value)]="selectedDate" (dateChange)="setDate($event.value)">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker touchUi="true" [startView]="'year'" #picker></mat-datepicker>
+              <mat-hint align="start">לפי חודש שכר</mat-hint>
+            </mat-form-field>
+          </div>
+        </section>
+        <section id="stats">
+          <!--<mat-form-field>-->
+          <!--<mat-select [(ngModel)]="year">-->
+          <!--<mat-option [value="year"]>{{ year }}</mat-option>-->
+          <!--<mat-option [value]="year - 1">{{ year - 1 }}</mat-option>-->
+          <!--</mat-select>-->
+          <!--</mat-form-field>-->
+          <!--<mat-form-field>-->
+          <!--<  mat-option *ngFor="let month of months">{{ month }}</mat-option>-->
+          <!--</mat-select>-->
+          <!--</mat-form-field>-->
+          <div class="row">
+            <div class="col box-container">
+              <div class="box">
+                <img src="/assets/img/employees.svg" class="mb-2" alt="סהכ עובדים">
+                <p>סה"כ עובדים</p>
+                <!--<p>127</p>-->
+                <P>{{countsData.numberEmp  }}</P>
+              </div>
+            </div>
+            <div class="col box-container">
+              <div class="box">
+                <img src="/assets/img/messages.svg" class="mb-2" alt="מספר פניות פתוחות">
+                <p>מספר פניות פתוחות</p>
+                <p>({{countsData.totalNumberRef}}) {{countsData.numberRef}}</p>
+              </div>
+            </div>
+            <div class="col box-container">
+              <div class="box">
+                <img src="/assets/img/coins.svg" class="mb-2" alt="כספים ששולמו">
+                <p>כספים ששולמו</p>
+                <p>{{countsData.paidMoney | currency:'ILS':'&#8362;'}}</p>
+              </div>
+            </div>
+            <div class="col box-container">
+              <div class="box">
+                <img src="/assets/img/file.svg" class="mb-2" alt="מס' קבצים ששודרו">
+                <p>מס' קבצים ששודרו</p>
+                <p>{{countsData.numberSentFiles}}</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section id="feedback" class="mb-3">
+          <p class="h3 mb-5">היזונים חוזרים</p>
+          <div class="row">
+            <div class="col">
+              <app-feedback-graph [graphOnly]="true"></app-feedback-graph>
+            </div>
+            <div id="doughnutGraphContainer" class="col relative">
+              <div class="d-block w-75 mr-auto ml-auto">
+                <canvas baseChart [data]="doughnutGraph.data" [labels]='doughnutGraph.labels' [colors]="doughnutGraph.colors" [chartType]="'doughnut'" [legend]="false"></canvas>
+              </div>
+              <span>
+              <p>62%</p>
+              <p>פרעון</p>
+            </span>
+            </div>
+          </div>
+        </section>
+      </div>
+</div>

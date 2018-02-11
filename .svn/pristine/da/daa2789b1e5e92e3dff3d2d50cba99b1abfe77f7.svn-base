@@ -1,0 +1,160 @@
+import { Component, OnInit } from '@angular/core';
+import {MONTHS} from '../../../shared/_const/months';
+import {Employer} from '../../../shared/_models/employer.model';
+import {ActivatedRoute} from '@angular/router';
+import {DataTableComponent} from '../../../shared/data-table/data-table.component';
+import {FeedbackService} from '../../_services/http/feedback.service';
+import {UserSessionService} from '../../../shared/_services/user-session.service';
+import {Select2OptionData} from 'ng2-select2/ng2-select2.interface';
+import {Product} from "../../../shared/_models/product.model";
+
+@Component({
+  selector: 'app-rejected-file',
+  templateUrl: './rejected-file.component.html',
+  styleUrls: ['../../../shared/data-table/data-table.component.css']
+})
+export class RejectedFileComponent extends DataTableComponent implements OnInit {
+  employers: Employer[] = [];
+  product = new Product();
+
+  manufacturers: Select2OptionData[] = [];
+  statuses: Select2OptionData[] = [];
+  processes: Select2OptionData[] = [];
+
+  appDestiny: Select2OptionData[] = [];
+  appSubject: Select2OptionData[] = [];
+
+  activeFilter: 'processId';
+  isLoadingData = false;
+
+  selectedValue: string;
+
+
+  readonly months = MONTHS;
+  readonly currentYear = new Date().getFullYear();
+
+  constructor(protected route: ActivatedRoute, private userSession: UserSessionService, private feedbackService: FeedbackService) {
+    super(route);
+  }
+
+  ngOnInit() {
+    this.employers = this.route.snapshot.data['employers'];
+    this.searchCriteria['employerID'] = +this.employers[0].id;
+
+
+    const currentMonth = new Date().getMonth() + 1;
+    if (currentMonth === 1 ) {
+      this.searchCriteria['year'] = this.currentYear - 1;
+      this.searchCriteria['months'] = [12];
+    } else {
+      this.searchCriteria['year'] = this.currentYear;
+      this.searchCriteria['months'] = [currentMonth - 1];
+    }
+
+
+    this.route.queryParams.subscribe(params => this.setCriteria(params));
+    super.ngOnInit();
+
+  }
+
+  private setCriteria(params: Object): void {
+    for (const param in params) {
+      if (params[param]) {
+        if (param === 'months') {
+          this.searchCriteria['months'] = JSON.parse(params['months']);
+        } else {
+          this.searchCriteria[param] = params[param];
+        }
+      }
+    }
+  }
+
+
+  fetchItems(): void {
+    this.feedbackService.getErrorFileFeedbacks(this.userSession.getToken(), this.searchCriteria).then(response => this.setItems(response));
+  }
+
+
+  setItems(response: any): void {
+debugger;
+    this.isLoadingData = true;
+    this.isSearching = false;
+    this.items = response.feedbacks;
+
+    this.paginationData = response.paginationData;
+    this.manufacturers = response.manufacturers;
+    this.statuses = response.statuses;
+    this.appSubject = response.appSubject;
+    this.appDestiny = response.appDestiny;
+
+    if (this.activeFilter !== 'processId') {
+      this.processes = this.setProcessSelect2Data(response['processes']);
+      if (this.searchCriteria['processId']) {
+        this.selectedValue = this.searchCriteria['processId'];
+      }
+    }
+
+    setTimeout(() => this.isLoadingData = false, 0);
+  }
+
+  paginateItems(): void {
+    this.fetchItems();
+  }
+
+  private setProcessSelect2Data(values: Object[]): Select2OptionData[] {
+
+    const data = [
+      { id: '0', text: 'בחר תהליך' },
+      { id: '-1', text: 'הכל' }
+    ];
+
+    for (let i = 0; i < values.length; i++) {
+      data[i + 2] = { id: values[i]['id'], text: values[i]['text'] };
+    }
+
+    return data;
+  }
+
+  setMonths(month: number): void {
+    debugger;
+    this.searchCriteria['months'] = month;
+    // this.selectedMonthValue = month;
+
+    this.newSearch();
+  }
+
+  setYear(year: number): void {
+    this.searchCriteria['year'] = year;
+    // this.selectedYearValue = year;
+    this.newSearch();
+  }
+
+  setSearch(name: 'processId', value: number): void {
+    debugger;
+    if (value != 0) {
+      this.activeFilter = name;
+
+      if (this.isLoadingData) {
+        return;
+      }
+      this.searchCriteria[name] = value;
+      this.search();
+    }
+  }
+
+  getMonthLable(date: string): string {
+    const d: Date = new Date(date);
+    return this.months[d.getMonth()];
+  }
+
+
+  newSearch(keyCode?: number): void {
+    // debugger;
+     this.activeFilter = null;
+     this.searchCriteria['processId'] = -1;
+    super.search(keyCode);
+  }
+
+
+
+}

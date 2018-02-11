@@ -1,0 +1,26 @@
+.previous-step-btn {
+  font-size: 26px;
+  cursor: pointer;
+}
+
+.upload-step-title > * {
+  flex-grow: 1;
+  color: #acaaac;
+  font-weight: bold;
+}
+
+.upload-step-title > p {
+  justify-self: center;
+}
+
+#selectFileContainer {
+  padding: 40px 0;
+  border: 1px dashed #acaaac;
+  text-align: center;
+  cursor: pointer;
+}
+
+.narrow-width {
+  width: 320px;
+  margin: 0 auto;
+}

@@ -1,0 +1,32 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import 'rxjs/add/operator/toPromise';
+
+import { BaseHttpService } from '../../../shared/_services/http/base-http.service';
+
+import { EmployeeFeedback } from '../../../shared/_models/employee-feedback.model';
+import { FileFeedback } from '../../../shared/_models/file-feedback.model';
+
+@Injectable()
+export class FeedbackService extends BaseHttpService {
+
+  readonly endPoint = this.apiUrl + '/feedback';
+
+  constructor(private http: HttpClient) {
+    super();
+  }
+
+  getEmployeeFeedbacks(token: string, searchCriteria?: Object): Promise<EmployeeFeedback[]> {
+    const options = this.getTokenHeader(token);
+    options['params'] = searchCriteria;
+
+    return this.http.get(this.endPoint + '/employee', options).toPromise().then(response => response as EmployeeFeedback[]);
+  }
+
+  getFileFeedbacks(token: string, searchCriteria?: Object): Promise<FileFeedback[]> {
+    const options = this.getTokenHeader(token);
+    options['params'] = searchCriteria;
+
+    return this.http.get(this.endPoint + '/file', options).toPromise().then(response => response as FileFeedback[]);
+  }
+}

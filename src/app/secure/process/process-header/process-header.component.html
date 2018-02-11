@@ -1,0 +1,59 @@
+<p class="h3 text-center bold grey-color">{{ mode === 'payment' ? 'תהליך תשלום' : 'תהליך שידור' }}</p>
+<p class="h5 text-center bold grey-color" *ngIf="mode === 'payment'">במסך זה הנך נדרש לבחור כיצד ברצונך לבצע את התשלום עבור הקופות</p>
+<p class="h5 text-center bold grey-color" *ngIf="mode === 'transmission'">במסך זה הינך נדרש לאשר את הנתונים ולשדרם לקופות</p>
+<div id="processIntro" class="row align-items-center mt-3">
+  <div class="col-12 col-lg-10 pl-md-5">
+    <div id="processGeneralInfo" class="pt-4 pb-4">
+      <ul class="col-md-10 col-lg-12 d-lg-flex justify-content-center">
+        <li class="col mb-3 mb-sm-0">
+          <p>שם המעסיק:</p>
+          <span class="bold">{{ process.employer.name }}</span>
+        </li>
+        <li class="col mb-3 mb-sm-0">
+          <p>ח.פ:</p>
+          <span class="bold">{{ process.employer.businessNumber }}</span>
+        </li>
+        <li class="col mb-3 mb-sm-0">
+          <p>שם התהליך:</p>
+          <span class="bold">{{ process.addToProcessName }}</span>
+        </li>
+        <li class="col">
+          <p>מספר התהליך:</p>
+          <span class="bold">{{ process.id }}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div id="detailsOptionFormats" class="col-12 col-lg-2 mt-4 mt-lg-0 pr-3 text-center text-sm-right text-lg-center">
+    <p class="h5 d-inline-block d-lg-block ml-3 ml-lg-0 bold grey-color">פירוט קובץ לפי:</p>
+    <a class="d-block d-sm-inline d-lg-block ml-3 mt-lg-3 mb-3 mb-sm-0 mb-lg-3 ml-lg-0 details-format-option" (click)="openEmployeePaymentModal()">תשלומי עובדים</a>
+    <a class="d-block d-sm-inline d-lg-block details-format-option" (click)="openProductPaymentModal()">תשלומי קופות</a>
+  </div>
+</div>
+<div id="processInfo" class="row no-gutters mt-5 text-center">
+  <div class="col-12 col-sm-6 col-md ml-md-3 mb-3 mb-md-0">
+    <div class="border-line border-line-top"></div>
+    <p>סכום לתשלום</p>
+    <span class="mt-5" dir="ltr" >{{ process.details.paymentSum }}</span>
+    <i class="fa fa-ils"></i>
+    <div class="border-line border-line-bottom"></div>
+  </div>
+  <div class="col-12 col-sm-6 col-md ml-md-3 mb-3 mb-md-0">
+    <div class="border-line border-line-top"></div>
+    <p>מספר תשלומים</p>
+    <span class="mt-5">{{ process.details.paymentNumber }}</span>
+    <div class="border-line border-line-bottom"></div>
+  </div>
+  <div class="col-12 col-sm-6 col-md ml-md-3">
+    <div class="border-line border-line-top"></div>
+    <p>מספר רשומות</p>
+    <span class="mt-5">{{ process.details.recordNumber }}</span>
+    <div class="border-line border-line-bottom"></div>
+  </div>
+  <div class="col-12 col-sm-6 col-md ml-md-3">
+    <div class="border-line border-line-top"></div>
+    <p>קופות מנוהלות בשכר</p>
+    <span class="mt-5">{{ process.details.productNumber }}</span>
+    <div class="border-line border-line-bottom"></div>
+  </div>
+</div>

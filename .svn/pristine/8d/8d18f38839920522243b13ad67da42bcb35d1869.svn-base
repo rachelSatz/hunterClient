@@ -1,0 +1,36 @@
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import 'rxjs/add/operator/toPromise';
+
+import { BaseHttpService } from '../../../shared/_services/http/base-http.service';
+import {EmployeePayment} from '../../../shared/_models/employee-payment.model';
+import {Process} from "../../../shared/_models/process.model";
+
+
+@Injectable()
+export class ManualProcessService extends BaseHttpService {
+
+  readonly endPoint = this.apiUrl + '/manual';
+
+  constructor(private http: HttpClient) {
+    super();
+  }
+
+
+  newManualProcess(process: Process, token: string): Promise<Process> {
+    return this.http.post(this.endPoint, process, this.getTokenHeader(token)).toPromise()
+      .then(response => response as Process);
+  }
+
+  AddPreHafrashot(payment: EmployeePayment, token: string): Promise<{errors: string, success: boolean}> {
+    return this.http.post(this.endPoint + '/payment', payment, this.getTokenHeader(token)).toPromise()
+      .then(response => response as {errors: string, success: boolean});
+  }
+
+  getPreHafrashot(process: Process, token: string): Promise<EmployeePayment[]> {
+    return this.http.post(this.endPoint + 'Process/payment', process, this.getTokenHeader(token)).toPromise()
+      .then(response => response as EmployeePayment[]);
+  }
+
+
+}

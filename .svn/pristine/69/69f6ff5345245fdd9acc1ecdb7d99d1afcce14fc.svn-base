@@ -1,0 +1,40 @@
+<app-process-header [mode]="'transmission'" [process]="process"></app-process-header>
+<div class="text-center mt-3 mb-3">
+  <button id="startTransmissionButton" class="btn btn-success" (click)="SendDetails()">שדר</button>
+</div>
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>
+          <mat-checkbox type="checkbox" [(ngModel)]="checkBoxValue" [checked]="checkBoxValue" (change)="clearSelectAllIndexList()"></mat-checkbox>
+      </th>
+      <th>חברה מנהלת</th>
+      <th>קופה בשכר</th>
+      <th>סוג מוצר</th>
+      <th>סוג תשלום</th>
+      <th>מס' חשבון/צ'ק</th>
+      <th>תאריך תשלום</th>
+      <th>סכום</th>
+      <th>הערות</th>
+      <th>סטטוס</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let payment of payments; let i=index">
+      <td>
+        <mat-checkbox type="checkbox" [checked]="checkBoxValue" (change)="IndexList(payment.id)" class="checkbox"></mat-checkbox>
+      </td>
+      <td>{{payment.manufacturer.name}}</td>
+      <td>
+        <i class="fa fa-info-circle" (click)="openProductDetailsDialog(payment.id)"></i>
+      </td>
+      <td>{{pay.labels.productType[pay.productType[payment.productType]]}}</td>
+      <td>{{pay.labels.KindPay[pay.KindPay[payment.KindPay]]}}</td>
+      <td><i class="fa fa-pencil" (click)="openBankDetailsDialog(payment)"></i> {{payment.employer.bankAccountNumber}}</td>
+      <td><i class="fa fa-pencil" ></i> {{payment.PaymentDate | date: 'dd/MM/yyyy'}}</td>
+      <td>{{payment.sumFile}}</td>
+      <td><i class="fa fa-comment" (click)="openCommentDialog(payment)"></i></td>
+      <td>{{pay.labels.SentToSafeBoxes[pay.SentToSafeBoxes[payment.StatusSafeBoxes]]}}</td>
+    </tr>
+  </tbody> 
+</table> 

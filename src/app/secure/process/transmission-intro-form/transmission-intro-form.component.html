@@ -1,0 +1,24 @@
+<i class="fa fa fa-arrow-right pointer mb-3" (click)="onCloseClicked()" aria-hidden="true"></i>
+<form #f="ngForm" (ngSubmit)="submit(f.valid)" novalidate>
+  <mat-form-field>
+    <input matInput name="date" [matDatepicker]="picker" placeholder="תאריך ערך" [(ngModel)]="date" #dateInput="ngModel" required>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker touchUi="true" #picker></mat-datepicker>
+    <mat-error *ngIf="dateInput.errors && f.submitted">יש להזין תאריך ערך.</mat-error>
+  </mat-form-field>
+  <mat-form-field class="mr-3">
+    <input matInput type="text" [(ngModel)]="time" name="time" #timeInput="ngModel" placeholder="שעת ערך" required>
+    <i matSuffix class="fa fa-clock-o"></i>
+    <mat-error *ngIf="timeInput.errors && f.submitted">יש להזין שעת ערך.</mat-error>
+  </mat-form-field>
+  <mat-form-field class="mr-3">
+    <mat-select name="method" placeholder="אופן תשלום" [(ngModel)]="data.method" #method="ngModel">
+      <mat-option value="0">מס"ב</mat-option>
+      <mat-option value="1">העברה בנקאית</mat-option>
+    </mat-select>
+    <mat-error *ngIf="method.errors && f.submitted">יש לבחור אופן תשלום.</mat-error>
+  </mat-form-field>
+  <div mat-dialog-actions class="justify-content-center justify-content-md-end">
+    <button type="submit" class="btn btn-primary">התחל שידור</button>
+  </div>
+</form>

@@ -1,0 +1,5 @@
+#startTransmissionButton {
+  width: 300px;
+  font-size: 22px;
+  cursor: pointer;
+}

@@ -1,0 +1,153 @@
+import { Component, OnInit, Input } from '@angular/core';
+import { Router} from '@angular/router';
+
+import { UserSessionService } from '../../../shared/_services/user-session.service';
+import { EmployerService } from '../../_services/http/employer.service';
+
+import { MONTHS } from '../../../shared/_const/months';
+import { Employer } from '../../../shared/_models/employer.model';
+import { EmployeeFeedback } from '../../../shared/_models/employee-feedback.model';
+import { GeneralHttpService } from '../../_services/http/general-http.service';
+import { BarChartDataItem } from '../../../shared/_models/BarChartDataItem.model';
+import { debug } from 'util';
+
+@Component({
+  selector: 'app-feedback-graph',
+  templateUrl: './feedback-graph.component.html',
+  styleUrls: ['./feedback-graph.component.css']
+})
+export class FeedbackGraphComponent implements OnInit {
+
+  @Input() graphOnly = false;
+
+  constructor(private router: Router,
+     private userSession: UserSessionService,
+      private employerService: EmployerService,
+    private generalService: GeneralHttpService) {}
+
+  feedback = new EmployeeFeedback();
+
+  employers: Employer[] = [];
+
+  readonly months = MONTHS;
+  readonly currentYear = new Date().getFullYear();
+
+  readonly searchCriteria = { employer: '', year: this.currentYear, months: []};
+
+  chartOptions= {};
+
+
+  readonly chartLabels = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
+
+  readonly chartData = [
+    { data: [28, 28, 20, 12, 56, 12, 40], label: 'לא נפרעו',  },
+    { data: [55, 55, 40, 21, 86, 34, 55], label: 'נפרעו חלקית' },
+    { data: [100, 100, 60, 32, 106, 65, 90], label: 'נפרעו' }
+  ];
+
+  // chartData : {data: number[],label: string}[] = [];
+  // chartLabels: string[] = [];
+
+  chartDataReady = true;
+
+  readonly chartColors = [{
+      backgroundColor: 'rgba(251, 103, 131, 1)'
+    },
+    {
+      backgroundColor: 'rgba(249, 197, 135, 1)'
+    },
+    {
+      backgroundColor: 'rgba(87, 189, 190, 1)'
+  }];
+
+  ngOnInit() {
+    this.chartOptions = {
+      scaleShowVerticalLines: false,
+      responsive: true,
+      scales: {
+        xAxes: [{
+          stacked: true,
+           ticks: {
+            display: this.graphOnly ? false : true ,
+             autoSkip: this.graphOnly ? true : false
+         }
+        }
+      ]
+      },
+      legend: {
+        position: 'bottom'
+      }
+    };
+
+  this.employerService.getEmployers(this.userSession.getToken()).then(response => this.employers = response);
+// let cert = {};
+// cert['employerId'] = "9619";
+// cert['year'] = "2017";
+// cert['month'] = "7";
+//     this.generalService.getBarChartData(this.userSession.getToken(),cert)
+//     .then(response => this.setChartData(response))
+  }
+
+  setChartData(response: BarChartDataItem[]): void {
+    debugger;
+    let unpaidArr: number[] = [];
+    let paidArr: number[] = [];
+    let fullyPaidArr: number[] = [];
+    for (let i of response) {
+      unpaidArr.push(i.unpaid);
+      paidArr.push(i.paid);
+      fullyPaidArr.push(i.fullyPaid);
+      this.chartLabels.push(i.manufacturerName);
+   }
+   this.chartData.push({data: fullyPaidArr, label: 'נפרעו'})
+   this.chartData.push({data: paidArr, label: 'נפרעו חלקית'})
+   this.chartData.push({data: unpaidArr, label: 'לא נפרעו'})
+   this.chartDataReady = true;
+  }
+
+  setMonths(values: string[]): void {
+    for (let i = 0; i < values.length; i++) {
+
+      this.searchCriteria.months.push(this.months[i]);
+
+      if (values[i] === 'full') {
+        this.searchCriteria.months = ['full'];
+
+        for (let a = 0; a < this.months.length; a++) {
+          this.searchCriteria.months.push(this.months[a]);
+        }
+
+        break;
+      }
+    }
+  }
+
+  chartClicked(e: { event: MouseEvent, active: any[]}): void {
+    let sectionClicked;
+
+    const yCords = [];
+
+    for (let i = 0; i < e.active.length; i++) {
+      yCords[e.active[i]._model.y] = e.active[i]._model.datasetLabel;
+    }
+
+    for (const i in yCords) {
+      if (e.event.offsetY >= +i) {
+        sectionClicked = yCords[i];
+      }
+    }
+
+    const status = this.feedback.getStatusLabels(sectionClicked, 'value');
+    const company = e.active[0]._model.label;
+
+    this.router.navigate(['/feedback/table/employees'], { queryParams: {
+      employer: this.searchCriteria.employer,
+      year: this.searchCriteria.year,
+      months: JSON.stringify(this.searchCriteria.months),
+      status: status,
+      company: company
+    }
+    });
+
+  }
+}

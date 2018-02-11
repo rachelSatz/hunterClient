@@ -1,0 +1,68 @@
+<section id="header" class="d-flex justify-content-between align-items-center">
+  <p class="h2 blue">ברוך הבא, {{ selectedEmployer.name }}</p>
+  <mat-form-field>
+    <mat-select [(ngModel)]="selectedEmployer" placeholder="בחר מעסיק">
+      <mat-option *ngFor="let employer of employers" [value]="employer">{{ employer.name }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</section>
+<section id="stats">
+  <div>
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker touchUi="true" #picker></mat-datepicker>
+    </mat-form-field>
+    <span>לפי חודש שכר</span>
+  </div>
+  <div class="row">
+    <div class="col box-container">
+      <div class="box">
+        <img src="/assets/img/employees.png" alt="סהכ עובדים">
+        <p>סה"כ עובדים</p>
+        <p>127</p>
+      </div>
+    </div>
+    <div class="col box-container">
+      <div class="box">
+        <img src="/assets/img/comments.png" alt="מספר פניות פתוחות">
+        <p>מספר פניות פתוחות</p>
+        <p>10 (23)</p>
+      </div>
+    </div>
+    <div class="col box-container">
+      <div class="box">
+        <img src="/assets/img/coins.png" alt="כספים ששולמו">
+        <p>כספים ששולמו</p>
+        <p>250,000 &#8362;</p>
+      </div>
+    </div>
+    <div class="col box-container">
+      <div class="box">
+        <img src="/assets/img/file.png" alt="מס' קבצים ששודרו">
+        <p>מס' קבצים ששודרו</p>
+        <p>5</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="feedback" class="mb-3">
+  <p class="h3 mb-5">היזונים חוזרים</p>
+  <div class="row">
+    <div class="col">
+      <app-feedback-graph [graphOnly]="true"></app-feedback-graph>
+    </div>
+    <div id="doughnutGraphContainer" class="col relative">
+      <div class="d-block w-75 mr-auto ml-auto">
+        <canvas baseChart [data]="doughnutGraph.data" [labels]='doughnutGraph.labels' [colors]="doughnutGraph.colors" [chartType]="'doughnut'" [legend]="false"></canvas>
+      </div>
+      <span>
+        <p>62%</p>
+        <p>פרעון</p>
+      </span>
+    </div>
+  </div>
+</section>
+<div class="text-center text-lg-left">
+  <button class="btn btn-primary" routerLink="/process/new">תהליך חדש</button>
+</div>

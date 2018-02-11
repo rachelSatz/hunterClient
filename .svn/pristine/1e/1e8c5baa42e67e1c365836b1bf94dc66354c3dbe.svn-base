@@ -1,0 +1,68 @@
+<p class="h3">
+  עריכת חשבונות
+</p>
+<p class="h4">
+  {{payment.file.employer.name}}
+</p>
+<p class="h4">
+  {{payment.file.sumFile}}
+</p>
+
+<div class="row">
+
+  <div class="col-md-2  col-md-push-1">
+    <label>חשבון קופה</label>
+  </div>
+  <mat-form-field class="col-md-3">
+    <mat-select placeholder="בחר קופה" [(ngModel)]="bankNumber" (change)="selectionClickBankNumber()">
+      <mat-option *ngFor="let bank of bankNumbers" [value]="bank.Value">
+        {{ bank.Text }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="col-md-3">
+    <mat-select placeholder="בחר סניף" [(ngModel)]="branchNumber" (change)="selectionClickAccountNumber()">
+      <mat-option *ngFor="let bank of bankBranchNumbers" [value]="bank.Value">
+        {{ bank.Text }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="col-md-3">
+    <mat-select placeholder="מספר חשבון" [(ngModel)]="accountNumber">
+      <mat-option *ngFor="let bank of bankAccountNumbers" [value]="bank.Value">
+        {{ bank.Value }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div id="btnWrapper">
+  <button type="submit" class="btn btn-default" (click)="sendNewBankDetails()">אישור</button>
+</div>
+
+<!-- <div class="row">
+  <div class="col-md-2  col-md-push-1">
+    <label>חשבון קופה</label>
+  </div>
+  <div class="col-md-3">
+    <select class="form-control" name="bankNum" [(ngModel)]="bankNumber" (change)="selectionClickBankNumber($event)">
+            <option selected="true" value="" hidden disabled>בחר קופה</option>
+            <option *ngFor="let bank of bankNumbers" value="{{bank.Value}}">{{bank.Text}}</option>
+        </select>
+  </div>
+  <div class="col-md-3">
+    <select type="number" class="form-control" [(ngModel)]="branchNumber" (change)="selectionClickAccountNumber()">
+            <option  [selected]="true" value="" hidden disabled >בחר סניף</option>
+            <option *ngFor="let bank of bankBranchNumbers" value="{{bank.Value}}">{{bank.Text}} - {{bank.Value}}</option>
+        </select>
+  </div>
+  <div class="col-md-3">
+    <select type="number" class="form-control" [(ngModel)]="accountNumber">
+            <option [ngClass]="{'defultAccount':bank.Selected}" *ngFor="let bank of bankAccountNumbers" value="{{bank.Value}}">
+                    {{bank.Value}}
+            </option>
+        </select>
+  </div>
+</div>
+<div id="btnWrapper">
+  <button type="submit" class="btn btn-default" (click)="onclick()">אישור</button>
+</div> -->

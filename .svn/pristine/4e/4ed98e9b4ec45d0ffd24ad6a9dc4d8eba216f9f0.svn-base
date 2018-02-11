@@ -1,0 +1,88 @@
+import { Component, OnInit ,Input} from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+
+import { UserSessionService } from '../../../../shared/_services/user-session.service';
+import { GeneralHttpService } from '../../../_services/http/general-http.service';
+import { EmployerService } from '../../../_services/http/employer.service';
+
+import { Employer } from '../../../../shared/_models/employer.model';
+import { Bank } from '../../../../shared/_models/bank.model';
+import { BankBranch } from '../../../../shared/_models/bank-branch.model';
+import { NotificationService } from '../../../_services/http/notification.service';
+
+@Component({
+  selector: 'app-employer-form',
+  templateUrl: './employer-form.component.html',
+  styleUrls: ['./employer-form.component.css']
+})
+export class EmployerFormComponent implements OnInit {
+  employer = new Employer();
+  banks: Bank[] = [];
+  bankBranches: BankBranch[] = [];
+
+  isSubmitting: boolean;
+  isSuccessful: boolean;
+
+  employerIdUpdateMode = -1;
+
+  constructor(private router: Router, private route: ActivatedRoute, private userSession: UserSessionService,
+              private generalHttp: GeneralHttpService, private employerService: EmployerService,
+            private notificationService: NotificationService) {}
+
+  ngOnInit() {
+    
+    this.generalHttp.getBanks(this.userSession.getUser().token).then(response => this.banks = response);
+
+    // this.route.params.subscribe(message => message['id'] ? this.employerService.getEmployer(+message['id'], this.userSession.getToken())
+    // .then(response => this.employer = response) : '');
+
+       this.route.params.subscribe(message =>
+        {
+          if (message['id']) {
+            this.employerIdUpdateMode = +message['id'];
+            this.employerService.getEmployer(+message['id'], this.userSession.getToken())
+            .then(response => this.employer = response);
+          } else {
+            this.employerIdUpdateMode = -1;
+          }
+        });
+  }
+
+  loadBankBranches(bankID: number): void {
+    if (bankID) {
+      this.generalHttp.getBankBranches(bankID, this.userSession.getUser().token).then(response => this.bankBranches = response);
+    }
+  }
+
+  submit(isValid: boolean): void {
+    if (isValid) {
+      if(this.employerIdUpdateMode === -1) {
+      this.isSubmitting = true;
+      this.employerService.newEmployer(this.employer, this.userSession.getToken())
+      .then(response => setTimeout(() => this.handleResponse(response), 2000));
+    }
+    else{ 
+      this.isSubmitting = true;
+      this.employerService.updateEmployer(this.employer,this.employerIdUpdateMode, this.userSession.getToken())
+      .then(response => setTimeout(() =>
+      {
+        this.notificationService.showResult(response ? "עדכון הרשומה בוצע בהצלחה" : "עדכון הרשומה נכשל" ,
+        response ? 0 : 1);
+        this.router.navigate(['/settings/employers']);
+      }, 2000));
+    }
+  }
+  console.log(this.employerIdUpdateMode);
+  }
+
+  private handleResponse(response: Employer): void {
+    debugger;
+    if (response['id']) {
+      sessionStorage.setItem('new-employer', JSON.stringify(response));
+      this.router.navigate(['/settings/employers']);
+    }
+
+    this.isSuccessful = false;
+    this.isSubmitting = false;
+  }
+}
