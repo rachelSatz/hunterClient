@@ -47,7 +47,7 @@
         <p *ngIf="paymentsFile" class="bold word-break w-75 mx-auto">{{ paymentsFile.name }}</p>
       </div>
     </div>
-    <mat-spinner class="mx-auto mt-3" [diameter]='75' *ngIf="isUploadingFile"></mat-spinner>
+    <!--<mat-spinner class="mx-auto mt-3" [diameter]='75' *ngIf="isUploadingFile"></mat-spinner>-->
     <p class="alert alert-danger" *ngIf="fileTypeError">יש להעלות קבצי XML בלבד.</p>
     <p class="alert alert-danger" *ngIf="noFileError">יש להעלות קובץ.</p>
     <p class="alert alert-danger" *ngIf="genericFileError">קובץ לא תקין, אנא צור קשר או נסה שנית.</p>

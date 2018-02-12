@@ -9,7 +9,7 @@ export class PaymentPromptComponent {
 
   constructor(private dialogRef: MatDialogRef<PaymentPromptComponent>) {}
 
-  choosePayment(): void {
-    this.dialogRef.close();
+  choosePayment(isPaid: boolean): void {
+    this.dialogRef.close(isPaid);
   }
 }

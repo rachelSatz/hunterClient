@@ -19,6 +19,8 @@ import { EmployeePaymentFormComponent } from './employee-payment-form/employee-p
 import { ProcessEmployeePaymentsComponent } from './process-employee-payments/process-employee-payments.component';
 import { ProcessProductPaymentsComponent } from './process-product-payments/process-product-payments.component';
 
+import { ProcessResolve } from '../../shared/_resolves/process.resolve';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -39,13 +41,13 @@ import { ProcessProductPaymentsComponent } from './process-product-payments/proc
     EmployeePaymentsTableComponent,
     EmployeePaymentFormComponent,
     ProcessEmployeePaymentsComponent,
-    ProcessProductPaymentsComponent,
+    ProcessProductPaymentsComponent
   ],
   entryComponents: [
     EmployeePaymentFormComponent,
     ProcessEmployeePaymentsComponent,
     ProcessProductPaymentsComponent,
   ],
-  providers: []
+  providers: [ProcessResolve]
 })
 export class ProcessModule {}

@@ -1,6 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material';
+import { Subscription } from 'rxjs/Subscription';
 
 import { trigger, state, style, animate, transition } from '@angular/animations';
 
@@ -37,7 +38,7 @@ import { MONTHS } from '../../../shared/_const/months';
   ],
   providers: [ProcessService]
 })
-export class ProcessUploadComponent implements OnInit {
+export class ProcessUploadComponent implements OnInit, OnDestroy {
 
   @Output() stepChange = new EventEmitter<{ index: number, process: Process }>();
   @Input() process: Process;
@@ -53,11 +54,10 @@ export class ProcessUploadComponent implements OnInit {
   noFileError = false;
   genericFileError = false;
 
-  isUploadingFile = false;
-
   activeUploadStep = 1;
   isPaymentTransferred: boolean;
 
+  paymentDialogSubscription: Subscription;
 
   constructor(private employerService: EmployerService, private processService: ProcessService,
               private processFileService: ProcessFileService, private notificationService: NotificationService,
@@ -125,23 +125,23 @@ export class ProcessUploadComponent implements OnInit {
         return;
       }
 
-      this.dialog.open(PaymentPromptComponent, {
-        height: '300px',
+      const dialog = this.dialog.open(PaymentPromptComponent, {
+        height: '200px',
         width: '450px'
       });
 
-      this.isUploadingFile = true;
+      this.paymentDialogSubscription = dialog.afterClosed().subscribe((message) => {
+        console.log(message)
+        this.processFileService.uploadFile(this.process, this.paymentsFile).then(response => {
+          this.activeUploadStep = nextStep;
 
-      this.processFileService.uploadFile(this.process, this.paymentsFile).then(response => {
-        setTimeout(() => {
-          if (response) {
-            this.activeUploadStep = nextStep;
-          } else {
-            this.genericFileError = true;
-          }
+          // if (response) {
+          //     this.activeUploadStep = nextStep;
+          //   } else {
+          //     this.genericFileError = true;
+          //   }
 
-          this.isUploadingFile = false;
-        }, 1500);
+        });
       });
     }
 
@@ -150,13 +150,11 @@ export class ProcessUploadComponent implements OnInit {
     }
   }
 
-  setUploadProgressStep(isPaymentTransferred: boolean): void {
-    this.activeUploadStep = 4;
-    this.isPaymentTransferred = isPaymentTransferred;
-    this.processFileService.getFileUploadStatus(this.process.id);
-  }
-
   setStepChange(index: number): void {
     this.stepChange.emit({ index: index, process: this.process });
+  }
+
+  ngOnDestroy() {
+    this.paymentDialogSubscription.unsubscribe();
   }
 }

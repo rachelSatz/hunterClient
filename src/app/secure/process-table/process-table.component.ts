@@ -8,7 +8,6 @@ import { ProcessFileService } from '../../shared/_services/http/process-file.ser
 import { EmployerService } from '../../shared/_services/http/employer.service';
 import { NotificationService } from '../../shared/_services/notification.service';
 
-import { DataTableHeader } from '../../shared/_models/data-table/data-table-header.model';
 import { Employer } from '../../shared/_models/employer.model';
 import { Process, ValidityStatus, StepStatus } from '../../shared/_models/process.model';
 
@@ -34,16 +33,19 @@ export class ProcessTableComponent extends DataTableComponent implements OnInit 
   validityStatus = ValidityStatus;
   stepStatus = StepStatus;
 
-  readonly headers: DataTableHeader[] = [
-    { column: 'addToProcessName', label: 'שם תהליך' }, { column: 'id', label: 'מספר תהליך' }, { column: 'month', label: 'חודש' },
-    { column: 'year', label: 'שנה' }, { column: 'codeFile', label: 'קוד' }, { column: 'totalPaymentFile', label: 'סכום' },
+  readonly headers = [
+    { column: 'addToProcessName', label: 'שם תהליך' }, { column: 'id', label: 'מספר תהליך' },
+    { column: 'month', label: 'חודש' }, { column: 'year', label: 'שנה' },
+    { column: 'codeFile', label: 'קוד' }, { column: 'totalPaymentFile', label: 'סכום' },
     { column: 'statusTransmit', label: 'סטטוס שידור' },
   ];
 
   searchCriteria: { employerID: number, year: number, months: number[] };
 
-  constructor(protected route: ActivatedRoute, private processService: ProcessService, private processFileService: ProcessFileService,
-              private employerService: EmployerService, private router: Router, private notificationService: NotificationService) {
+  constructor(protected route: ActivatedRoute, private processService: ProcessService,
+              private processFileService: ProcessFileService,
+              private employerService: EmployerService, private router: Router,
+              private notificationService: NotificationService) {
     super(route);
   }
 
@@ -69,7 +71,9 @@ export class ProcessTableComponent extends DataTableComponent implements OnInit 
   }
 
   fetchItems(): void {
-    this.processService.getProcesses(this.searchCriteria, this.orderCriteria).then(response => this.setItems(response));
+    this.processService.getProcesses(this.searchCriteria, this.orderCriteria).then(
+      response => this.setItems(response)
+    );
   }
 
   downloadFile(processID: number): void {

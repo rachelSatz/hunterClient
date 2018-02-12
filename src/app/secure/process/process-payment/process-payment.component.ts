@@ -11,7 +11,8 @@ import * as FileSaver from 'file-saver';
 @Component({
   selector: 'app-process-payment',
   templateUrl: './process-payment.component.html',
-  styleUrls: ['./process-payment.component.css']
+  styleUrls: ['./process-payment.component.css'],
+  providers: [ProcessService, ProcessMethodService]
 })
 export class ProcessPaymentComponent implements OnInit {
 
