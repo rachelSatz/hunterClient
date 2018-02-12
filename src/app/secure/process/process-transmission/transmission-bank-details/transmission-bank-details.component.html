@@ -1,12 +1,6 @@
-<p class="h3">
-  עריכת חשבונות
-</p>
-<p class="h4">
-  {{payment.file.employer.name}}
-</p>
-<p class="h4">
-  {{payment.file.sumFile}}
-</p>
+<p class="h3">עריכת חשבונות</p>
+<p class="h4">{{ payment.file.employer.name }}</p>
+<p class="h4">{{ payment.file.sumFile }}</p>
 
 <mat-radio-group [(ngModel)]="select">
   <mat-radio-button value="1">העברה בנקאית</mat-radio-button>
@@ -19,21 +13,17 @@
   </div>
   <mat-form-field class="col-md-3">
     <mat-select placeholder="בחר קופה" [(ngModel)]="bankNumber" (change)="selectionClickBankNumber()">
-      <mat-option *ngFor="let bank of bankNumbers" [value]="bank.Value">
-        {{ bank.Text }}
-      </mat-option>
+      <mat-option *ngFor="let bank of bankNumbers" [value]="bank.Value">{{ bank.Text }}</mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field class="col-md-3">
     <mat-select placeholder="בחר סניף" [(ngModel)]="branchNumber" (change)="selectionClickAccountNumber()">
-      <mat-option *ngFor="let bank of bankBranchNumbers" [value]="bank.Value">
-        {{ bank.Text }}
-      </mat-option>
+      <mat-option *ngFor="let branch of bankBranchNumbers" [value]="branch.Value">{{ branch.Text }}</mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field class="col-md-3">
     <mat-select placeholder="מספר חשבון" [(ngModel)]="accountNumber">
-      <mat-option [ngClass]="{'defaultAccount':bank.Selected}" *ngFor="let bank of bankAccountNumbers" [value]="bank.Value">
+      <mat-option [ngClass]="{'defaultAccount':account.Selected}" *ngFor="let account of bankAccountNumbers" [value]="account.Value">
         {{ bank.Value }}
       </mat-option>
     </mat-select>

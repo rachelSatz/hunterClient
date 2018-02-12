@@ -16,15 +16,16 @@ export class ProcessFileService extends BaseHttpService {
     super(userSession);
   }
 
-  uploadFile(process: Process, file: File): Promise<number> {
-    
+  uploadFile(process: Process, file: File): Promise<any> {
+
     const formData = new FormData;
     formData.append('process', JSON.stringify(process));
     formData.append('file', file, file.name);
 
     return this.http.post(this.endPoint + '/file', formData, this.getTokenHeader())
     .toPromise()
-    .then(response => response as number);
+    .then(response => true)
+    .catch(response => false);
   }
 
   getFileUploadStatus(processID: number): Promise<number> {

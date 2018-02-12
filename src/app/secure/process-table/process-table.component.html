@@ -27,8 +27,7 @@
     <tr class="headers">
       <th *ngFor="let header of headers" (click)="sort(header.column)">
         <span>{{ header.label }}</span>
-        <i class="ml-3 fa float-left" *ngIf="orderCriteria['column'] === header.column"
-           [ngClass]="{ 'fa-chevron-down': orderCriteria['dir'] === 'DESC',  'fa-chevron-up': orderCriteria['dir'] === 'ASC' }"></i>
+        <i [class]="getHeaderIconClass()" *ngIf="orderCriteria.orderBy === header.column"></i>
       </th>
       <th>הורדת קובץ</th>
     </tr>
@@ -46,7 +45,6 @@
         <td>{{ item.year }}</td>
         <td>{{ item.codeFile }}</td>
         <td class="ltr">&#8362; {{ item.totalPaymentFile }} </td>
-        <!-- <td>{{ process.labels.validityStatus[validityStatus[item.validityStatus]] }}</td> -->
         <td>{{ process.labels.stepStatus[stepStatus[item.stepStatus]] }}</td>
         <td>
           <i class="fa fa-download pointer" (click)="downloadFile(item.id)"></i>
@@ -63,5 +61,5 @@
     </tr>
     </tbody>
   </table>
-  <app-pagination [data]="paginationData" (isLinkClicked)="paginateItems()" *ngIf="items.length > 0"></app-pagination>
+  <app-pagination [data]="paginationData" *ngIf="items.length > 0"></app-pagination>
 </div>

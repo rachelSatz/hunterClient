@@ -1,6 +1,6 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
-import { PaginationData } from '../../_models/pagination-data.model';
+import { PaginationData } from '../classes/pagination-data';
 
 @Component({
   selector: 'app-pagination',
@@ -9,28 +9,15 @@ import { PaginationData } from '../../_models/pagination-data.model';
 })
 export class PaginationComponent {
 
-  @Input() data: PaginationData = <PaginationData>{ currentPage: 1, limit: 10 };
-  @Output() isLinkClicked = new EventEmitter<boolean>();
+  @Input() data: PaginationData;
 
   getMaxShownItems(): number {
-	  const max = this.data.currentPage * this.data.limit;
+    const max = this.data.currentPage * this.data.limit;
 
-	  if (this.data.totalItems < max) {
-	    return this.data.totalItems;
+    if (this.data.totalItems < max) {
+      return this.data.totalItems;
     }
 
-	  return max;
-  }
-
-  getUrl(): any {
-    if (this.data.url === false) {
-      return [];
-    }
-
-    return this.data.url ? this.data.url : './';
-  }
-
-  linkClicked(): void {
-    this.isLinkClicked.emit(true);
+    return max;
   }
 }

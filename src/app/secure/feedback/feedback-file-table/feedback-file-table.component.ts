@@ -6,7 +6,6 @@ import { Select2OptionData } from 'ng2-select2/ng2-select2.interface';
 import { DataTableComponent } from '../../../shared/data-table/data-table.component';
 import { FeedbackFileApplicationComponent } from '../feedback-file-application/feedback-file-application.component';
 
-import { UserSessionService} from '../../../shared/_services/user-session.service';
 import { FeedbackService } from '../../../shared/_services/http/feedback.service';
 
 import { Employer } from '../../../shared/_models/employer.model';

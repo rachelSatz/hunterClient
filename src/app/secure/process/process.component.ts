@@ -23,9 +23,10 @@ export class ProcessComponent implements OnInit {
   ngOnInit() {
     if (this.route.snapshot.params['id']) {
       this.isNew = false;
-      this.process = this.route.snapshot.data['process'].data.process;
+      this.process = this.route.snapshot.data['process'];
       this.stepper.selectedIndex = 1;
 
+      console.log(this.process);
 
       this.stepper.selectedIndex = (+this.process.stepStatus === 1) ? 2 : 1;
     }

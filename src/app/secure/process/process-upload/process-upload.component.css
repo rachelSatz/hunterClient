@@ -14,10 +14,31 @@
 }
 
 #selectFileContainer {
+  position: relative;
   padding: 40px 0;
   border: 1px dashed #acaaac;
   text-align: center;
   cursor: pointer;
+}
+
+#selectFileContainer.uploaded {
+  background-color: #eaeaea !important;
+  border: 1px solid #eaeaea;
+}
+
+#fileUploadedContainer > i {
+  color: #5cb85cd9;
+  font-size: 50px;
+}
+
+#removeUploadedFile {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 4px 10px;
+  background-color: #0275d8;
+  color: #fff;
+  font-weight: normal;
 }
 
 .narrow-width {

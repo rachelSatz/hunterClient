@@ -1,9 +1,11 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 
 import { trigger, state, style, animate, transition } from '@angular/animations';
 
 import { TransitionDialogComponent } from '../../../shared/transition-dialog/transition-dialog.component';
+import { PaymentPromptComponent } from './payment-prompt/payment-prompt.component';
 
 import { EmployerService } from '../../../shared/_services/http/employer.service';
 import { ProcessService } from '../../../shared/_services/http/process.service';
@@ -32,7 +34,8 @@ import { MONTHS } from '../../../shared/_const/months';
       transition('inactive => active', animate('400ms ease-in')),
       transition('active => inactive', animate('400ms ease-out'))
     ])
-  ]
+  ],
+  providers: [ProcessService]
 })
 export class ProcessUploadComponent implements OnInit {
 
@@ -43,13 +46,18 @@ export class ProcessUploadComponent implements OnInit {
   readonly months = MONTHS;
   readonly currentYear = new Date().getFullYear();
 
-  file: File = <File>{};
+  paymentsFile: File;
   selectedUploadMethod: 'xml' | 'manual';
 
-  uploadProgressPercent: number;
-  isFileUploaded = false;
+  fileTypeError = false;
+  noFileError = false;
+  genericFileError = false;
 
-  activeUploadStep = 2;
+  isUploadingFile = false;
+
+  activeUploadStep = 1;
+  isPaymentTransferred: boolean;
+
 
   constructor(private employerService: EmployerService, private processService: ProcessService,
               private processFileService: ProcessFileService, private notificationService: NotificationService,
@@ -59,66 +67,6 @@ export class ProcessUploadComponent implements OnInit {
     this.employerService.getEmployers().then(response => this.employers = response);
   }
 
-  checkFileType(): boolean {
-    if (!this.file.name  || !this.selectedUploadMethod) {
-      return true;
-    }
-
-    const ext = this.file.name.substr(this.file.name.indexOf('.') + 1);
-
-    switch (this.selectedUploadMethod) {
-      case 'xml':
-        if (['xml', 'XML', 'dat', 'DAT'].indexOf(ext) !== -1) {
-          return true;
-        }
-        break;
-      // case 'excel':
-      //   if (ext === 'xls' || ext === 'xlsx') {
-      //     return true;
-      //   }
-      //   break;
-      case 'manual':
-        return true;
-    }
-
-    return false;
-  }
-
-  uploadFile(isValid: boolean): void {
-    if (isValid && this.selectedUploadMethod !== 'manual') {
-      this.uploadProgressPercent = 1;
-      this.processFileService.uploadFile(this.process, this.file)
-        .then(response => this.setUploadFile(response['processNumber']))
-        .catch(response => {
-          this.uploadProgressPercent = null;
-          if (response.error.message) {
-            this.notificationService.showResultHTML(response.error.message , 1);
-          }
-        });
-    }
-  }
-
-  private setUploadFile(processID: number): void {
-    this.process.id = processID;
-    const intervalInstance = setInterval(() => this.processFileService.getFileUploadStatus(this.process.id)
-      .then(response => this.handleCheckFileStatus(response['progressPercent'], intervalInstance))
-      .catch(response => {
-        this.uploadProgressPercent = null;
-        if (response.error.message) {
-          clearInterval(intervalInstance);
-          this.notificationService.showResultHTML(response.error.message, 1);
-        }
-      }), 10000);
-  }
-
-  private handleCheckFileStatus(percent: number, intervalInstance): void {
-    this.uploadProgressPercent = percent > 0 ? percent : 1 ;
-    if (percent === 100) {
-      clearInterval(intervalInstance);
-      setTimeout(() => this.isFileUploaded = true, 3000);
-    }
-  }
-
   getTitle(): string {
     switch (this.activeUploadStep) {
       case 1:
@@ -126,8 +74,6 @@ export class ProcessUploadComponent implements OnInit {
       case 2:
         return 'טעינת קובץ אחיד';
       case 3:
-        return 'האם התשלום הועבר לקופות?';
-      case 4:
         return 'הקובץ בטעינה';
     }
   }
@@ -135,9 +81,79 @@ export class ProcessUploadComponent implements OnInit {
   openTransitionDialog(): void {
     this.dialog.open(TransitionDialogComponent, {
       data: 'הנחיית התשלום תשלח למייל בסיום עיבוד הקובץ',
-      height: '300px',
-      width: '450px'
+      height: '150px',
+      width: '300px'
     });
+  }
+
+  setFile(file: File) {
+
+    if (this.paymentsFile) {
+      return;
+    }
+
+    const ext = file.name.substr(file.name.indexOf('.') + 1);
+    if (['xml', 'XML', 'dat', 'DAT'].indexOf(ext) === -1) {
+      this.fileTypeError = true;
+      return;
+    }
+
+    if (this.fileTypeError) {
+      this.fileTypeError = false;
+    }
+
+    if (this.noFileError) {
+      this.noFileError = false;
+    }
+
+    this.paymentsFile = file;
+  }
+
+  removeFile(): void {
+    this.paymentsFile = null;
+    this.genericFileError = false;
+  }
+
+  setActiveUploadStep(nextStep: number, processForm: NgForm): void {
+
+    if (nextStep === 2 && !processForm.valid) {
+      return;
+    }
+
+    if (nextStep === 3) {
+      if (!this.paymentsFile) {
+        return;
+      }
+
+      this.dialog.open(PaymentPromptComponent, {
+        height: '300px',
+        width: '450px'
+      });
+
+      this.isUploadingFile = true;
+
+      this.processFileService.uploadFile(this.process, this.paymentsFile).then(response => {
+        setTimeout(() => {
+          if (response) {
+            this.activeUploadStep = nextStep;
+          } else {
+            this.genericFileError = true;
+          }
+
+          this.isUploadingFile = false;
+        }, 1500);
+      });
+    }
+
+    if (nextStep === 2) {
+      this.activeUploadStep = nextStep;
+    }
+  }
+
+  setUploadProgressStep(isPaymentTransferred: boolean): void {
+    this.activeUploadStep = 4;
+    this.isPaymentTransferred = isPaymentTransferred;
+    this.processFileService.getFileUploadStatus(this.process.id);
   }
 
   setStepChange(index: number): void {

@@ -72,7 +72,7 @@ export class EmployeePaymentsTableComponent extends DataTableComponent implement
     return new Date(date);
   }
 
-  getMonthLable(date: string): string {
+  getMonthLabel(date: string): string {
     const d: Date = new Date(date);
     return this.months[d.getMonth()];
   }

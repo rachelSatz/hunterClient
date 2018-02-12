@@ -23,24 +23,29 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let payment of payments; let i = index">
+    <tr *ngFor="let payment of payments">
       <td>
         <mat-checkbox type="checkbox" [checked]="checkBoxValue" (change)="IndexList(payment.id)" class="checkbox"></mat-checkbox>
       </td>
-      <td>{{payment.manufacturer.name}}</td>
+      <td>{{payment.manufacturer.name }}</td>
       <td>
         <i class="fa fa-info-circle" (click)="openProductDetailsDialog(payment.id)"></i>
       </td>
-      <!-- <td>{{pay.labels.productType[pay.productType[payment.productType]]}}</td>
-      <td>{{pay.labels.KindPay[pay.KindPay[payment.KindPay]]}}</td> -->
-      <td>{{getproductTypeLable(payment.productType)}}</td>
-      <td>{{getPayTypeLabel(payment.kindPay)}}</td>
-      <td><i class="fa fa-pencil" (click)="openBankDetailsDialog(payment)"> </i> {{payment.accountNumber}}</td>
-      <td><i class="fa fa-pencil" (click)="openDateDialog(payment)"></i> {{payment.paymentDate | date: 'dd/MM/yyyy'}}</td>
-      <td>{{payment.sumFile}}</td>
-      <td><i class="fa fa-comment" (click)="openCommentDialog(payment)" [title]="payment.remark" [ngClass]="{'fa-comment-value': payment.remark!=''}"></i></td>
-      <!-- <td>{{pay.labels.SentToSafeBoxes[pay.SentToSafeBoxes[payment.StatusSafeBoxes]]}}</td> -->
-      <td>{{getSentToSafeBoxesLable(payment.statusSafeBoxes)}}</td>
+      <td>{{ getproductTypeLable(payment.productType) }}</td>
+      <td>{{ getPayTypeLabel(payment.kindPay) }}</td>
+      <td>
+        <i class="fa fa-pencil" (click)="openBankDetailsDialog(payment)"></i>
+        <span>{{payment.accountNumber}}</span>
+      </td>
+      <td>
+        <i class="fa fa-pencil" (click)="openDateDialog(payment)"></i>
+        <span>{{payment.paymentDate | date: 'dd/MM/yyyy' }}</span>
+      </td>
+      <td>{{ payment.sumFile }}</td>
+      <td>
+        <i class="fa fa-comment" (click)="openCommentDialog(payment)" [title]="payment.remark" [ngClass]="{'fa-comment-value': payment.remark }"></i>
+      </td>
+      <td>{{ getSentToSafeBoxesLable(payment.statusSafeBoxes) }}</td>
     </tr>
   </tbody>
 </table>

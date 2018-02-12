@@ -9,7 +9,7 @@ import { TransitionDialogModule } from '../../../shared/transition-dialog/transi
 
 import { ProcessUploadComponent } from './process-upload.component';
 
-import { ProcessService } from '../../../shared/_services/http/process.service';
+import { PaymentPromptComponent } from './payment-prompt/payment-prompt.component';
 
 @NgModule({
   imports: [
@@ -22,8 +22,7 @@ import { ProcessService } from '../../../shared/_services/http/process.service';
     TransitionDialogModule
   ],
   exports: [ProcessUploadComponent],
-  declarations: [ProcessUploadComponent],
-  entryComponents: [ProcessUploadComponent],
-  providers: [ProcessService]
+  declarations: [ProcessUploadComponent, PaymentPromptComponent],
+  entryComponents: [PaymentPromptComponent]
 })
 export class ProcessUploadModule {}

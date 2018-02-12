@@ -19,12 +19,6 @@ import { EmployeePaymentFormComponent } from './employee-payment-form/employee-p
 import { ProcessEmployeePaymentsComponent } from './process-employee-payments/process-employee-payments.component';
 import { ProcessProductPaymentsComponent } from './process-product-payments/process-product-payments.component';
 
-import { ProcessService } from '../../shared/_services/http/process.service';
-import { ProcessFileService } from '../../shared/_services/http/process-file.service';
-import { ProcessMethodService } from '../../shared/_services/http/process-method.service';
-import { EmployerService } from '../../shared/_services/http/employer.service';
-import { ManualProcessService } from '../../shared/_services/http/manual-process.service';
-
 @NgModule({
   imports: [
     CommonModule,

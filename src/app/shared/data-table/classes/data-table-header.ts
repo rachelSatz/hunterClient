@@ -1,4 +1,4 @@
-import { DataTableSelectCriteria } from './data-table-select-criteria.model';
+import { DataTableSelectCriteria } from './data-table-select-criteria';
 
 export interface DataTableHeader {
   column: string;

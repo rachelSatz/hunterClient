@@ -1,10 +1,8 @@
-<div class=" row text-center text-md-left mb-3">
+<div class="text-center text-md-left mb-3">
   <button class="btn btn-primary ml-1" (click)="createNewProcess()">התחל תהליך</button>
 </div>
-
 <div>
   <div class="row table-actions">
-
     <div class="col-auto">
       <button class="btn btn-primary" (click)="makeNewPayment()">הוספת תשלום</button>
       <button class="btn btn-danger">מחק תשלום</button>
@@ -50,11 +48,11 @@
 
         <td>{{ item.productEmployer.ProductIdInEmployer}}</td>
         <td>{{ item.productEmployer.name }}</td>
-        <td>{{ getProductTypeLable(item.product.productType) }}</td>
+        <td>{{ getProductTypeLabel(item.product.productType) }}</td>
         <td>{{getWorksInSalary(item.WorksInSalary)}}</td>
         <td>{{item.product.name}}</td>
         <td>{{convertToDate(item.dateMonthPay).getFullYear()}}</td>
-        <td>{{ getMonthLable(item.dateMonthPay)}}</td>
+        <td>{{ getMonthLabel(item.dateMonthPay)}}</td>
         <td>{{item.Salary}}</td>
         <td>{{item.KodPolisa}}</td>
         <td>{{item.SumTotal}}</td>

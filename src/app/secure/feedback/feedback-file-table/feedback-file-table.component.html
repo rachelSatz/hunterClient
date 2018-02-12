@@ -27,16 +27,6 @@
           <mat-option [value]="currentYear - 1">{{ currentYear - 1 }}</mat-option>
         </mat-select>
       </mat-form-field>
-
-
- <!-- old_multi_select -->
-      <!-- <mat-form-field>
-        <mat-select multiple placeholder="בחר חודש" [ngModel]="searchCriteria['months']" (selectionChange)="setMonths($event.value)">
-          <mat-option value="full">כל החודשים</mat-option>
-          <mat-option *ngFor="let month of months;let i = index" [value]="i+1">{{ month }}</mat-option>
-        </mat-select>
-      </mat-form-field> -->
-      
       <mat-form-field class="mr-3">
         <mat-select [(ngModel)]="searchCriteria.months" (selectionChange)="setMonths($event.value)" placeholder="חודש" multiple>
           <div class="clear-selection">
@@ -46,13 +36,7 @@
           <mat-option *ngFor="let month of months; let i = index" [value]="i + 1">{{ month }}</mat-option>
         </mat-select>
       </mat-form-field>
-
-
-
-
-
       <select2 class="ml-3" [data]="processes" [value]="selectedValue" [options]="select2Options" (valueChanged)="setSearch('processId', $event.value)"></select2>
-
     </div>
   </div>
   <table class="table table-bordered table-striped">
@@ -78,11 +62,7 @@
     <tr *ngFor="let item of items">
       <td>{{ item.process.addToProcessName }}</td>
       <td>{{ item.manufacturer.name }}</td>
-      <!--<td class="text-center">-->
-        <!--<i class="fa fa-exclamation-circle row-icon" (click)="openDetailsDialog(item)"></i>-->
-      <!--</td>-->
       <td>{{ getproductTypeLable(item.productType) }}</td>
-      <!--product.labels['types'][product.productType[item.productType]] }}-->
       <td>{{getPayTypeLabel(item.payType)}}</td>
       <td>{{ item.accountNumber }}</td>
       <td>{{item.SendStatusDate | date: 'dd/MM/yyyy'}}</td>
@@ -99,14 +79,8 @@
       <td class="text-center row-actions">
         <i class="fa fa-exclamation-circle" (click)="openDetailsDialog(item)"></i>
       </td>
-      <!--<td class="text-center">-->
-        <!--<i class="fa fa-exclamation-circle row-icon" (click)="openDetailsDialog(item)"></i>-->
-      <!--</td>-->
-      <!--<td class="text-center row-actions">-->
-        <!--<i class="fa fa-exclamation-circle" (click)="openDetailsDialog(item)"></i>-->
-      <!--</td>-->
     </tr>
     </tbody>
   </table>
-  <app-pagination [data]="paginationData" (isLinkClicked)="paginateItems()" *ngIf="items.length > 0"></app-pagination>
+  <app-pagination [data]="paginationData" *ngIf="items.length > 0"></app-pagination>
 </div>

@@ -67,11 +67,11 @@
       </tr>
       <tr *ngIf="isSearching">
         <td colspan="20">
-          <mat-spinner class="mr-auto ml-auto"></mat-spinner>
+          <mat-spinner class="mx-auto"></mat-spinner>
         </td>
       </tr>
     </tbody>
   </table>
-  <app-pagination [data]="paginationData" (isLinkClicked)="paginateItems()" *ngIf="items.length > 0"></app-pagination>
+  <app-pagination [data]="paginationData" *ngIf="items.length > 0"></app-pagination>
 </div>
 

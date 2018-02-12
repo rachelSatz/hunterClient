@@ -16,8 +16,7 @@
     <tr class="headers">
       <th *ngFor="let header of headers" (click)="sort(header.column)">
         <span>{{ header.label }}</span>
-        <i class="ml-3 fa float-left" *ngIf="orderCriteria['column'] === header.column"
-           [ngClass]="{ 'fa-chevron-down': orderCriteria['dir'] === 'DESC',  'fa-chevron-up': orderCriteria['dir'] === 'ASC' }"></i>
+        <i [class]="getHeaderIconClass()" *ngIf="orderCriteria.orderBy === header.column"></i>
       </th>
       <th>פעולות</th>
     </tr>
@@ -35,7 +34,6 @@
           <a [routerLink]="'./form/' + item.id">
             <i class="fa fa-pencil"></i>
           </a>
-          <!--<i class="fa fa-trash" (click)="delete(item.id)"></i>-->
         </td>
       </tr>
     </ng-container>
@@ -46,5 +44,5 @@
     </tr>
     </tbody>
   </table>
-  <app-pagination [data]="paginationData" (isLinkClicked)="paginateItems()" *ngIf="items.length > 0"></app-pagination>
+  <app-pagination [data]="paginationData" *ngIf="items.length > 0"></app-pagination>
 </div>
