@@ -1,18 +1,19 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { MatDialog } from '@angular/material';
+
 import { trigger, state, style, animate, transition } from '@angular/animations';
 
-import { UserSessionService } from '../../../shared/_services/user-session.service';
-import { EmployerService } from '../../_services/http/employer.service';
-import { ProcessService } from '../../_services/http/process.service';
-import { ProcessFileService } from '../../_services/http/process-file.service';
-import { NotificationService } from '../../_services/notification.service';
+import { TransitionDialogComponent } from '../../../shared/transition-dialog/transition-dialog.component';
+
+import { EmployerService } from '../../../shared/_services/http/employer.service';
+import { ProcessService } from '../../../shared/_services/http/process.service';
+import { ProcessFileService } from '../../../shared/_services/http/process-file.service';
+import { NotificationService } from '../../../shared/_services/notification.service';
 
 import { Process } from '../../../shared/_models/process.model';
 import { Employer } from '../../../shared/_models/employer.model';
 
 import { MONTHS } from '../../../shared/_const/months';
-import {MatDialog} from "@angular/material";
-import {TransitionDialogComponent} from "../../../shared/transition-dialog/transition-dialog.component";
 
 @Component({
   selector: 'app-process-upload',
@@ -50,12 +51,12 @@ export class ProcessUploadComponent implements OnInit {
 
   activeUploadStep = 2;
 
-  constructor(private userSession: UserSessionService, private employerService: EmployerService,
-              private processService: ProcessService, private processFileService: ProcessFileService,
-              private notificationService: NotificationService, private dialog: MatDialog) {}
+  constructor(private employerService: EmployerService, private processService: ProcessService,
+              private processFileService: ProcessFileService, private notificationService: NotificationService,
+              private dialog: MatDialog) {}
 
   ngOnInit() {
-    this.employerService.getEmployers(this.userSession.getToken()).then(response => this.employers = response);
+    this.employerService.getEmployers().then(response => this.employers = response);
   }
 
   checkFileType(): boolean {
@@ -86,7 +87,7 @@ export class ProcessUploadComponent implements OnInit {
   uploadFile(isValid: boolean): void {
     if (isValid && this.selectedUploadMethod !== 'manual') {
       this.uploadProgressPercent = 1;
-      this.processFileService.uploadFile(this.process, this.file, this.userSession.getToken())
+      this.processFileService.uploadFile(this.process, this.file)
         .then(response => this.setUploadFile(response['processNumber']))
         .catch(response => {
           this.uploadProgressPercent = null;
@@ -99,10 +100,9 @@ export class ProcessUploadComponent implements OnInit {
 
   private setUploadFile(processID: number): void {
     this.process.id = processID;
-    const intervalInstance = setInterval(() => this.processFileService.getFileUploadStatus(this.process.id, this.userSession.getToken())
+    const intervalInstance = setInterval(() => this.processFileService.getFileUploadStatus(this.process.id)
       .then(response => this.handleCheckFileStatus(response['progressPercent'], intervalInstance))
       .catch(response => {
-        debugger;
         this.uploadProgressPercent = null;
         if (response.error.message) {
           clearInterval(intervalInstance);

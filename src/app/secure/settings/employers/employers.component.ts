@@ -3,8 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { DataTableComponent } from '../../../shared/data-table/data-table.component';
 
-import { UserSessionService } from '../../../shared/_services/user-session.service';
-import { EmployerService } from '../../_services/http/employer.service';
+import { EmployerService } from '../../../shared/_services/http/employer.service';
 
 import { DataTableHeader } from '../../../shared/_models/data-table/data-table-header.model';
 import { Employer } from '../../../shared/_models/employer.model';
@@ -17,15 +16,15 @@ import { Employer } from '../../../shared/_models/employer.model';
 export class EmployersComponent extends DataTableComponent implements OnInit {
 
   readonly headers: DataTableHeader[] = [
-    { column: 'name', label: 'שם מלא' }, { column: 'businessNumber', label: 'ח.פ' }, { column: 'phone', label: 'מס טלפון' },
-    { column: 'email', label: 'כתובת מייל' }, { column: 'instituteCode5', label: 'קוד מוסד - 5' },
-    { column: 'instituteCode8', label: 'קוד מוסד - 8' },
+    { column: 'name', label: 'שם מלא' }, { column: 'businessNumber', label: 'ח.פ' },
+    { column: 'phone', label: 'מס טלפון' }, { column: 'email', label: 'כתובת מייל' },
+    { column: 'instituteCode5', label: 'קוד מוסד - 5' }, { column: 'instituteCode8', label: 'קוד מוסד - 8' }
   ];
 
   newEmployer: Employer;
   employers: Employer[] = [];
 
-  constructor(protected route: ActivatedRoute, private userSession: UserSessionService, private employerService: EmployerService) {
+  constructor(protected route: ActivatedRoute, private employerService: EmployerService) {
     super(route);
   }
 
@@ -39,7 +38,7 @@ export class EmployersComponent extends DataTableComponent implements OnInit {
   }
 
   fetchItems(): void {
-    this.employerService.getEmployers(this.userSession.getUser().token).then(response => this.setItems(response));
+    this.employerService.getEmployers().then(response => this.setItems(response));
   }
 
 }

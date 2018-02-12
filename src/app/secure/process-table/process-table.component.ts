@@ -3,11 +3,10 @@ import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 
 import { DataTableComponent } from '../../shared/data-table/data-table.component';
 
-import { UserSessionService } from '../../shared/_services/user-session.service';
-import { ProcessService } from '../_services/http/process.service';
-import { ProcessFileService } from '../_services/http/process-file.service';
-import { EmployerService } from '../_services/http/employer.service';
-import { NotificationService } from '../_services/notification.service';
+import { ProcessService } from '../../shared/_services/http/process.service';
+import { ProcessFileService } from '../../shared/_services/http/process-file.service';
+import { EmployerService } from '../../shared/_services/http/employer.service';
+import { NotificationService } from '../../shared/_services/notification.service';
 
 import { DataTableHeader } from '../../shared/_models/data-table/data-table-header.model';
 import { Employer } from '../../shared/_models/employer.model';
@@ -43,18 +42,13 @@ export class ProcessTableComponent extends DataTableComponent implements OnInit 
 
   searchCriteria: { employerID: number, year: number, months: number[] };
 
-  constructor(protected route: ActivatedRoute,
-              private userSession: UserSessionService,
-              private processService: ProcessService,
-              private processFileService: ProcessFileService,
-              private employerService: EmployerService,
-              private router: Router,
-              private notificationService: NotificationService) {
+  constructor(protected route: ActivatedRoute, private processService: ProcessService, private processFileService: ProcessFileService,
+              private employerService: EmployerService, private router: Router, private notificationService: NotificationService) {
     super(route);
   }
 
   ngOnInit() {
-    this.employerService.getEmployers(this.userSession.getToken()).then(response => this.init(response));
+    this.employerService.getEmployers().then(response => this.init(response));
   }
 
   private init(response: Employer[]): void {
@@ -75,13 +69,14 @@ export class ProcessTableComponent extends DataTableComponent implements OnInit 
   }
 
   fetchItems(): void {
-    this.processService.getProcesses(this.userSession.getToken(), this.searchCriteria, this.orderCriteria).then(response => this.setItems(response));
+    this.processService.getProcesses(this.searchCriteria, this.orderCriteria).then(response => this.setItems(response));
   }
 
   downloadFile(processID: number): void {
-    this.processFileService.downloadProcessFile(processID, this.userSession.getToken()).then(response => {
+    this.processFileService.downloadProcessFile(processID).then(response => {
       FileSaver.save(response, 'export.dat');
-    }).catch(response => this.notificationService.showResult('הקובץ אינו קיים במערכת', 1));
+    })
+    .catch(response => this.notificationService.showResult('הקובץ אינו קיים במערכת', 1));
   }
 
   openProcessStatusErrorMessageComponent(): void {

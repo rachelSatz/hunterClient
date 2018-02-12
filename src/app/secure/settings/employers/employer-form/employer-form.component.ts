@@ -1,14 +1,13 @@
-import { Component, OnInit ,Input} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
 
-import { UserSessionService } from '../../../../shared/_services/user-session.service';
-import { GeneralHttpService } from '../../../_services/http/general-http.service';
-import { EmployerService } from '../../../_services/http/employer.service';
+import { GeneralHttpService } from '../../../../shared/_services/http/general-http.service';
+import { EmployerService } from '../../../../shared/_services/http/employer.service';
 
 import { Employer } from '../../../../shared/_models/employer.model';
-import { Bank } from '../../../../shared/_models/bank.model';
-import { BankBranch } from '../../../../shared/_models/bank-branch.model';
-import { NotificationService } from '../../../_services/notification.service';
+
+import { NotificationService } from '../../../../shared/_services/notification.service';
 import { Select2OptionData } from 'ng2-select2';
 
 @Component({
@@ -16,11 +15,12 @@ import { Select2OptionData } from 'ng2-select2';
   templateUrl: './employer-form.component.html',
   styleUrls: ['./employer-form.component.css']
 })
-export class EmployerFormComponent implements OnInit {
-  employer = new Employer();
-  //banks: Bank[] = [];
-  //bankBranches: BankBranch[] = [];
+export class EmployerFormComponent implements OnInit, OnDestroy {
 
+  paramSubscription: Subscription;
+  
+  employer = new Employer();
+  
   isSubmitting: boolean;
   isSuccessful: boolean;
 
@@ -30,113 +30,89 @@ export class EmployerFormComponent implements OnInit {
 
   select2Options: Select2Options;
   bankBranches: Select2OptionData[] = [];
-  bankBranchSelected: string = "-1";
+  bankBranchSelected = '-1';
 
   banks: Select2OptionData[] = [];
-  bankSelected: string = "-1";
+  bankSelected = '-1';
 
-  constructor(private router: Router, private route: ActivatedRoute, private userSession: UserSessionService,
-              private generalHttp: GeneralHttpService, private employerService: EmployerService,
-            private notificationService: NotificationService) {}
+  constructor(private router: Router, private route: ActivatedRoute, private generalHttp: GeneralHttpService,
+              private employerService: EmployerService, private notificationService: NotificationService) {}
 
   ngOnInit() {
 
-    this.generalHttp.getBanks(this.userSession.getUser().token).then(response =>
-      {
+    this.generalHttp.getBanks().then(response => {
       this.banks = response.map( x => <Select2OptionData>{id: String(x.id), text : x.text});
-      this.banks.unshift({id: "-1", text : "בחר בנק"})
-      this.bankSelected = "-1";
-      });
+      this.banks.unshift({id: '-1', text : 'בחר בנק'});
+      this.bankSelected = '-1';
+    });
 
-    this.generalHttp.getEmployerTypeSentEnum(this.userSession.getToken())
-    .then(response => this.typeSentOptions = response)
-
-    // this.route.params.subscribe(message => message['id'] ? this.employerService.getEmployer(+message['id'], this.userSession.getToken())
-    // .then(response => this.employer = response) : '');
-
-       this.route.params.subscribe(message =>
-        {
-          if (message['id']) {
-            this.employerIdUpdateMode = +message['id'];
-            this.employerService.getEmployer(+message['id'], this.userSession.getToken())
-            .then(response =>
-              {
-              this.employer = response
-              if(this.employer.bankBranch.bank.id != 0){
-                this.bankSelected =  String(this.employer.bankBranch.bank.id);
-               this.loadBankBranches(this.employer.bankBranch.bank.id);
-              }
-            });
-          } else {
-            this.employerIdUpdateMode = -1;
-            this.clearBankBranch();
-          }
-        });
+    this.generalHttp.getEmployerTypeSentEnum()
+    .then(response => this.typeSentOptions = response);
+    
+     this.paramSubscription = this.route.params.subscribe(message => {
+        if (message['id']) {
+          this.employerIdUpdateMode = +message['id'];
+          this.employerService.getEmployer(+message['id']).then(response => {
+            this.employer = response;
+            if (this.employer.bankBranch.bank.id !== 0) {
+              this.bankSelected =  String(this.employer.bankBranch.bank.id);
+              this.loadBankBranches(this.employer.bankBranch.bank.id);
+            }
+          });
+        } else {
+          this.employerIdUpdateMode = -1;
+          this.clearBankBranch();
+        }
+     });
   }
 
   loadBankBranches(bankID: number): void {
-    if (bankID){
-      this.generalHttp.getBankBranches(bankID, this.userSession.getUser().token).then(response =>
-        {
-        this.bankBranches = response.map( x => <Select2OptionData>{id: String(x.id), text : x.text});
-        this.bankBranches.unshift({id: "-1", text : "בחר סניף"});
-        if(this.employer.bankBranch.id != 0) {
-          this.bankBranchSelected = String(this.employer.bankBranch.id);
-        }
-        });
+    if (bankID) {
+      this.generalHttp.getBankBranches(bankID).then(response => {
+      this.bankBranches = response.map( x => <Select2OptionData>{id: String(x.id), text : x.text});
+      this.bankBranches.unshift({id: '-1', text : 'בחר סניף'});
+      
+      if (this.employer.bankBranch.id !== 0) {
+        this.bankBranchSelected = String(this.employer.bankBranch.id);
+      }
+      });
     }
   }
 
   submit(isValid: boolean): void {
-    console.log(this.employer);
+    
     if (isValid) {
-      if(this.employerIdUpdateMode === -1) {
+      if ( this.employerIdUpdateMode === -1) {
       this.isSubmitting = true;
-      this.employerService.newEmployer(this.employer, this.userSession.getToken())
-      .then(response => setTimeout(() => this.handleResponse(response), 2000));
+      this.employerService.newEmployer(this.employer).then(
+        response => setTimeout(() => this.handleResponse(response), 2000)
+      );
+      } else {
+        this.isSubmitting = true;
+        this.employerService.updateEmployer(this.employer, this.employerIdUpdateMode)
+        .then(response => setTimeout(() => {
+          this.notificationService.showResult(response ? 'עדכון הרשומה בוצע בהצלחה' : 'עדכון הרשומה נכשל',
+          response ? 0 : 1);
+          this.router.navigate(['/settings/employers']);
+        }, 2000));
+      }
     }
-    else{
-      this.isSubmitting = true;
-      this.employerService.updateEmployer(this.employer,this.employerIdUpdateMode, this.userSession.getToken())
-      .then(response => setTimeout(() =>
-      {
-        this.notificationService.showResult(response ? "עדכון הרשומה בוצע בהצלחה" : "עדכון הרשומה נכשל" ,
-        response ? 0 : 1);
-        this.router.navigate(['/settings/employers']);
-      }, 2000));
-    }
-  }
-  console.log(this.employerIdUpdateMode);
   }
 
   private handleResponse(response: Employer): void {
-    debugger;
+
     if (response['id']) {
       sessionStorage.setItem('new-employer', JSON.stringify(response));
-      this.router.navigate(['/settings/employers']);
+      this.router.navigate(['/settings', 'employers']);
     }
 
     this.isSuccessful = false;
     this.isSubmitting = false;
   }
-
-  // private setSelect2Data(values: Object[], textLable: string): Select2OptionData[] {
-
-  //   const data = [
-  //     { id: '-1', text: textLable }
-  //   ];
-
-  //   for (let i = 0; i < values.length; i++) {
-  //     data[i + 1] = { id: values[i]['Value'], text: values[i]['Key'] };
-  //   }
-
-  //   return data;
-  // }
-
-  setBankBranch(index: string): void
-  {
-    this.employer.bankBranch.text = "";
-    if(index === "-1"){
+  
+  setBankBranch(index: string): void {
+    this.employer.bankBranch.text = '';
+    if(index === '-1') {
       this.employer.bankBranch.id = 0;
 
     } else {
@@ -144,10 +120,10 @@ export class EmployerFormComponent implements OnInit {
     }
   }
 
-  setBank(index: string): void
-  {
-    this.employer.bankBranch.bank.text = "";
-    if(index === "-1"){
+  setBank(index: string): void {
+    this.employer.bankBranch.bank.text = '';
+    
+    if(index === '-1') {
       this.employer.bankBranch.bank.id = 0;
       this.employer.bankBranch.id = 0;
       this.clearBankBranch();
@@ -159,7 +135,11 @@ export class EmployerFormComponent implements OnInit {
 
   clearBankBranch(): void {
     this.bankBranches = [];
-    this.bankBranches.push({id: "-1", text : "בחר סניף"});
-    this.bankBranchSelected = "-1";
+    this.bankBranches.push({id: '-1', text : 'בחר סניף'});
+    this.bankBranchSelected = '-1';
+  }
+  
+  ngOnDestroy() {
+    this.paramSubscription.unsubscribe();
   }
 }

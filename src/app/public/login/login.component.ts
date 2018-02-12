@@ -16,8 +16,8 @@ export class LoginComponent {
   loginErrorMsg: string;
   loginErrors = false;
 
-  constructor(private router: Router, private dialog: MatDialogRef<LoginComponent>, private userSession: UserSessionService,
-              private appHttp: AppHttpService) {}
+  constructor(private router: Router, private dialog: MatDialogRef<LoginComponent>,
+              private userSession: UserSessionService, private appHttp: AppHttpService) {}
 
   makeLogin(isValid: boolean): void {
     this.loginErrors = false;

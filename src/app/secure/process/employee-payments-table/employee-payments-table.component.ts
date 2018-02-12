@@ -1,20 +1,19 @@
-import {Component, OnInit, Input} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {MatDialog} from '@angular/material';
+import { Component, OnInit, Input } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material';
 
-import {DataTableComponent} from '../../../shared/data-table/data-table.component';
-import {EmployeePaymentFormComponent} from '../employee-payment-form/employee-payment-form.component';
+import { DataTableComponent } from '../../../shared/data-table/data-table.component';
+import { EmployeePaymentFormComponent } from '../employee-payment-form/employee-payment-form.component';
 
-import {Employer} from '../../../shared/_models/employer.model';
-import {ManualProcessService} from '../../_services/http/manual-process.service';
-import {UserSessionService} from '../../../shared/_services/user-session.service';
-import {Process} from '../../../shared/_models/process.model';
-import {EmployeePayment} from "../../../shared/_models/employee-payment.model";
-import {productTypeLable, SugTakbulLabel, WorksInSalaryLable} from "../../../shared/_const/EnumLabels";
-import {MONTHS} from "../../../shared/_const/months";
-import {ProcessService} from "../../_services/http/process.service";
-import {NotificationService} from "../../_services/notification.service";
+import { ProcessService } from '../../../shared/_services/http/process.service';
+import { NotificationService } from '../../../shared/_services/notification.service';
+import { ManualProcessService } from '../../../shared/_services/http/manual-process.service';
 
+import { Employer} from '../../../shared/_models/employer.model';
+import { Process } from '../../../shared/_models/process.model';
+import { productTypeLable, SugTakbulLabel, WorksInSalaryLable } from '../../../shared/_const/EnumLabels';
+
+import { MONTHS } from '../../../shared/_const/months';
 
 @Component({
   selector: 'app-employee-payments-table',
@@ -29,12 +28,8 @@ export class EmployeePaymentsTableComponent extends DataTableComponent implement
   manualProcessCreated = false;
   readonly months = MONTHS;
 
-  constructor(protected route: ActivatedRoute,
-              private dialog: MatDialog,
-              private manualProcessService: ManualProcessService,
-              private userSessionService: UserSessionService,
-              private processService: ProcessService,
-              private notificationService: NotificationService) {
+  constructor(protected route: ActivatedRoute, private dialog: MatDialog, private manualProcessService: ManualProcessService,
+              private processService: ProcessService, private notificationService: NotificationService) {
     super(route);
   }
 
@@ -43,20 +38,11 @@ export class EmployeePaymentsTableComponent extends DataTableComponent implement
   }
 
   fetchItems(): void {
-      this.manualProcessService.getPreHafrashot(this.process, this.userSessionService.getToken())
-        .then(response => this.setItems(response));
-
-    // this.searchCriteria['processID'] = this.process.id;
-    //
-    // this.processService.getEmployeePayments(this.userSessionService.getToken(), this.searchCriteria).then(response => {
-    //   this.setItems(response);
-    //   this.isSearching = false;
-    // });
+      this.manualProcessService.getPreHafrashot(this.process).then(response => this.setItems(response));
   }
 
   setItems(response: any): void {
     this.items = response;
-    // console.log(response);
   }
 
   makeNewPayment(): void {
@@ -76,16 +62,16 @@ export class EmployeePaymentsTableComponent extends DataTableComponent implement
   }
 
   createNewProcess(): void {
-    this.manualProcessService.newManualProcess(this.process, this.userSessionService.getToken())
-      .then(response => {
-        console.log(response);
-        this.process = response;
-        this.manualProcessCreated = true; });
+    this.manualProcessService.newManualProcess(this.process).then(response => {
+      this.process = response;
+      this.manualProcessCreated = true;
+    });
   }
 
-  convertToDate(date: string): Date{
+  convertToDate(date: string): Date {
     return new Date(date);
   }
+
   getMonthLable(date: string): string {
     const d: Date = new Date(date);
     return this.months[d.getMonth()];

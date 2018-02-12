@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { GeneralHttpService } from '../_services/http/general-http.service';
-import { UserSessionService } from '../../shared/_services/user-session.service';
+import { GeneralHttpService } from '../../shared/_services/http/general-http.service';
 
 import { Employer } from '../../shared/_models/employer.model';
 
@@ -12,7 +11,7 @@ import { MONTHS } from '../../shared/_const/months';
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
-  providers: [GeneralHttpService, UserSessionService]
+  providers: [GeneralHttpService]
 })
 export class DashboardComponent implements OnInit {
 
@@ -42,7 +41,7 @@ export class DashboardComponent implements OnInit {
     numberSentFiles: 0
   };
 
-  constructor(private route: ActivatedRoute, private generalService: GeneralHttpService, private userSession: UserSessionService) {}
+  constructor(private route: ActivatedRoute, private generalService: GeneralHttpService) {}
 
   ngOnInit() {
     this.employers = this.route.snapshot.data['employers'];
@@ -56,7 +55,7 @@ export class DashboardComponent implements OnInit {
     this.searchCriteria['month'] = this.selectedDate.getMonth() + 1;
     this.searchCriteria['year'] = this.selectedDate.getFullYear();
 
-    this.generalService.getDashboardCounts(this.userSession.getToken(), this.searchCriteria)
+    this.generalService.getDashboardCounts(this.searchCriteria)
       .then(response => {
        if (response.success === 1) {
          this.countsData = response.Data;

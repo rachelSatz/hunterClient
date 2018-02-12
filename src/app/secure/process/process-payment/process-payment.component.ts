@@ -1,9 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
-import { UserSessionService } from '../../../shared/_services/user-session.service';
-import { ProcessService } from '../../_services/http/process.service';
-import { ProcessMethodService } from '../../_services/http/process-method.service';
-import { NotificationService } from '../../_services/notification.service';
+import { ProcessService } from '../../../shared/_services/http/process.service';
+import { ProcessMethodService } from '../../../shared/_services/http/process-method.service';
+import { NotificationService } from '../../../shared/_services/notification.service';
 
 import { Process } from '../../../shared/_models/process.model';
 
@@ -22,12 +21,12 @@ export class ProcessPaymentComponent implements OnInit {
   @Input() isNew: boolean;
   @Output() stepChange = new EventEmitter<{ index: number, process: Process }>();
 
-  constructor(private userSession: UserSessionService, private processService: ProcessService,
-              private processMethodService: ProcessMethodService, private notificationService: NotificationService) {}
+  constructor(private processService: ProcessService, private processMethodService: ProcessMethodService,
+              private notificationService: NotificationService) {}
 
   ngOnInit() {
     if (this.isNew) {
-      this.processService.getProcessDetail(this.process.id, this.userSession.getToken()).then(
+      this.processService.getProcessDetail(this.process.id).then(
         response => this.process.details = response
       );
     }
@@ -35,7 +34,7 @@ export class ProcessPaymentComponent implements OnInit {
 
   downloadExcel(): void {
     this.paymentOption = 'downloadExcel';
-    this.processMethodService.downloadExcel(this.process.id, this.userSession.getToken())
+    this.processMethodService.downloadExcel(this.process.id)
     .then(response => FileSaver.save(response, 'export.xls'))
     .catch(res => {
       this.notificationService.showResult(res.error.Message, 1);
@@ -44,7 +43,7 @@ export class ProcessPaymentComponent implements OnInit {
 
   downloadMasab(): void {
     this.paymentOption = 'downloadMasab';
-    this.processMethodService.downloadMasab(this.process.id, this.userSession.getToken())
+    this.processMethodService.downloadMasab(this.process.id)
     .then(response => {
       FileSaver.save(response, 'export.001');
     })
@@ -55,7 +54,7 @@ export class ProcessPaymentComponent implements OnInit {
 
   mailMasab(): void {
     this.paymentOption = 'mailMasab';
-    this.processMethodService.mailMasab(this.process.id, this.userSession.getToken())
+    this.processMethodService.mailMasab(this.process.id)
     .catch(res => {
       this.notificationService.showResult(res.error.Message, 1);
     });

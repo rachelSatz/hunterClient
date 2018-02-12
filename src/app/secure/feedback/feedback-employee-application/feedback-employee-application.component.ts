@@ -1,10 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
-import { ContactService } from '../../_services/http/contact.service';
-import { UserSessionService } from '../../../shared/_services/user-session.service';
-import { FeedbackService } from '../../_services/http/feedback.service';
-import { GeneralHttpService } from '../../_services/http/general-http.service';
-import { NotificationService } from '../../_services/notification.service';
+import { ContactService } from '../../../shared/_services/http/contact.service';
+import { FeedbackService } from '../../../shared/_services/http/feedback.service';
+import { GeneralHttpService } from '../../../shared/_services/http/general-http.service';
+import { NotificationService } from '../../../shared/_services/notification.service';
 
 import { EmployeeFeedback } from '../../../shared/_models/employee-feedback.model';
 import { Contact } from '../../../shared/_models/contact.model';
@@ -23,16 +22,15 @@ export class FeedbackEmployeeApplicationComponent implements OnInit {
   headerText: string;
 
   contacts: Contact[] = [];
-  files: {id: string, fileName: string}[] = [];
+  files: { id: string, fileName: string }[] = [];
 
   uploadedFile: File;
   selectedFileIds: number[];
   selectedContactIds: number[];
   comments: string;
 
-  constructor(private contactService: ContactService, private userSession: UserSessionService,
-              private feedbackService: FeedbackService, private generalService: GeneralHttpService,
-              private notificationService: NotificationService) {}
+  constructor(private contactService: ContactService, private feedbackService: FeedbackService,
+              private generalService: GeneralHttpService, private notificationService: NotificationService) {}
 
   ngOnInit() {
     switch (this.applicationType) {
@@ -53,11 +51,11 @@ export class FeedbackEmployeeApplicationComponent implements OnInit {
     this.searchCriteria['manufacturerId'] = this.feedback.product.manufacturer.id;
     this.searchCriteria['productType'] = this.feedback.product.productType;
     this.searchCriteria['distribution'] = 5;
-    this.contactService.getContacts(this.userSession.getToken(), this.searchCriteria)
+    this.contactService.getContacts(this.searchCriteria)
       .then(response => {
         this.contacts = response;
       });
-    this.generalService.getFilesByEmployee(this.userSession.getToken(), this.feedback.employee.id)
+    this.generalService.getFilesByEmployee(this.feedback.employee.id)
       .then(response => this.files = response);
   }
 
@@ -74,7 +72,7 @@ export class FeedbackEmployeeApplicationComponent implements OnInit {
       comments: this.comments
     };
 
-    this.feedbackService.createEmployeeApplication(data, this.uploadedFile, this.userSession.getToken())
+    this.feedbackService.createEmployeeApplication(data, this.uploadedFile)
     .then(res => {
         this.notificationService.showResult(res.message, res.success ? 0 : 1);
     });

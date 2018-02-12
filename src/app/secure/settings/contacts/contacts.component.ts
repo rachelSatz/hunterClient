@@ -5,9 +5,8 @@ import { MatDialog } from '@angular/material';
 import { DataTableComponent } from '../../../shared/data-table/data-table.component';
 import { ContactFormComponent } from './contact-form/contact-form.component';
 
-import { ContactService } from '../../_services/http/contact.service';
-import { EmployerService } from '../../_services/http/employer.service';
-import { UserSessionService } from '../../../shared/_services/user-session.service';
+import { ContactService } from '../../../shared/_services/http/contact.service';
+import { EmployerService } from '../../../shared/_services/http/employer.service';
 
 import { Contact } from '../../../shared/_models/contact.model';
 import { DataTableHeader } from '../../../shared/_models/data-table/data-table-header.model';
@@ -20,20 +19,21 @@ import { DataTableHeader } from '../../../shared/_models/data-table/data-table-h
 export class ContactsComponent extends DataTableComponent implements OnInit {
 
   readonly headers: DataTableHeader[] = [
-    { column: 'firstName', label: 'שם פרטי' }, { column: 'lastName', label: 'שם משפחה' }, { column: 'phone', label: 'טלפון' },
-    { column: 'mobile', label: 'נייד' }, { column: 'email', label: 'כתובת מייל' }, { column: 'role', label: 'תפקיד' }
+    { column: 'firstName', label: 'שם פרטי' }, { column: 'lastName', label: 'שם משפחה' },
+    { column: 'phone', label: 'טלפון' }, { column: 'mobile', label: 'נייד' },
+    { column: 'email', label: 'כתובת מייל' }, { column: 'role', label: 'תפקיד' }
   ];
 
   typeEntities: any[];
 
-  constructor(protected route: ActivatedRoute, private dialog: MatDialog, private userSession: UserSessionService,
-              private contactService: ContactService, private employerService: EmployerService) {
+  constructor(protected route: ActivatedRoute, private dialog: MatDialog, private contactService: ContactService,
+              private employerService: EmployerService) {
     super(route);
   }
 
 
   fetchItems(): void {
-    this.contactService.getContacts(this.userSession.getToken(), this.searchCriteria).then(response => this.setItems(response));
+    this.contactService.getContacts(this.searchCriteria).then(response => this.setItems(response));
   }
 
   openFormDialog(item: Contact): void {
@@ -48,8 +48,12 @@ export class ContactsComponent extends DataTableComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.contactService.newContact(result, this.userSession.getToken())
-          .then(response => response['id'] ? this.setNewItem(response) : '');
+        this.contactService.storeContact(result)
+        .then(response => {
+            if (response['id']) {
+              this.setNewItem(response);
+            }
+        });
       }
     });
   }
@@ -57,7 +61,7 @@ export class ContactsComponent extends DataTableComponent implements OnInit {
   setEntityType(): void {
     switch (this.searchCriteria['entityType']) {
       case 0:
-        this.employerService.getEmployers(this.userSession.getToken()).then(response => this.typeEntities = response);
+        this.employerService.getEmployers().then(response => this.typeEntities = response);
     }
 
     this.search();

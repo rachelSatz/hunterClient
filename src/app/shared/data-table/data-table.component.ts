@@ -29,7 +29,6 @@ export class DataTableComponent implements OnInit {
 	constructor(protected route: ActivatedRoute) {}
 
 	setItems(items: any[]): void {
-	  //debugger;
     this.isSearching = false;
 
     this.items = items;
@@ -38,7 +37,6 @@ export class DataTableComponent implements OnInit {
 	}
 
   paginateItems(): void {
-	  //debugger;
     const data = this.paginationData;
     const totalPages = Math.ceil(data.totalItems / data.limit);
 
@@ -62,7 +60,6 @@ export class DataTableComponent implements OnInit {
   }
 
 	search(keyCode?: number): void {
-	  //debugger;
     if ((keyCode && keyCode !== 13)) {
 	    return;
     }
@@ -138,7 +135,7 @@ export class DataTableComponent implements OnInit {
   }
 
   setNewItem(item: any): void {
-      this.items.unshift(item);
-      this.paginateItems();
+    this.items.unshift(item);
+    this.paginateItems();
   }
 }

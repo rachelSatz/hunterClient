@@ -1,8 +1,7 @@
-import {Component, Inject} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
-import {EmployeeFeedback} from '../../../shared/_models/employee-feedback.model';
-import {Employer} from '../../../shared/_models/employer.model';
+import { EmployeeFeedback } from '../../../shared/_models/employee-feedback.model';
 
 @Component({
   selector: 'app-feedback-employee-table-details',

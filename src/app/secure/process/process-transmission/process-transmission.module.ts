@@ -4,7 +4,7 @@ import { FormsModule , ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule, MatInputModule, MatCheckboxModule, MatSelectModule, MatStepperModule,
-         MatIconModule, MatDialogModule, MatProgressSpinnerModule, MatDatepickerModule, MatRadioModule,} from '@angular/material';
+  MatIconModule, MatDialogModule, MatProgressSpinnerModule, MatDatepickerModule, MatRadioModule,} from '@angular/material';
 import { Select2Module } from 'ng2-select2';
 import { ProcessUploadModule } from './process-upload/process-upload.module';
 
@@ -24,11 +24,11 @@ import { TransmissionBankDetailsComponent } from './process-transmission/transmi
 import { TransmissionDateComponent } from './process-transmission/transmission-date/transmission-date.component';
 import { TransmissionCommentComponent } from './process-transmission/transmission-comment/transmission-comment.component';
 
-import { ProcessService } from '../../shared/_services/http/process.service';
-import { ProcessFileService } from '../../shared/_services/http/process-file.service';
-import { ProcessMethodService } from '../../shared/_services/http/process-method.service';
-import { EmployerService } from '../../shared/_services/http/employer.service';
-import { ManualProcessService } from '../../shared/_services/http/manual-process.service';
+import { ProcessService } from '../_services/http/process.service';
+import { ProcessFileService } from '../_services/http/process-file.service';
+import { ProcessMethodService } from '../_services/http/process-method.service';
+import { EmployerService } from '../_services/http/employer.service';
+import { ManualProcessService } from '../_services/http/manual-process.service';
 
 @NgModule({
   imports: [

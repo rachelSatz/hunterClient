@@ -1,19 +1,18 @@
-import {Component, Inject, OnInit, ViewChild} from '@angular/core';
-import {trigger, state, style, animate, transition} from '@angular/animations';
-import {FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from '@angular/forms';
-import {Employee} from '../../../shared/_models/employee.model';
-import {EmployeePayment} from '../../../shared/_models/employee-payment.model';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {EmployeeService} from '../../_services/http/employee.service';
-import {UserSessionService} from '../../../shared/_services/user-session.service';
-import {Select2OptionData} from 'ng2-select2';
-import {GeneralHttpService} from '../../_services/http/general-http.service';
-import {Manufacturer} from '../../../shared/_models/manufacturer.model';
-import {Product} from '../../../shared/_models/product.model';
-import {ManualProcessService} from '../../_services/http/manual-process.service';
-import {Process} from '../../../shared/_models/process.model';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { trigger, state, style, animate, transition } from '@angular/animations';
+import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { Select2OptionData } from 'ng2-select2';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
+import { EmployeeService } from '../../../shared/_services/http/employee.service';
+import { GeneralHttpService } from '../../../shared/_services/http/general-http.service';
+import { ManualProcessService } from '../../../shared/_services/http/manual-process.service';
 
+import { Employee } from '../../../shared/_models/employee.model';
+import { EmployeePayment } from '../../../shared/_models/employee-payment.model';
+import { Manufacturer } from '../../../shared/_models/manufacturer.model';
+import { Product } from '../../../shared/_models/product.model';
+import { Process } from '../../../shared/_models/process.model';
 
 @Component({
   selector: 'app-employee-payment-form',
@@ -38,16 +37,16 @@ import {Process} from '../../../shared/_models/process.model';
 })
 export class EmployeePaymentFormComponent implements OnInit {
 
-  @ViewChild("f") newEmployeeForm1: NgForm;
-  @ViewChild("f2") newPaymentForm1: NgForm;
+  @ViewChild('f') newEmployeeForm1: NgForm;
+  @ViewChild('f2') newPaymentForm1: NgForm;
+  
   newEmployeeForm: FormGroup;
   newPaymentForm: FormGroup;
   isClicked = false;
 
   StatusUpdatedAtDate: Date = new Date();
   TaarichErechDate: Date;
-
-
+  
   employeeSelectedValue: string;
   manufSelectedValue: string;
   productSelectedValue: string;
@@ -66,47 +65,31 @@ export class EmployeePaymentFormComponent implements OnInit {
   manufacturers: Manufacturer[] = [];
   products: Product[] = [];
 
-  payment: EmployeePayment = new EmployeePayment(); // <EmployeePayment>{};
-  // newEmployee: Employee = <Employee>{};
+  payment: EmployeePayment = new EmployeePayment(); 
 
   searchCriteria = {};
 
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any,
-              public dialogRef: MatDialogRef<EmployeePaymentFormComponent>,
-              private employeeService: EmployeeService,
-              private userSessionService: UserSessionService,
-              private generalService: GeneralHttpService,
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<EmployeePaymentFormComponent>,
+              private employeeService: EmployeeService, private generalService: GeneralHttpService,
               private manualProcessService: ManualProcessService) {
     this.process = data.process;
-
     this.TaarichErechDate = new Date(this.process.year, this.process.month - 1, 1);
   }
 
   ngOnInit() {
     this.payment = new EmployeePayment();
     this.searchCriteria['employerId'] = this.process.employer.id;
-    this.employeeService.getEmployees(this.userSessionService.getToken(), this.searchCriteria)
-      .then(response => this.setEmployeesData(response));
+    this.employeeService.getEmployees(this.searchCriteria).then(response => this.setEmployeesData(response));
 
-    this.generalService.getManufacturers(this.userSessionService.getToken())
-      .then(response => this.setManufacturersData(response));
+    this.generalService.getManufacturers().then(response => this.setManufacturersData(response));
+    this.generalService.getProducts().then(response => this.setProductsData(response));
+    this.generalService.getSugTakbulEnum().then(response => {
+      this.sugTakbulOption = response;
+    });
 
-    this.generalService.getProducts(this.userSessionService.getToken())
-      .then(response => this.setProductsData(response));
-
-    this.generalService.getSugTakbulEnum(this.userSessionService.getToken())
-      .then(response => {
-          this.sugTakbulOption = response;
-          console.log(this.sugTakbulOption);
-        }
-      );
-
-    this.generalService.getStatusDepositEnum(this.userSessionService.getToken())
-      .then(response => this.statusDepositOption = response);
-
-    this.generalService.getWorksInSalaryEnum(this.userSessionService.getToken())
-      .then(response => this.worksInSalaryOption = response);
+    this.generalService.getStatusDepositEnum().then(response => this.statusDepositOption = response);
+    this.generalService.getWorksInSalaryEnum().then(response => this.worksInSalaryOption = response);
 
 
     this.initEmpPaymentForm();
@@ -131,22 +114,17 @@ export class EmployeePaymentFormComponent implements OnInit {
   onManufValueChanged(value: string): void {
     this.manufSelectedValue = value;
     if (value !== '0') {
-      // this.payment.product.manufacturer.id = +value;
-
-      this.generalService.getProductsByManuf(this.userSessionService.getToken(), +value)
-        .then(response => this.setProductsData(response));
+      this.generalService.getProductsByManuf(+value).then(response => this.setProductsData(response));
     }
   }
 
   onEmployeeValueChanged(value: string): void {
     this.employeeSelectedValue = value;
-    // this.payment.employee.id = +value;
 
   }
 
   onProductValueChanged(value: string): void {
     this.productSelectedValue = value;
-    // this.payment.product.id = +value;
 
   }
 
@@ -164,20 +142,22 @@ export class EmployeePaymentFormComponent implements OnInit {
     const data = [
       {id: '0', text: textLabel}
     ];
+    
     for (let i = 0; i < values.length; i++) {
       data[i + 1] = {id: values[i]['id'], text: values[i]['name']};
     }
+    
     return data;
   }
 
 
   onSubmitForm(): void {
-    debugger;
-    if ((this.isClicked === true && this.newEmployeeForm1 != null && !this.newEmployeeForm1.valid) || !this.newPaymentForm1.valid)
-    {return;}
- 
-
-    if(this.isClicked === true) {
+  
+    if ((this.isClicked === true && this.newEmployeeForm1 != null && !this.newEmployeeForm1.valid) || !this.newPaymentForm1.valid) {
+      return;
+    }
+    
+    if (this.isClicked === true) {
       this.payment.employee.id = -1;
     }
 
@@ -193,19 +173,15 @@ export class EmployeePaymentFormComponent implements OnInit {
       return manufacturer.id.toString() === this.manufSelectedValue;
     });
 
-    if(this.isClicked === false) {
-    this.payment.employee = this.employees.find((employee) => {
-      return employee.id.toString() === this.employeeSelectedValue;
-    });
-  }
+    if (this.isClicked === false) {
+      this.payment.employee = this.employees.find((employee) => {
+        return employee.id.toString() === this.employeeSelectedValue;
+      });
+    }
     
-
-    this.manualProcessService.AddPreHafrashot(this.payment, this.userSessionService.getToken())
-      .then(response => {
-        //console.log(response);
-        this.dialogRef.close(response);
-      })
-      .catch(error => console.log(error));
+    this.manualProcessService.AddPreHafrashot(this.payment).then(response => {
+      this.dialogRef.close(response);
+    });
   }
 
   createNewEmployeeOnClick(): void {
@@ -235,8 +211,6 @@ export class EmployeePaymentFormComponent implements OnInit {
     this.payment.sugTakbul = 1;
     this.payment.statusDeposit = 1;
     this.payment.WorksInSalary = 1;
-
-
   }
 
   onCloseClicked(): void {

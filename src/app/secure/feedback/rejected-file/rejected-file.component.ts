@@ -1,15 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import {MONTHS} from '../../../shared/_const/months';
-import {Employer} from '../../../shared/_models/employer.model';
-import {ActivatedRoute} from '@angular/router';
-import {DataTableComponent} from '../../../shared/data-table/data-table.component';
-import {FeedbackService} from '../../_services/http/feedback.service';
-import {UserSessionService} from '../../../shared/_services/user-session.service';
-import {Select2OptionData} from 'ng2-select2/ng2-select2.interface';
-import {Product} from "../../../shared/_models/product.model";
-import {FileFeedback} from "../../../shared/_models/file-feedback.model";
-import {FeedbackFileApplicationComponent} from "../feedback-file-application/feedback-file-application.component";
-import {MatDialog} from "@angular/material";
+import { ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material';
+import { Select2OptionData } from 'ng2-select2/ng2-select2.interface';
+
+import { DataTableComponent } from '../../../shared/data-table/data-table.component';
+import { FeedbackFileApplicationComponent } from '../feedback-file-application/feedback-file-application.component';
+
+import { FeedbackService } from '../../../shared/_services/http/feedback.service';
+
+import { FileFeedback } from '../../../shared/_models/file-feedback.model';
+import { Product } from '../../../shared/_models/product.model';
+import { Employer } from '../../../shared/_models/employer.model';
+
+import { MONTHS } from '../../../shared/_const/months';
 
 @Component({
   selector: 'app-rejected-file',
@@ -36,10 +39,7 @@ export class RejectedFileComponent extends DataTableComponent implements OnInit 
   readonly months = MONTHS;
   readonly currentYear = new Date().getFullYear();
 
-  constructor(protected route: ActivatedRoute,
-              private userSession: UserSessionService,
-              private feedbackService: FeedbackService,
-              private dialog: MatDialog) {
+  constructor(protected route: ActivatedRoute, private feedbackService: FeedbackService, private dialog: MatDialog) {
     super(route);
   }
 
@@ -75,14 +75,12 @@ export class RejectedFileComponent extends DataTableComponent implements OnInit 
     }
   }
 
-
   fetchItems(): void {
-    this.feedbackService.getErrorFileFeedbacks(this.userSession.getToken(), this.searchCriteria).then(response => this.setItems(response));
+    this.feedbackService.getErrorFileFeedbacks(this.searchCriteria).then(response => this.setItems(response));
   }
 
-
   setItems(response: any): void {
-//debugger;
+
     this.isLoadingData = true;
     this.isSearching = false;
     this.items = response.feedbacks;
@@ -122,22 +120,17 @@ export class RejectedFileComponent extends DataTableComponent implements OnInit 
   }
 
   setMonths(month: number): void {
-    //debugger;
     this.searchCriteria['months'] = month;
-    // this.selectedMonthValue = month;
-
     this.newSearch();
   }
 
   setYear(year: number): void {
     this.searchCriteria['year'] = year;
-    // this.selectedYearValue = year;
     this.newSearch();
   }
 
   setSearch(name: 'processId', value: number): void {
-    //debugger;
-    if (value != 0) {
+    if (value !== 0) {
       this.activeFilter = name;
 
       if (this.isLoadingData) {
@@ -153,11 +146,9 @@ export class RejectedFileComponent extends DataTableComponent implements OnInit 
     return this.months[d.getMonth()];
   }
 
-
   newSearch(keyCode?: number): void {
-    // debugger;
-     this.activeFilter = null;
-     this.searchCriteria['processId'] = -1;
+    this.activeFilter = null;
+    this.searchCriteria['processId'] = -1;
     super.search(keyCode);
   }
 
@@ -169,7 +160,4 @@ export class RejectedFileComponent extends DataTableComponent implements OnInit 
       }
     });
   }
-
-
-
 }

@@ -1,4 +1,4 @@
- import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import 'rxjs/add/operator/toPromise';
@@ -11,20 +11,9 @@ export class AppHttpService extends BaseHttpService {
     super();
   }
 
-  login(username: string, password: string): Promise<{ responseCode: number, token: string }> {
+  login(username: string, password: string): Promise<{ responseCode: number }> {
     return this.http.post(this.apiUrl  + '/login', { username: username, password: password })
-    .toPromise().then(response => response as { responseCode: number, token: string });
+    .toPromise()
+    .then(response => response as { responseCode: number, token: string });
   }
-
-	// register(): Promise<any> {
-	// 	return this.http.post(this.apiUrl  + "AccountApi/Register", user, this.getPostHeaders()).toPromise().then(response => response.json());
-	// }
-	//
-	// forgotPassword(): Promise<any> {
-	// 	return this.http.get(this.apiUrl  + "AccountApi/ForgotPassword").toPromise().then(response => response.json());
-	// }
-	//
-	// contact(data: any): Promise<any> {
-	// 	return this.http.post(this.apiUrl  + "AccountApi/Contact", data, this.getPostHeaders()).toPromise().then(response => response.json());
-  // }
 }

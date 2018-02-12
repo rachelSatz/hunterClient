@@ -1,19 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
+import { MatDialog } from '@angular/material';
+import { Select2OptionData } from 'ng2-select2/ng2-select2.interface';
 
 import { DataTableComponent } from '../../../shared/data-table/data-table.component';
+import { FeedbackFileApplicationComponent } from '../feedback-file-application/feedback-file-application.component';
 
 import { UserSessionService} from '../../../shared/_services/user-session.service';
-import { FeedbackService } from '../../_services/http/feedback.service';
+import { FeedbackService } from '../../../shared/_services/http/feedback.service';
 
-import { MONTHS } from '../../../shared/_const/months';
 import { Employer } from '../../../shared/_models/employer.model';
 import { Product } from '../../../shared/_models/product.model';
-import {Select2OptionData} from 'ng2-select2/ng2-select2.interface';
-import {MatDialog} from "@angular/material";
-import {FeedbackFileApplicationComponent} from "../feedback-file-application/feedback-file-application.component";
-import {productTypeLable, payTypeLabel} from "../../../shared/_const/EnumLabels";
+import { productTypeLable, payTypeLabel } from '../../../shared/_const/EnumLabels';
 import { FileFeedback } from '../../../shared/_models/file-feedback.model';
+
+import { MONTHS } from '../../../shared/_const/months';
 
 @Component({
   selector: 'app-feedback-file-table',
@@ -42,16 +43,13 @@ export class FeedbackFileTableComponent extends DataTableComponent implements On
   readonly months = MONTHS;
   readonly currentYear = new Date().getFullYear();
 
-  constructor(protected route: ActivatedRoute,
-              private router: Router,
-              private userSession: UserSessionService,
-              private feedbackService: FeedbackService,
+  constructor(protected route: ActivatedRoute, private router: Router, private feedbackService: FeedbackService,
               private dialog: MatDialog) {
     super(route);
   }
 
   ngOnInit() {
-    //debugger;
+
     this.employers = this.route.snapshot.data['employers'];
     this.searchCriteria['employerID'] = +this.employers[0].id;
     const year = this.route.snapshot.queryParams['year'];
@@ -90,18 +88,15 @@ export class FeedbackFileTableComponent extends DataTableComponent implements On
     }
   }
 
-
-
   paginateItems(): void {
     this.fetchItems();
   }
 
   fetchItems(): void {
-    this.feedbackService.getFileFeedbacks(this.userSession.getToken(), this.searchCriteria).then(response => this.setItems(response));
+    this.feedbackService.getFileFeedbacks(this.searchCriteria).then(response => this.setItems(response));
   }
 
   setMonths(month: number): void {
-    //debugger;
     this.searchCriteria['months'] = month;
     this.selectedMonthValue = month;
 
@@ -124,7 +119,6 @@ export class FeedbackFileTableComponent extends DataTableComponent implements On
   }
 
   setItems(response: any): void {
-    //debugger;
     this.isLoadingData = true;
     this.isSearching = false;
 
@@ -144,8 +138,8 @@ export class FeedbackFileTableComponent extends DataTableComponent implements On
   }
 
   setSearch(name: 'processId', value: number): void {
-    //debugger;
-    if (value != 0) {
+
+    if (value !== 0) {
       this.activeFilter = name;
 
       if (this.isLoadingData) {
@@ -171,12 +165,13 @@ export class FeedbackFileTableComponent extends DataTableComponent implements On
   }
 
   handleEmployeeInfoClick(fileCodeId: number): void {
-        this.router.navigate(['/feedback/table/employees'],
-          <NavigationExtras>{ queryParams: {month: this.selectedMonthValue, year: this.selectedYearValue, fileCodeId: fileCodeId}});
-    }
+    const queryParams = { month: this.selectedMonthValue, year: this.selectedYearValue, fileCodeId: fileCodeId };
+
+    this.router.navigate(['/feedback', 'table', 'employees'], <NavigationExtras>{ queryParams: queryParams });
+  }
 
   newSearch(keyCode?: number): void {
-    //debugger;
+
     this.activeFilter = null;
     this.searchCriteria['processId'] = -1;
     super.search(keyCode);
@@ -193,14 +188,12 @@ export class FeedbackFileTableComponent extends DataTableComponent implements On
   }
 
   selectAllMonths() {
-    this.searchCriteria["months"] = [];
+    this.searchCriteria['months'] = [];
 
     for (let i = 1; i < 13; i++) {
-      this.searchCriteria["months"].push(i);
+      this.searchCriteria['months'].push(i);
     }
+
     this.fetchItems();
   }
-
-
-
 }

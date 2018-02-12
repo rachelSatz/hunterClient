@@ -14,12 +14,12 @@ import { ContactsComponent } from './contacts/contacts.component';
 import { ContactFormComponent } from './contacts/contact-form/contact-form.component';
 
 import { UserSessionService } from '../../shared/_services/user-session.service';
-import { GeneralHttpService } from '../_services/http/general-http.service';
-import { EmployeeService } from '../_services/http/employee.service';
-import { EmployerService } from '../_services/http/employer.service';
-import { ContactService } from '../_services/http/contact.service';
+import { GeneralHttpService } from '../../shared/_services/http/general-http.service';
+import { EmployeeService } from '../../shared/_services/http/employee.service';
+import { EmployerService } from '../../shared/_services/http/employer.service';
+import { ContactService } from '../../shared/_services/http/contact.service';
 
-import { IDValidatorDirective } from '../_directives/id-validator.directive';
+import { IDValidatorDirective } from '../../shared/_directives/id-validator.directive';
 
 @NgModule({
   imports: [

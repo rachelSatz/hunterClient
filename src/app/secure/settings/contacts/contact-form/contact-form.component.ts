@@ -1,9 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
-import { UserSessionService } from '../../../../shared/_services/user-session.service';
-import { EmployerService } from '../../../_services/http/employer.service';
-import { ContactService } from '../../../_services/http/contact.service';
+import { EmployerService } from '../../../../shared/_services/http/employer.service';
+import { ContactService } from '../../../../shared/_services/http/contact.service';
 
 import { Contact } from '../../../../shared/_models/contact.model';
 
@@ -19,15 +18,13 @@ export class ContactFormComponent implements OnInit {
 
   typeEntities: any[];
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<ContactFormComponent>, private userSession: UserSessionService,
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<ContactFormComponent>,
               private employerService: EmployerService, private contactService: ContactService) {
     this.contact = data.contact;
   }
 
   ngOnInit() {
-    if (this.contact['entityType']) {
-    }
-    // this.employerService.getEmployers()
+    if (this.contact['entityType']) {}
   }
 
   submit(isValid: boolean): void {
@@ -40,7 +37,7 @@ export class ContactFormComponent implements OnInit {
   setEntityType(): void {
     switch (this.contact.entityType) {
       case 0:
-        this.employerService.getEmployers(this.userSession.getToken()).then(response => this.typeEntities = response);
+        this.employerService.getEmployers().then(response => this.typeEntities = response);
     }
   }
 }

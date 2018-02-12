@@ -1,16 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import {FileFeedback} from "../../../shared/_models/file-feedback.model";
-import {Select2OptionData} from "ng2-select2/ng2-select2.interface";
-import {PaginationData} from "../../../shared/_models/pagination-data.model";
-import {MONTHS} from "../../../shared/_const/months";
-import {MatDialog} from "@angular/material";
-import {FeedbackService} from "../../_services/http/feedback.service";
-import {ActivatedRoute} from "@angular/router";
-import {GeneralHttpService} from "../../_services/http/general-http.service";
-import {UserSessionService} from "../../../shared/_services/user-session.service";
-import {DataTableComponent} from "../../../shared/data-table/data-table.component";
-import {EmployeeFeedback} from "../../../shared/_models/employee-feedback.model";
-import {FeedbackEmployeeTableDetailsComponent} from "../feedback-employee-table-details/feedback-employee-table-details.component";
+import { ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material';
+import { Select2OptionData } from 'ng2-select2/ng2-select2.interface';
+
+import { FeedbackEmployeeTableDetailsComponent } from '../feedback-employee-table-details/feedback-employee-table-details.component';
+import { DataTableComponent } from '../../../shared/data-table/data-table.component';
+
+import { FeedbackService } from '../../../shared/_services/http/feedback.service';
+import { GeneralHttpService } from '../../../shared/_services/http/general-http.service';
+
+import { EmployeeFeedback } from '../../../shared/_models/employee-feedback.model';
+import { FileFeedback } from '../../../shared/_models/file-feedback.model';
+import { PaginationData } from '../../../shared/_models/pagination-data.model';
+
+import { MONTHS } from '../../../shared/_const/months';
 
 @Component({
   selector: 'app-rejected-employee',
@@ -31,21 +34,16 @@ export class RejectedEmployeeComponent extends DataTableComponent implements OnI
 
   feedback = new FileFeedback;
   selectedValue: string;
-
-
-
+  
   activeFilter: 'manufacturerId' | 'employeeID' | 'fileCodeId';
   isLoadingData = false;
   mode: 'standard' | 'rejected' = 'standard';
 
   readonly months = MONTHS;
   readonly currentYear = new Date().getFullYear();
-
-
-
-
-  constructor(protected route: ActivatedRoute, private dialog: MatDialog, private userSession: UserSessionService,
-              private generalService: GeneralHttpService, private feedbackService: FeedbackService) {
+  
+  constructor(protected route: ActivatedRoute, private dialog: MatDialog, private generalService: GeneralHttpService, 
+              private feedbackService: FeedbackService) {
     super(route);
   }
 
@@ -95,7 +93,7 @@ export class RejectedEmployeeComponent extends DataTableComponent implements OnI
   }
 
   fetchItems(): void {
-    this.feedbackService.getEmployeeFeedbacks(this.userSession.getToken(), this.searchCriteria).then(response => this.setItems(response));
+    this.feedbackService.getEmployeeFeedbacks(this.searchCriteria).then(response => this.setItems(response));
   }
 
   openDetailsDialog(feedback: FileFeedback): void {
@@ -106,8 +104,7 @@ export class RejectedEmployeeComponent extends DataTableComponent implements OnI
       }
     });
   }
-
-
+  
   setItems(response: any): void {
     this.isSearching = false;
     this.isLoadingData = true;
@@ -141,7 +138,7 @@ export class RejectedEmployeeComponent extends DataTableComponent implements OnI
     this.newSearch();
   }
 
-  getEnumLabel(key:number, enumStr: 'status' | 'productType'): string{
+  getEnumLabel(key: number, enumStr: 'status' | 'productType'): string{
     if (enumStr === 'status' ) {
       return EmployeeFeedback.statusLabel.get(key);
     }
@@ -196,12 +193,10 @@ export class RejectedEmployeeComponent extends DataTableComponent implements OnI
   }
 
   newSearch(keyCode?: number): void {
-    //debugger;
     this.activeFilter = null;
     this.searchCriteria['manufacturerId'] = -1;
     this.searchCriteria['employeeID'] = -1;
     this.searchCriteria['fileCodeId'] = -1;
     super.search(keyCode);
   }
-
 }

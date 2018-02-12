@@ -9,7 +9,7 @@ import { TransitionDialogModule } from '../../../shared/transition-dialog/transi
 
 import { ProcessUploadComponent } from './process-upload.component';
 
-import { ProcessService } from '../../_services/http/process.service';
+import { ProcessService } from '../../../shared/_services/http/process.service';
 
 @NgModule({
   imports: [

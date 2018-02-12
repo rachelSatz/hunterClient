@@ -5,9 +5,8 @@ import { MatDialog } from '@angular/material';
 import { DataTableComponent } from '../../../shared/data-table/data-table.component';
 import { FeedbackEmployeeTableDetailsComponent } from '../feedback-employee-table-details/feedback-employee-table-details.component';
 
-import { UserSessionService } from '../../../shared/_services/user-session.service';
-import { FeedbackService } from '../../_services/http/feedback.service';
-import { GeneralHttpService } from '../../_services/http/general-http.service';
+import { FeedbackService } from '../../../shared/_services/http/feedback.service';
+import { GeneralHttpService } from '../../../shared/_services/http/general-http.service';
 
 import { MONTHS } from '../../../shared/_const/months';
 import { FileFeedback } from '../../../shared/_models/file-feedback.model';
@@ -45,8 +44,8 @@ export class FeedbackEmployeeTableComponent extends DataTableComponent implement
   readonly currentYear = new Date().getFullYear();
 
 
-  constructor(protected route: ActivatedRoute, private dialog: MatDialog, private userSession: UserSessionService,
-              private generalService: GeneralHttpService, private feedbackService: FeedbackService) {
+  constructor(protected route: ActivatedRoute, private dialog: MatDialog, private generalService: GeneralHttpService,
+              private feedbackService: FeedbackService) {
     super(route);
   }
 
@@ -57,7 +56,7 @@ export class FeedbackEmployeeTableComponent extends DataTableComponent implement
 
     this.employers = this.route.snapshot.data['employers'];
     this.searchCriteria['employerID'] = +this.employers[0].id;
-//debugger;
+
     const year = this.route.snapshot.queryParams['year'];
     const month = this.route.snapshot.queryParams['month'];
     const fileCodeId = this.route.snapshot.queryParams['fileCodeId'];
@@ -93,7 +92,7 @@ export class FeedbackEmployeeTableComponent extends DataTableComponent implement
   }
 
   fetchItems(): void {
-    this.feedbackService.getEmployeeFeedbacks(this.userSession.getToken(), this.searchCriteria).then(response => this.setItems(response));
+    this.feedbackService.getEmployeeFeedbacks(this.searchCriteria).then(response => this.setItems(response));
   }
 
   setItems(response: any): void {
@@ -103,7 +102,7 @@ export class FeedbackEmployeeTableComponent extends DataTableComponent implement
     this.statuses = response.statuses;
     this.items = response.feedbacks;
     this.paginationData = response.paginationData;
-    //debugger;
+
     if (this.activeFilter !== 'manufacturerId') {
       this.manufacturers = this.setSelect2Data(response['manufacturers'], 'בחר חברה מנהלת');
     }
@@ -124,14 +123,13 @@ export class FeedbackEmployeeTableComponent extends DataTableComponent implement
   }
 
   paginateItems(): void {
-  this.fetchItems();
+    this.fetchItems();
   }
 
   setMonths(month: number): void {
     this.searchCriteria['month'] = month;
     this.newSearch();
   }
-
 
   openDetailsDialog(feedback: FileFeedback): void {
     this.dialog.open(FeedbackEmployeeTableDetailsComponent, {
@@ -157,18 +155,17 @@ export class FeedbackEmployeeTableComponent extends DataTableComponent implement
     return this.months[d.getMonth()];
   }
 
-  setSearch(name: 'manufacturerId' | 'employeeID' | 'fileCodeId' , value: number): void {
-      if (value !== 0) {
-        this.activeFilter = name;
+  setSearch(name: 'manufacturerId' | 'employeeID' | 'fileCodeId', value: number): void {
+    if (value !== 0) {
+      this.activeFilter = name;
 
-        if (this.isLoadingData) {
-          return;
-        }
-        this.searchCriteria[name] = value;
-        this.search();
+      if (this.isLoadingData) {
+        return;
       }
+      this.searchCriteria[name] = value;
+      this.search();
+    }
   }
-
 
   private setSelect2Data(values: Object[], textLable: string): Select2OptionData[] {
 
@@ -184,8 +181,6 @@ export class FeedbackEmployeeTableComponent extends DataTableComponent implement
     return data;
   }
 
-
-
   private setEmployeeSelect2Data(values: Object[]): Select2OptionData[] {
     const data = [
       { id: '0', text: 'בחר עובד' },
@@ -200,12 +195,10 @@ export class FeedbackEmployeeTableComponent extends DataTableComponent implement
   }
 
   newSearch(keyCode?: number): void {
-    //debugger;
     this.activeFilter = null;
     this.searchCriteria['manufacturerId'] = -1;
     this.searchCriteria['employeeID'] = -1;
     this.searchCriteria['fileCodeId'] = -1;
     super.search(keyCode);
   }
-
 }

@@ -5,9 +5,8 @@ import { MatDialog } from '@angular/material';
 import { DataTableComponent } from '../../../shared/data-table/data-table.component';
 import { EmployeeFormComponent } from './employee-form/employee-form.component';
 
-import { EmployeeService } from '../../_services/http/employee.service';
-import { EmployerService } from '../../_services/http/employer.service';
-import { UserSessionService } from '../../../shared/_services/user-session.service';
+import { EmployeeService } from '../../../shared/_services/http/employee.service';
+import { EmployerService } from '../../../shared/_services/http/employer.service';
 
 import { Employee } from '../../../shared/_models/employee.model';
 import { Employer } from '../../../shared/_models/employer.model';
@@ -21,21 +20,22 @@ import { DataTableHeader } from '../../../shared/_models/data-table/data-table-h
 export class EmployeesComponent extends DataTableComponent implements OnInit {
 
   readonly headers: DataTableHeader[] = [
-    { column: 'employer', label: 'שם מעסיק' }, { column: 'name', label: 'שם מלא' }, { column: 'identityNumber', label: 'מספר ת"ז' },
-    { column: 'phone', label: 'טלפון' }, { column: 'mobile', label: 'נייד' }, { column: 'email', label: 'כתובת מייל' },
+    { column: 'employer', label: 'שם מעסיק' }, { column: 'name', label: 'שם מלא' },
+    { column: 'identityNumber', label: 'מספר ת"ז' }, { column: 'phone', label: 'טלפון' },
+    { column: 'mobile', label: 'נייד' }, { column: 'email', label: 'כתובת מייל' },
     { column: 'address', label: 'כתובת' }
   ];
 
   selectedEmployer: Employer;
   employers: Employer[] = [];
 
-  constructor(protected route: ActivatedRoute, private dialog: MatDialog, private userSession: UserSessionService,
-              private employeeService: EmployeeService, private employerService: EmployerService) {
+  constructor(protected route: ActivatedRoute, private dialog: MatDialog, private employeeService: EmployeeService,
+              private employerService: EmployerService) {
     super(route);
   }
 
   ngOnInit() {
-    this.employerService.getEmployers(this.userSession.getToken()).then(response => this.init(response));
+    this.employerService.getEmployers().then(response => this.init(response));
   }
 
   init(response: Employer[]): void {
@@ -45,14 +45,14 @@ export class EmployeesComponent extends DataTableComponent implements OnInit {
   }
 
   fetchItems(): void {
-    if(this.searchCriteria['q'] === "" ) {
+    if (this.searchCriteria['q'] === '') {
       delete this.searchCriteria['q'];
     }
+    
     this.searchCriteria['employerID'] = this.selectedEmployer.id;
-    this.employeeService.getEmployees(this.userSession.getToken(), this.searchCriteria).then(response => this.setItems(response));
+    this.employeeService.getEmployees(this.searchCriteria).then(response => this.setItems(response));
   }
-
-
+  
   openFormDialog(item: Employee): void {
     const employee = item ? item : new Employee;
 
@@ -67,14 +67,13 @@ export class EmployeesComponent extends DataTableComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         if (!result['id']) {
-          this.employeeService.newEmployee(result, this.userSession.getToken())
-            .then(response =>
-              {
-                console.log(response);
-              response['id'] ? this.setNewItem(response) : ''
-              });
+          this.employeeService.newEmployee(result).then(response => {
+            if (response['id']) {
+              this.setNewItem(response);
+            }
+          });
         } else {
-          this.employeeService.updateEmployee(result, this.userSession.getToken());
+          this.employeeService.updateEmployee(result);
         }
       }
     });

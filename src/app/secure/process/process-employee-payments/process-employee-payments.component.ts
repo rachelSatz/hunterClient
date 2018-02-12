@@ -1,19 +1,17 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { Select2OptionData } from 'ng2-select2';
 
 import { DataTableComponent } from '../../../shared/data-table/data-table.component';
 
-import { UserSessionService } from '../../../shared/_services/user-session.service';
-import { ProcessService } from '../../_services/http/process.service';
+import { ProcessService } from '../../../shared/_services/http/process.service';
 
 import { Select2Options } from '../../../shared/_const/select2-options';
 import { Product } from '../../../shared/_models/product.model';
 import { EmployeePayment } from '../../../shared/_models/employee-payment.model';
 import { Process } from '../../../shared/_models/process.model';
-import {productTypeLable, StatusDepositLable, SugTakbulLabel} from "../../../shared/_const/EnumLabels";
+import { productTypeLable, StatusDepositLable, SugTakbulLabel } from '../../../shared/_const/EnumLabels';
 
 @Component({
   selector: 'app-process-employee-payments',
@@ -36,7 +34,7 @@ export class ProcessEmployeePaymentsComponent extends DataTableComponent impleme
 
   isLoadingData = false;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public process: Process, protected route: ActivatedRoute, private userSession: UserSessionService,
+  constructor(@Inject(MAT_DIALOG_DATA) public process: Process, protected route: ActivatedRoute,
               private processService: ProcessService) {
     super(route);
   }
@@ -50,7 +48,7 @@ export class ProcessEmployeePaymentsComponent extends DataTableComponent impleme
 
   fetchItems(): void {
     this.isSearching = true;
-    this.processService.getEmployeePayments(this.userSession.getToken(), this.searchCriteria).then(response => {
+    this.processService.getEmployeePayments(this.searchCriteria).then(response => {
       this.setItems(response);
       this.isSearching = false;
     });

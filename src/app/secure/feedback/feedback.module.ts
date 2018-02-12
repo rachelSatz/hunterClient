@@ -11,7 +11,7 @@ import { FeedbackEmployeeTableComponent } from './feedback-employee-table/feedba
 import { FeedbackEmployeeTableDetailsComponent } from './feedback-employee-table-details/feedback-employee-table-details.component';
 import { FeedbackFileTableComponent } from './feedback-file-table/feedback-file-table.component';
 
-import { FeedbackService } from '../_services/http/feedback.service';
+import { FeedbackService } from '../../shared/_services/http/feedback.service';
 import { RejectedEmployeeComponent } from './rejected-employee/rejected-employee.component';
 import { RejectedFileComponent } from './rejected-file/rejected-file.component';
 import { FeedbackEmployeeApplicationComponent } from './feedback-employee-application/feedback-employee-application.component';
