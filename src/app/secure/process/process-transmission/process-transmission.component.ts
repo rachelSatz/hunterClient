@@ -28,7 +28,7 @@ export class ProcessTransmissionComponent implements OnInit {
   @Output() stepChange = new EventEmitter<{ index: number, process: Process }>();
 
   payments: SendFile[] = [];
-  
+
   public spin = false;
 
   public checklist: { fileId: number }[] = [{ fileId: 0 }];
@@ -96,7 +96,6 @@ export class ProcessTransmissionComponent implements OnInit {
   clearSelectAllIndexList() {
     if (this.checkBoxValue) {
       for (let i = 0; i < this.payments.length; i++) {
-        // this.checklist.push({ fileId: this.payments[i].fileId });
         this.checklist.push({ fileId: this.payments[i].id });
       }
     } else {
@@ -145,7 +144,7 @@ export class ProcessTransmissionComponent implements OnInit {
     if (this.checklist.length > 0) {
       this.checklist.splice(this.checklist.findIndex(x => x.fileId === 0), 1);
     }
-    
+
     this.processService.postTransition(this.process, this.checklist)
     .then(response => {
        this.notificationService.showResult(response.Message, response.Success);

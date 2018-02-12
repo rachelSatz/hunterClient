@@ -20,10 +20,10 @@ export class ProcessMethodService extends BaseHttpService {
     .then(response => response as Blob);
   }
 
-  downloadMasab(processID: number): Promise<ArrayBuffer> {
+  downloadMasab(processID: number): Promise<Blob> {
     return this.http.get(this.endPoint + processID + '/method/masab', this.getBlobOptions())
     .toPromise()
-    .then(response => response as ArrayBuffer);
+    .then(response => response as Blob);
   }
 
   mailMasab(processID: number): Promise<Object> {

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
 
 import { BaseHttpService } from './base-http.service';
+import { UserSessionService } from '../user-session.service';
 
 import { Bank } from '../../_models/bank.model';
 import { BankBranch } from '../../_models/bank-branch.model';
@@ -11,8 +12,8 @@ import { Product } from '../../_models/product.model';
 
 @Injectable()
 export class GeneralHttpService extends BaseHttpService {
-  constructor(private http: HttpClient) {
-    super();
+  constructor(userSession: UserSessionService, private http: HttpClient) {
+    super(userSession);
   }
 
   getBanks(): Promise<Bank[]> {
@@ -84,7 +85,7 @@ export class GeneralHttpService extends BaseHttpService {
   getDashboardCounts(searchCriteria: Object): Promise<any> {
     const options = this.getTokenHeader();
     options['params'] = searchCriteria;
-   
+
     return this.http.get(this.apiUrl + '/stats/common', options)
     .toPromise()
     .then(response => response);
@@ -93,7 +94,7 @@ export class GeneralHttpService extends BaseHttpService {
   getBarChartData(searchCriteria: Object): Promise<any> {
     const options = this.getTokenHeader();
     options['params'] = searchCriteria;
-    
+
     return this.http.get(this.apiUrl + '/stats/feedbackCounts', options)
     .toPromise()
     .then(response => response);

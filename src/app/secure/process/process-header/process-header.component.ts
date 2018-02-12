@@ -16,7 +16,7 @@ export class ProcessHeaderComponent {
   @Input() mode: 'payment' | 'transimission';
   @Input() process: Process;
 
-  constructor(private dialog: MatDialog) {};
+  constructor(private dialog: MatDialog) {}
 
   openEmployeePaymentModal(): void {
     this.dialog.open(ProcessEmployeePaymentsComponent, {
