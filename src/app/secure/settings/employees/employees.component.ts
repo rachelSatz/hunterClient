@@ -10,7 +10,7 @@ import { EmployerService } from '../../../shared/_services/http/employer.service
 
 import { Employee } from '../../../shared/_models/employee.model';
 import { Employer } from '../../../shared/_models/employer.model';
-import { DataTableHeader } from '../../../shared/_models/data-table/data-table-header.model';
+import { DataTableHeader } from '../../../shared/data-table/classes/data-table-header';
 
 @Component({
   selector: 'app-employees',
@@ -48,11 +48,11 @@ export class EmployeesComponent extends DataTableComponent implements OnInit {
     if (this.searchCriteria['q'] === '') {
       delete this.searchCriteria['q'];
     }
-    
+
     this.searchCriteria['employerID'] = this.selectedEmployer.id;
     this.employeeService.getEmployees(this.searchCriteria).then(response => this.setItems(response));
   }
-  
+
   openFormDialog(item: Employee): void {
     const employee = item ? item : new Employee;
 

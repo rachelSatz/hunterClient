@@ -1,6 +1,6 @@
 import { EmployeeFeedback } from '../_models/employee-feedback.model';
 import { Select2OptionData } from 'ng2-select2';
-import {PaginationData} from '../_models/pagination-data.model';
+import { PaginationData } from '../data-table/classes/pagination-data';
 
 export interface EmployeeFeedbackData {
     feedbacks: EmployeeFeedback[];

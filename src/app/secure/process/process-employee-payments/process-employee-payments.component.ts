@@ -41,8 +41,6 @@ export class ProcessEmployeePaymentsComponent extends DataTableComponent impleme
 
   ngOnInit() {
     this.searchCriteria['processID'] = this.process.id;
-
-    this.paginationData.url = false;
     this.fetchItems();
   }
 

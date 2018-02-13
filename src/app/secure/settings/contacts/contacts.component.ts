@@ -9,7 +9,7 @@ import { ContactService } from '../../../shared/_services/http/contact.service';
 import { EmployerService } from '../../../shared/_services/http/employer.service';
 
 import { Contact } from '../../../shared/_models/contact.model';
-import { DataTableHeader } from '../../../shared/_models/data-table/data-table-header.model';
+import { DataTableHeader } from '../../../shared/data-table/classes/data-table-header';
 
 @Component({
   selector: 'app-contacts',

@@ -131,7 +131,6 @@ export class ProcessUploadComponent implements OnInit, OnDestroy {
       });
 
       this.paymentDialogSubscription = dialog.afterClosed().subscribe((message) => {
-        console.log(message)
         this.processFileService.uploadFile(this.process, this.paymentsFile).then(response => {
           this.activeUploadStep = nextStep;
 
@@ -155,6 +154,8 @@ export class ProcessUploadComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.paymentDialogSubscription.unsubscribe();
+    if (this.paymentDialogSubscription) {
+      this.paymentDialogSubscription.unsubscribe();
+    }
   }
 }

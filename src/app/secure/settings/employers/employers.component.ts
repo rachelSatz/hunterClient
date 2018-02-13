@@ -5,7 +5,7 @@ import { DataTableComponent } from '../../../shared/data-table/data-table.compon
 
 import { EmployerService } from '../../../shared/_services/http/employer.service';
 
-import { DataTableHeader } from '../../../shared/_models/data-table/data-table-header.model';
+import { DataTableHeader } from '../../../shared/data-table/classes/data-table-header';
 import { Employer } from '../../../shared/_models/employer.model';
 
 @Component({

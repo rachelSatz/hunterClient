@@ -8,7 +8,7 @@ import { UserSessionService } from '../user-session.service';
 import { Process } from '../../_models/process.model';
 import { ProcessDetails } from '../../_models/process-details.model';
 import { ProductPayment } from '../../_models/product-payment.model';
-import { DataTableOrderCriteria } from '../../_models/data-table/data-table-order-criteria.model';
+import { DataTableOrderCriteria } from '../../data-table/classes/data-table-order-criteria';
 import { TransmissionData } from '../../_models/transmission-data.model';
 import { EmployeePayment } from '../../_models/employee-payment.model';
 

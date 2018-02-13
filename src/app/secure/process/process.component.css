@@ -33,7 +33,7 @@
 }
 
 ::ng-deep .btn-primary {
-  width: 150px;
+  min-width: 150px;
 }
 
 #processesHeader {
