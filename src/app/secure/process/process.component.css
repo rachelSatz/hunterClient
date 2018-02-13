@@ -23,6 +23,7 @@
 
 ::ng-deep .btn-primary {
   min-width: 150px;
+  color: #fff !important;
 }
 
 @media (max-width: 596px) {

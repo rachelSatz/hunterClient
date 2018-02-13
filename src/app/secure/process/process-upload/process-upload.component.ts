@@ -64,7 +64,12 @@ export class ProcessUploadComponent implements OnInit, OnDestroy {
               private notificationService: NotificationService, private dialog: MatDialog) {}
 
   ngOnInit() {
-    this.process = this.route.parent.snapshot.data['process'].data.process;
+    if (this.route.parent.snapshot.data['process']) {
+      this.process = this.route.parent.snapshot.data['process'].data.process;
+    } else {
+      this.process = new Process;
+      this.process.year = this.currentYear;
+    }
 
     this.employerService.getEmployers().then(response => this.employers = response);
   }
@@ -133,6 +138,10 @@ export class ProcessUploadComponent implements OnInit, OnDestroy {
       });
 
       this.paymentDialogSubscription = dialog.afterClosed().subscribe((message) => {
+        if (message) {
+          this.activeUploadStep = nextStep;
+          this.checkFileStatus(message);
+        }
         this.processFileService.uploadFile(this.process, this.paymentsFile).then(processNumber => {
           this.activeUploadStep = nextStep;
           this.process.id = processNumber;
@@ -164,7 +173,7 @@ export class ProcessUploadComponent implements OnInit, OnDestroy {
       }, 5000);
     });
 
-    checkStatus.then(() => this.router.navigate(['../payments'], { relativeTo: this.route}));
+    checkStatus.then(() => this.router.navigate(['../payments'], { relativeTo: this.route }));
   }
 
   ngOnDestroy() {

@@ -51,17 +51,23 @@
     <button class="btn btn-primary float-left mt-5" (click)="showPaymentOptions = true">לביצוע תשלום</button>
   </ng-container>
   <ng-container *ngIf="showPaymentOptions">
-    <p class="h4 mb-3 bold grey-color">אנא בחר אפשרות לתשלום</p>
-    <div class="text-center">
-      <div class="d-inline-flex align-items-center ml-3 p-3 box-shadow payment-option" [ngClass]="{ 'selected': paymentOption === 'downloadExcel' }" (click)="downloadExcel()">
-        <img src="/assets/img/processes/payment-option-1.svg">
-        <p class="mr-3 grey-color bold f-18">הורדת הנחיית תשלום בפורמט אקסל</p>
+    <p class="h4 mb-5 bold grey-color">אנא בחר אפשרות לתשלום</p>
+    <div class="d-flex justify-content-center align-items-center">
+      <div class="payment-option-container">
+        <div class="d-flex align-items-center ml-5 p-3 box-shadow payment-option" [ngClass]="{ 'selected': paymentOption === 'downloadExcel' }" (click)="downloadExcel()">
+          <img src="/assets/img/processes/payment-option-1.svg">
+          <p class="mr-3 grey-color bold f-18">הורדת הנחיית תשלום בפורמט אקסל</p>
+        </div>
       </div>
-      <div class="d-inline-flex align-items-center p-3 box-shadow payment-option" [ngClass]="{ 'selected': paymentOption === 'downloadMasab' }" (click)="downloadMasab()">
-        <img src="/assets/img/processes/payment-option-2.svg">
-        <p class="mr-3 grey-color bold f-18">הורדת קובץ מס"ב</p>
+      <div class="payment-option-container">
+        <div class="d-flex align-items-center mb-2 p-3 box-shadow payment-option" [ngClass]="{ 'selected': paymentOption === 'downloadMasab' }" (click)="downloadMasab()">
+          <img src="/assets/img/processes/payment-option-2.svg">
+          <p class="mr-3 grey-color bold f-18">הורדת קובץ מס"ב</p>
+        </div>
+        <a class="bold link">שליחת קובץ למייל</a>
       </div>
     </div>
+    <a routerLink="../transmission" class="btn btn-primary float-left mt-5">המשך לתהליך שידור</a>
   </ng-container>
 </div>
 

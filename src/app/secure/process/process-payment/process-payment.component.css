@@ -7,6 +7,10 @@
   margin-left: 8px;
 }
 
+.payment-option-container {
+  height: 90px;
+}
+
 .payment-option {
   height: 70px;
   width: 250px;
@@ -19,52 +23,4 @@
 
 .payment-option > p {
   margin: 0;
-}
-
-@media (min-width: 992px) {
-  #processDetails {
-    width: 670px;
-    margin: 50px auto;
-  }
-}
-
-@media (max-width: 992px) {
-  #processGeneralInfo li {
-    display: inline-block;
-    width: 45%;
-    padding: 0;
-    border-left: none;
-  }
-
-  #processIntro > div:first-child {
-    border-left: none;
-  }
-
-  #detailsOptionFormats > * {
-    font-size: 24px;
-  }
-
-  #detailsOptionFormats > p {
-    vertical-align: middle;
-  }
-
-  #processIntro .details-format-option {
-    padding: 8px 26px;
-  }
-
-  #startTransmissionButton {
-    width: auto;
-  }
-}
-
-@media (max-width: 596px) {
-  #processGeneralInfo li {
-    display: block;
-    width: 100%;
-    font-size: 18px;
-  }
-
-  #detailsOptionFormats > a {
-    width: 100%;
-  }
 }

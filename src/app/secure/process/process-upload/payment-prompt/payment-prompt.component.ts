@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 
+import { ProcessService } from '../../../../shared/_services/http/process.service';
+
 @Component({
   selector: 'app-payment-prompt',
-  templateUrl: './payment-prompt.component.html'
+  templateUrl: './payment-prompt.component.html',
+  providerS: [ProcessService]
 })
 export class PaymentPromptComponent {
 

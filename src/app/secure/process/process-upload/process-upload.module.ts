@@ -2,8 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { MatFormFieldModule, MatInputModule, MatDialogModule, MatProgressSpinnerModule, MatProgressBarModule,
-         MatSelectModule } from '@angular/material';
+import { MatFormFieldModule, MatInputModule, MatDialogModule, MatProgressBarModule, MatSelectModule } from '@angular/material';
 import { Ng2FileDropModule } from 'ng2-file-drop';
 import { TransitionDialogModule } from '../../../shared/transition-dialog/transition-dialog.module';
 
@@ -16,7 +15,7 @@ import { PaymentPromptComponent } from './payment-prompt/payment-prompt.componen
     CommonModule,
     FormsModule,
     RouterModule,
-    MatFormFieldModule, MatInputModule, MatSelectModule, MatDialogModule, MatProgressSpinnerModule,
+    MatFormFieldModule, MatInputModule, MatSelectModule, MatDialogModule,
     MatProgressBarModule,
     Ng2FileDropModule,
     TransitionDialogModule
