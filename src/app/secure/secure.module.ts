@@ -10,7 +10,6 @@ import { FeedbackModule } from './feedback/feedback.module';
 
 import { SecureComponent } from './secure.component';
 
-
 @NgModule({
   imports: [
     CommonModule,

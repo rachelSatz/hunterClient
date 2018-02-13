@@ -14,7 +14,7 @@ export const SugTakbulLabel = new Map([
   [4, 'הפרשים'],
   [5, 'שעות נוספות']]);
 
-export const WorksInSalaryLable = new Map([
+export const WorksInSalaryLabel = new Map([
   [0, 'לא רלוונטי'],
   [1, 'חודשי/רגיל'],
   [2, 'שעתי/יומי'],
@@ -31,7 +31,7 @@ export const WorksInSalaryLable = new Map([
   [13, 'אחר'],
   [14, 'עובד חדש']]);
 
-export const productTypeLable = new Map([
+export const productTypeLabel = new Map([
   [0, 'אחר'],
   [1, 'קרן פנסיה'],
   [2, 'קופת גמל'],
@@ -40,7 +40,7 @@ export const productTypeLable = new Map([
   [5, 'פוליסת חיסכון טהור'],
   [6, 'פוליסת סיכון טהור']]);
 
-export const StatusDepositLable = new Map([
+export const StatusDepositLabel = new Map([
   [0, 'ללא'],
   [1, 'שכיר'],
   [2, 'עצמאי'],

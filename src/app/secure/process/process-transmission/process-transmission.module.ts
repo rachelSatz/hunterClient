@@ -8,13 +8,12 @@ import { MatProgressSpinnerModule, MatCheckboxModule, MatSelectModule, MatRadioM
          MatDatepickerModule } from '@angular/material';
 
 import { DataTableModule } from '../../../shared/data-table/data-table.module';
-import { ProcessHeaderModule } from '../process-header/process-header.module';
 
 import { ProcessTransmissionComponent } from './process-transmission.component';
 import { TransmissionProductDetailsComponent } from './transmission-product-details/transmission-product-details.component';
 import { TransmissionBankDetailsComponent } from './transmission-bank-details/transmission-bank-details.component';
 import { TransmissionDateComponent } from './transmission-date/transmission-date.component';
-import { TransmissionCommentComponent } from './transmission-comment/transmission-comment.component';
+import { TransmissionCommentComponent } from '../process-payment/transmission-comment/transmission-comment.component';
 
 @NgModule({
   imports: [
@@ -26,7 +25,6 @@ import { TransmissionCommentComponent } from './transmission-comment/transmissio
     MatDatepickerModule,
     Select2Module,
     DataTableModule,
-    ProcessHeaderModule
   ],
   declarations: [
     ProcessTransmissionComponent,
@@ -41,7 +39,6 @@ import { TransmissionCommentComponent } from './transmission-comment/transmissio
     TransmissionBankDetailsComponent,
     TransmissionCommentComponent
   ],
-  exports: [ProcessTransmissionComponent],
   providers: []
 })
 export class ProcessTransmissionModule {}

@@ -29,6 +29,7 @@ export class ProcessProductPaymentsComponent extends DataTableComponent {
   }
 
   fetchItems(): void {
+    console.log('b')
     this.isLoading = true;
     this.processService.getProductPayments(this.process.id).then(response => {
       this.setItems(response);

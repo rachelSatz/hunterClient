@@ -1,6 +1,5 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MAT_DIALOG_DATA } from '@angular/material';
 import { Select2OptionData } from 'ng2-select2';
 
 import { DataTableComponent } from '../../../../shared/data-table/data-table.component';
@@ -11,7 +10,7 @@ import { Select2Options } from '../../../../shared/_const/select2-options';
 import { Product } from '../../../../shared/_models/product.model';
 import { EmployeePayment } from '../../../../shared/_models/employee-payment.model';
 import { Process } from '../../../../shared/_models/process.model';
-import { productTypeLable, StatusDepositLable, SugTakbulLabel } from '../../../../shared/_const/EnumLabels';
+import { productTypeLabel, StatusDepositLabel, SugTakbulLabel } from '../../../../shared/_const/EnumLabels';
 
 @Component({
   selector: 'app-process-employee-payments',
@@ -19,6 +18,8 @@ import { productTypeLable, StatusDepositLable, SugTakbulLabel } from '../../../.
   styleUrls: ['../../../../shared/data-table/data-table.component.css']
 })
 export class ProcessEmployeePaymentsComponent extends DataTableComponent implements OnInit {
+
+  process: Process;
 
   select2Options: Select2Options;
 
@@ -34,12 +35,13 @@ export class ProcessEmployeePaymentsComponent extends DataTableComponent impleme
 
   isLoadingData = false;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public process: Process, protected route: ActivatedRoute,
-              private processService: ProcessService) {
+  constructor(protected route: ActivatedRoute, private processService: ProcessService) {
     super(route);
   }
 
   ngOnInit() {
+    this.process = this.route.parent.snapshot.data['process'].data.process;
+
     this.searchCriteria['processID'] = this.process.id;
     this.fetchItems();
   }
@@ -116,10 +118,10 @@ export class ProcessEmployeePaymentsComponent extends DataTableComponent impleme
   getSugTakbulLabel(key: number): string {
     return SugTakbulLabel.get(key);
   }
-  getStatusDepositLable(key: number): string {
-    return StatusDepositLable.get(key);
+  getStatusDepositLabel(key: number): string {
+    return StatusDepositLabel.get(key);
   }
-  getProductTypeLable(key: number): string {
-    return productTypeLable.get(key);
+  getProductTypeLabel(key: number): string {
+    return productTypeLabel.get(key);
   }
 }

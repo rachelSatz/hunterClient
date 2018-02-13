@@ -1,31 +1,31 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatDialogModule, MatFormFieldModule, MatInputModule, MatProgressSpinnerModule,
-         MatSelectModule } from '@angular/material';
+import { RouterModule } from '@angular/router';
+import { MatFormFieldModule, MatInputModule, MatProgressSpinnerModule, MatSelectModule } from '@angular/material';
 import { Select2Module } from 'ng2-select2';
 
 import { DataTableModule } from '../../../shared/data-table/data-table.module';
+import { CommatizeNumberModule } from '../../../shared/_pipes/commatize-number.module';
 
 import { ProcessPaymentComponent } from './process-payment.component';
 import { ProcessEmployeePaymentsComponent } from './process-employee-payments/process-employee-payments.component';
-import { ProcessProductPaymentsComponent } from './process-product-payments/process-product-payments.component';
+import { ProcessPaymentTableComponent } from './process-payment-table/process-payment-table.component';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    RouterModule,
     Select2Module,
     MatSelectModule, MatProgressSpinnerModule, MatFormFieldModule, MatInputModule,
-    MatDialogModule,
     DataTableModule,
+    CommatizeNumberModule
   ],
-  exports: [ProcessPaymentComponent],
   declarations: [
     ProcessPaymentComponent,
     ProcessEmployeePaymentsComponent,
-    ProcessProductPaymentsComponent
-  ],
-  entryComponents: [ProcessEmployeePaymentsComponent, ProcessProductPaymentsComponent]
+    ProcessPaymentTableComponent
+  ]
 })
 export class ProcessPaymentModule {}

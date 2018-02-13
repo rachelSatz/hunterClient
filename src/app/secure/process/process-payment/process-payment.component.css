@@ -7,8 +7,18 @@
   margin-left: 8px;
 }
 
-#processPaymentSum {
-  color: #56af57;
+.payment-option {
+  height: 70px;
+  width: 250px;
+}
+
+.payment-option > img {
+  height: 40px;
+  width: 40px;
+}
+
+.payment-option > p {
+  margin: 0;
 }
 
 @media (min-width: 992px) {

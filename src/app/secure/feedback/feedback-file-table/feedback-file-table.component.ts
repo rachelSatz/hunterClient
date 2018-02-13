@@ -10,7 +10,7 @@ import { FeedbackService } from '../../../shared/_services/http/feedback.service
 
 import { Employer } from '../../../shared/_models/employer.model';
 import { Product } from '../../../shared/_models/product.model';
-import { productTypeLable, payTypeLabel } from '../../../shared/_const/EnumLabels';
+import { productTypeLabel, payTypeLabel } from '../../../shared/_const/EnumLabels';
 import { FileFeedback } from '../../../shared/_models/file-feedback.model';
 
 import { MONTHS } from '../../../shared/_const/months';
@@ -113,8 +113,8 @@ export class FeedbackFileTableComponent extends DataTableComponent implements On
     return payTypeLabel.get(key);
   }
 
-  getproductTypeLable(key: number): string{
-    return productTypeLable.get(key);
+  getproductTypeLabel(key: number): string{
+    return productTypeLabel.get(key);
   }
 
   setItems(response: any): void {

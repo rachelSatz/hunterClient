@@ -12,8 +12,7 @@ import { TransmissionData } from '../../../shared/_models/transmission-data.mode
 
 import { TransmissionBankDetailsComponent } from './transmission-bank-details/transmission-bank-details.component';
 import { TransmissionDateComponent } from './transmission-date/transmission-date.component';
-import { TransmissionCommentComponent } from './transmission-comment/transmission-comment.component';
-import { productTypeLable, payTypeLabel, SentToSafeBoxes } from '../../../shared/_const/EnumLabels';
+import { TransmissionCommentComponent } from '../process-payment/transmission-comment/transmission-comment.component';
 import { SendFile } from '../../../shared/_models/send-file.model';
 import { NotificationService } from '../../../shared/_services/notification.service';
 
@@ -154,17 +153,4 @@ export class ProcessTransmissionComponent implements OnInit {
   setPreviousStep(): void {
     this.stepChange.emit({ index: 1, process: this.process });
   }
-
-  getproductTypeLable(key: number): string{
-    return productTypeLable.get(key);
-  }
-
-  getPayTypeLabel(key: number): string{
-    return payTypeLabel.get(key);
-  }
-
-  getSentToSafeBoxesLable(key: number): string{
-    return SentToSafeBoxes.get(key);
-  }
-
 }

@@ -150,7 +150,7 @@ export class FeedbackEmployeeTableComponent extends DataTableComponent implement
     }
   }
 
-  getMonthLable(date: string): string {
+  getMonthLabel(date: string): string {
     const d: Date = new Date(date);
     return this.months[d.getMonth()];
   }
@@ -167,10 +167,10 @@ export class FeedbackEmployeeTableComponent extends DataTableComponent implement
     }
   }
 
-  private setSelect2Data(values: Object[], textLable: string): Select2OptionData[] {
+  private setSelect2Data(values: Object[], textLabel: string): Select2OptionData[] {
 
     const data = [
-      { id: '0', text: textLable },
+      { id: '0', text: textLabel },
       { id: '-1', text: 'הכל' }
     ];
 

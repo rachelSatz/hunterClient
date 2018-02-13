@@ -141,7 +141,7 @@ export class RejectedFileComponent extends DataTableComponent implements OnInit 
     }
   }
 
-  getMonthLable(date: string): string {
+  getMonthLabel(date: string): string {
     const d: Date = new Date(date);
     return this.months[d.getMonth()];
   }

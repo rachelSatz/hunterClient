@@ -11,7 +11,7 @@ import { ManualProcessService } from '../../../shared/_services/http/manual-proc
 
 import { Employer} from '../../../shared/_models/employer.model';
 import { Process } from '../../../shared/_models/process.model';
-import { productTypeLable, SugTakbulLabel, WorksInSalaryLable } from '../../../shared/_const/EnumLabels';
+import { productTypeLabel, SugTakbulLabel, WorksInSalaryLabel } from '../../../shared/_const/EnumLabels';
 
 import { MONTHS } from '../../../shared/_const/months';
 
@@ -82,9 +82,9 @@ export class EmployeePaymentsTableComponent extends DataTableComponent implement
   }
 
   getWorksInSalary(key: number): string {
-    return WorksInSalaryLable.get(key);
+    return WorksInSalaryLabel.get(key);
   }
-  getProductTypeLable(key: number): string {
-    return productTypeLable.get(key);
+  getProductTypeLabel(key: number): string {
+    return productTypeLabel.get(key);
   }
 }

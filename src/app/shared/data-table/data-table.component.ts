@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -13,7 +13,7 @@ declare let swal: any;
   template: '',
   styleUrls: ['./data-table.component.css']
 })
-export class DataTableComponent implements OnInit {
+export class DataTableComponent implements OnInit, OnDestroy {
 
   headers: DataTableHeader[] = [];
 
@@ -41,7 +41,11 @@ export class DataTableComponent implements OnInit {
       sessionStorage.removeItem('saved-item');
     }
 
-    this.pageSubscription = this.route.queryParams.subscribe((message) => this.setCurrentPage(+message['page']));
+    this.pageSubscription = this.route.queryParams.subscribe((message) => {
+        if (this.items.length > 0) {
+          this.setCurrentPage(+message['page']);
+        }
+    });
 
     this.fetchItems();
   }
@@ -76,6 +80,7 @@ export class DataTableComponent implements OnInit {
     this.paginationData.currentPage = this.currentPage;
 
     const data = this.paginationData;
+
     this.paginatedItems = this.items.slice((data.currentPage - 1) * data.limit, data.currentPage * data.limit);
 
     this.isPaginated = true;
@@ -97,7 +102,7 @@ export class DataTableComponent implements OnInit {
     this.fetchItems();
   }
 
-  fetchItems() {};
+  fetchItems() {}
 
   setLimit(limit: number): void {
     this.paginationData.limit = limit;
@@ -140,5 +145,11 @@ export class DataTableComponent implements OnInit {
     }
 
     return 'fa fa-chevron-up';
+  }
+
+  ngOnDestroy() {
+    if (this.pageSubscription) {
+      this.pageSubscription.unsubscribe();
+    }
   }
 }

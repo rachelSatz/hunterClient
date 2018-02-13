@@ -2,6 +2,11 @@ import { Routes } from '@angular/router';
 
 import { DashboardComponent } from '../../secure/dashboard/dashboard.component';
 import { ProcessComponent } from '../../secure/process/process.component';
+import { ProcessUploadComponent } from '../../secure/process/process-upload/process-upload.component';
+import { ProcessPaymentComponent } from '../../secure/process/process-payment/process-payment.component';
+import { ProcessPaymentTableComponent } from '../../secure/process/process-payment/process-payment-table/process-payment-table.component';
+import { ProcessEmployeePaymentsComponent } from '../../secure/process/process-payment/process-employee-payments/process-employee-payments.component';
+
 import { ProcessTableComponent } from '../../secure/process-table/process-table.component';
 import { FeedbackGraphComponent } from '../../secure/feedback/feedback-graph/feedback-graph.component';
 import { FeedbackEmployeeTableComponent } from '../../secure/feedback/feedback-employee-table/feedback-employee-table.component';
@@ -20,8 +25,17 @@ export const SECURE_ROUTES: Routes = [
   { path: 'dashboard', component: DashboardComponent, resolve: { employers: EmployersResolve } },
   { path: 'process', redirectTo: 'new' },
   { path: 'process/table', component: ProcessTableComponent },
-  { path: 'process/new', component: ProcessComponent },
-  { path: 'process/new/:id', component: ProcessComponent, resolve: { process: ProcessResolve } },
+  { path: 'process/new', component: ProcessComponent, children: [
+      { path: '', redirectTo: 'upload', pathMatch: 'full' },
+      { path: 'upload', component: ProcessUploadComponent }
+    ]},
+  { path: 'process/new/:id', component: ProcessComponent, resolve: { process: ProcessResolve }, children: [
+      { path: '', redirectTo: 'upload', pathMatch: 'full' },
+      { path: 'upload', component: ProcessUploadComponent },
+      { path: 'payment', component: ProcessPaymentComponent },
+      { path: 'payment-table', component: ProcessPaymentTableComponent },
+      { path: 'employee-payments', component: ProcessEmployeePaymentsComponent },
+    ]},
   { path: 'feedback', children: [
     { path: '', redirectTo: 'graph', pathMatch: 'full' },
     { path: 'graph', component: FeedbackGraphComponent },

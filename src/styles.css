@@ -50,6 +50,7 @@ a {
 }
 
 a:hover{
+  text-decoration: none;
   cursor: pointer;
 }
 
@@ -79,10 +80,18 @@ a:hover{
   direction: ltr;
 }
 
+.w-100p {
+  width: 100px;
+}
+
 .title {
   font-size: 34px;
   color: #356cb3;
   text-align: center;
+}
+
+.green-color {
+  color: #56af57;
 }
 
 .blue-color {
@@ -276,6 +285,13 @@ a:hover{
 .mat-slide-toggle-content, .mat-checkbox-layout .mat-checkbox-label {
   margin-right: 8px;
   font-size: 16px;
+}
+
+@media (min-width: 992px) {
+  .container-wide {
+    width: 75%;
+    margin: 0 auto;
+  }
 }
 
 @media (max-width: 992px) {

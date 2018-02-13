@@ -1,8 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { MatDialog } from '@angular/material';
-
-import { ProcessEmployeePaymentsComponent } from './process-employee-payments/process-employee-payments.component';
-import { ProcessProductPaymentsComponent } from './process-product-payments/process-product-payments.component';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 import { ProcessService } from '../../../shared/_services/http/process.service';
 import { ProcessMethodService } from '../../../shared/_services/http/process-method.service';
@@ -16,25 +13,24 @@ import * as FileSaver from 'file-saver';
   selector: 'app-process-payment',
   templateUrl: './process-payment.component.html',
   styleUrls: ['./process-payment.component.css'],
-  providers: [ProcessService, ProcessMethodService]
+  providers: [ProcessService, ProcessMethodService, NotificationService]
 })
 export class ProcessPaymentComponent implements OnInit {
 
-  paymentOption: 'downloadExcel' | 'downloadMasab' | 'mailMasab' | 'paymentMasab';
+  process: Process;
+  paymentOption: 'downloadExcel' | 'downloadMasab' | 'mailMasab';
 
-  @Input() process: Process;
-  @Input() isNew: boolean;
-  @Output() stepChange = new EventEmitter<{ index: number, process: Process }>();
+  showPaymentOptions = false;
 
-  constructor(private processService: ProcessService, private processMethodService: ProcessMethodService,
-              private dialog: MatDialog, private notificationService: NotificationService) {}
+  constructor(private route: ActivatedRoute, private processService: ProcessService,
+              private processMethodService: ProcessMethodService, private notificationService: NotificationService) {}
 
   ngOnInit() {
-    if (this.isNew) {
-      this.processService.getProcessDetail(this.process.id).then(
-        response => this.process.details = response
-      );
-    }
+    this.process = this.route.parent.snapshot.data['process'].data.process;
+
+    this.processService.getProcessDetail(this.process.id).then(
+      response => this.process.details = response
+    );
   }
 
   downloadExcel(): void {
@@ -63,25 +59,5 @@ export class ProcessPaymentComponent implements OnInit {
     .catch(res => {
       this.notificationService.showResult(res.error.Message, 1);
     });
-  }
-
-  openEmployeePaymentModal(): void {
-    this.dialog.open(ProcessEmployeePaymentsComponent, {
-      data: this.process,
-      height: '90%',
-      width: '94%'
-    });
-  }
-
-  openProductPaymentModal(): void {
-    this.dialog.open(ProcessProductPaymentsComponent, {
-      data: this.process,
-      height: '90%',
-      width: '94%'
-    });
-  }
-
-  setNextStep(): void {
-    this.stepChange.emit({ index: 2, process: this.process });
   }
 }

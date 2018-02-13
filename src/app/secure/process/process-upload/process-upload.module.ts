@@ -21,7 +21,6 @@ import { PaymentPromptComponent } from './payment-prompt/payment-prompt.componen
     Ng2FileDropModule,
     TransitionDialogModule
   ],
-  exports: [ProcessUploadComponent],
   declarations: [ProcessUploadComponent, PaymentPromptComponent],
   entryComponents: [PaymentPromptComponent]
 })

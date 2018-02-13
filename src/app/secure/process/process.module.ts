@@ -2,16 +2,13 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatCheckboxModule, MatDatepickerModule, MatFormFieldModule, MatProgressSpinnerModule, MatSelectModule,
-         MatStepperModule } from '@angular/material';
 import { Select2Module } from 'ng2-select2';
+import {MatDatepickerModule, MatFormFieldModule, MatSelectModule} from '@angular/material';
 
 import { DataTableModule } from '../../shared/data-table/data-table.module';
 import { ProcessUploadModule } from './process-upload/process-upload.module';
 import { ProcessPaymentModule } from './process-payment/process-payment.module';
 import { ProcessTransmissionModule } from './process-transmission/process-transmission.module';
-import { ProcessHeaderModule } from './process-header/process-header.module';
 
 import { ProcessComponent } from './process.component';
 import { EmployeePaymentsTableComponent } from './employee-payments-table/employee-payments-table.component';
@@ -24,22 +21,19 @@ import { ProcessResolve } from '../../shared/_resolves/process.resolve';
     CommonModule,
     FormsModule,
     RouterModule,
-    BrowserAnimationsModule,
-    MatStepperModule, MatCheckboxModule, MatDatepickerModule, MatFormFieldModule, MatSelectModule,
-    MatProgressSpinnerModule,
     Select2Module,
+    MatFormFieldModule, MatSelectModule, MatDatepickerModule,
     DataTableModule,
     ProcessUploadModule,
     ProcessPaymentModule,
     ProcessTransmissionModule,
-    ProcessHeaderModule
   ],
   declarations: [
     ProcessComponent,
     EmployeePaymentsTableComponent,
     EmployeePaymentFormComponent,
   ],
-  entryComponents: [EmployeePaymentFormComponent,],
+  entryComponents: [EmployeePaymentFormComponent],
   providers: [ProcessResolve]
 })
 export class ProcessModule {}

@@ -1,11 +1,19 @@
-<mat-horizontal-stepper [linear]="true" #stepper>
-  <mat-step label="העלאת קובץ שכר">
-      <app-process-upload (stepChange)="setStep($event)"  [process]="process" *ngIf="stepper.selectedIndex === 0"></app-process-upload>
-  </mat-step>
-  <mat-step label="תשלום">
-      <app-process-payment (stepChange)="setStep($event)" [process]="process" [isNew]="isNew" *ngIf="stepper.selectedIndex === 1"></app-process-payment>
-  </mat-step>
-  <mat-step label="שידור נתונים">
-    <app-process-transmission (stepChange)="setStep($event)" [process]="process" *ngIf="stepper.selectedIndex === 2"></app-process-transmission>
-  </mat-step>
-</mat-horizontal-stepper>
+<div class="d-flex align-items-center justify-content-center mb-3 node-list">
+  <div class="node">
+    <div class="node-inner">1</div>
+    <p>העלאת קובץ שכר</p>
+  </div>
+  <div class="horizontal-line"></div>
+  <div class="node">
+    <div class="node-inner">2</div>
+    <p>תשלום</p>
+  </div>
+  <div class="horizontal-line"></div>
+  <div class="node">
+    <div class="node-inner">3</div>
+    <p>שידור נתונים</p>
+  </div>
+</div>
+
+
+<router-outlet></router-outlet>

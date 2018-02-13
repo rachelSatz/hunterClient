@@ -1,4 +1,5 @@
-import {Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
@@ -40,8 +41,7 @@ import { MONTHS } from '../../../shared/_const/months';
 })
 export class ProcessUploadComponent implements OnInit, OnDestroy {
 
-  @Output() stepChange = new EventEmitter<{ index: number, process: Process }>();
-  @Input() process: Process;
+  process: Process;
 
   employers: Employer[] = [];
   readonly months = MONTHS;
@@ -59,11 +59,13 @@ export class ProcessUploadComponent implements OnInit, OnDestroy {
 
   paymentDialogSubscription: Subscription;
 
-  constructor(private employerService: EmployerService, private processService: ProcessService,
-              private processFileService: ProcessFileService, private notificationService: NotificationService,
-              private dialog: MatDialog) {}
+  constructor(private router: Router, private route: ActivatedRoute, private employerService: EmployerService,
+              private processService: ProcessService, private processFileService: ProcessFileService,
+              private notificationService: NotificationService, private dialog: MatDialog) {}
 
   ngOnInit() {
+    this.process = this.route.parent.snapshot.data['process'].data.process;
+
     this.employerService.getEmployers().then(response => this.employers = response);
   }
 
@@ -162,11 +164,7 @@ export class ProcessUploadComponent implements OnInit, OnDestroy {
       }, 5000);
     });
 
-    checkStatus.then(() => this.setNextStep());
-  }
-
-  setNextStep(): void {
-    this.stepChange.emit({ index: 1, process: this.process });
+    checkStatus.then(() => this.router.navigate(['../payments'], { relativeTo: this.route}));
   }
 
   ngOnDestroy() {

@@ -34,15 +34,15 @@ export class RejectedEmployeeComponent extends DataTableComponent implements OnI
 
   feedback = new FileFeedback;
   selectedValue: string;
-  
+
   activeFilter: 'manufacturerId' | 'employeeID' | 'fileCodeId';
   isLoadingData = false;
   mode: 'standard' | 'rejected' = 'standard';
 
   readonly months = MONTHS;
   readonly currentYear = new Date().getFullYear();
-  
-  constructor(protected route: ActivatedRoute, private dialog: MatDialog, private generalService: GeneralHttpService, 
+
+  constructor(protected route: ActivatedRoute, private dialog: MatDialog, private generalService: GeneralHttpService,
               private feedbackService: FeedbackService) {
     super(route);
   }
@@ -104,7 +104,7 @@ export class RejectedEmployeeComponent extends DataTableComponent implements OnI
       }
     });
   }
-  
+
   setItems(response: any): void {
     this.isSearching = false;
     this.isLoadingData = true;
@@ -147,7 +147,7 @@ export class RejectedEmployeeComponent extends DataTableComponent implements OnI
     }
   }
 
-  getMonthLable(date: string): string {
+  getMonthLabel(date: string): string {
     const d: Date = new Date(date);
     return this.months[d.getMonth()];
   }
@@ -164,10 +164,10 @@ export class RejectedEmployeeComponent extends DataTableComponent implements OnI
     }
   }
 
-  private setSelect2Data(values: Object[], textLable: string): Select2OptionData[] {
+  private setSelect2Data(values: Object[], textLabel: string): Select2OptionData[] {
 
     const data = [
-      { id: '0', text: textLable },
+      { id: '0', text: textLabel },
       { id: '-1', text: 'הכל' }
     ];
 
