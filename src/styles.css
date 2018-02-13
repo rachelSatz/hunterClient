@@ -1,8 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
 @font-face {
-  src: url('./assets/fonts/Arimo-Regular.ttf');
-  font-family: Arimo;
+  src: url('./assets/fonts/Heebo-Regular.ttf');
+  font-family: Heebo;
 }
 
 html, body {
@@ -14,7 +14,7 @@ body {
 }
 
 * {
-  font-family: Arimo;
+  font-family: Heebo;
 }
 
 a:focus {
@@ -61,7 +61,6 @@ a:hover{
 
 .btn, .pointer {
   cursor: pointer;
-  font-family: Arimo;
 }
 
 .fa {
@@ -70,6 +69,10 @@ a:hover{
 
 .bold {
   font-weight: bold;
+}
+
+.underline {
+  text-decoration: underline;
 }
 
 .ltr {
@@ -82,12 +85,16 @@ a:hover{
   text-align: center;
 }
 
-.blue {
+.blue-color {
   color: #356cb3;
 }
 
 .grey-color {
   color: #a4a4a3;
+}
+
+.light-grey-color {
+  color: #c4c4c4;
 }
 
 .sub-title-container {
@@ -165,11 +172,23 @@ a:hover{
 }
 
 .f-12 {
-  font-size: 12px;
+  font-size: 12px !important;
+}
+
+.f-14 {
+  font-size: 14px !important;
+}
+
+.f-16 {
+  font-size: 16px !important;
 }
 
 .f-18 {
-  font-size: 18px;
+  font-size: 18px !important;
+}
+
+.box-shadow {
+  box-shadow: 0 3px 11px 4px #999;
 }
 
 /*--- Select 2 ---*/
@@ -264,12 +283,4 @@ a:hover{
     width: 880px;
     max-width: 100%;
   }
-}
-
-td i:hover{
-  cursor: pointer !important;
-}
-
-i .fa .fa-pencil{
-  font-family: Arimo;
 }

@@ -1,8 +1,7 @@
-<div>
-  <mat-spinner *ngIf="spin" class="mx-auto"></mat-spinner>
-  <button class="btn btn-primary" (click)="closeAll()">בצע נעילת עיבוד</button>
-</div>
-<div class="data-table">
+<p mat-dialog-title>פירוט תשלום</p>
+<mat-spinner *ngIf="isLoading" class="mx-auto"></mat-spinner>
+  <!--<button class="btn btn-primary" (click)="closeAll()">בצע נעילת עיבוד</button>-->
+<div class="data-table" *ngIf="!isLoading">
   <table class="table table-bordered table-striped">
     <thead>
     <tr>
@@ -34,7 +33,7 @@
     </tr>
     <tr *ngIf="isSearching">
       <td colspan="20">
-        <mat-spinner class="mr-auto ml-auto"></mat-spinner>
+        <mat-spinner class="mx-auto"></mat-spinner>
       </td>
     </tr>
     </tbody>

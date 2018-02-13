@@ -131,15 +131,16 @@ export class ProcessUploadComponent implements OnInit, OnDestroy {
       });
 
       this.paymentDialogSubscription = dialog.afterClosed().subscribe((message) => {
-        this.processFileService.uploadFile(this.process, this.paymentsFile).then(response => {
+        this.processFileService.uploadFile(this.process, this.paymentsFile).then(processNumber => {
           this.activeUploadStep = nextStep;
+          this.process.id = processNumber;
 
-          // if (response) {
-          //     this.activeUploadStep = nextStep;
-          //   } else {
-          //     this.genericFileError = true;
-          //   }
-
+          if (processNumber) {
+              this.activeUploadStep = nextStep;
+              this.checkFileStatus(processNumber);
+            } else {
+              this.genericFileError = true;
+            }
         });
       });
     }
@@ -149,8 +150,23 @@ export class ProcessUploadComponent implements OnInit, OnDestroy {
     }
   }
 
-  setStepChange(index: number): void {
-    this.stepChange.emit({ index: index, process: this.process });
+  private checkFileStatus(processNumber: number): void {
+    const checkStatus = new Promise<boolean>((resolve, reject) => {
+      const interval = setInterval(() => {
+        this.processFileService.getFileUploadStatus(processNumber).then((response) => {
+          if (response['progressPercent'] === 100) {
+            clearInterval(interval);
+            resolve();
+          }
+        });
+      }, 5000);
+    });
+
+    checkStatus.then(() => this.setNextStep());
+  }
+
+  setNextStep(): void {
+    this.stepChange.emit({ index: 1, process: this.process });
   }
 
   ngOnDestroy() {

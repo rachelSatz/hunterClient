@@ -1,53 +1,21 @@
-.payment-option {
-  padding-top: 25px;
-  cursor: pointer;
+#processDetails span {
+  font-size: 18px;
+  font-weight: bold;
 }
 
-.payment-option:hover, .payment-option.selected {
-  background-color: #fff;
-  box-shadow: 0px 4px 62px 0 rgba(0, 0, 0, 0.27);
+#processDetails span:first-child {
+  margin-left: 8px;
 }
 
-.payment-option-inner {
-  position: relative;
+#processPaymentSum {
+  color: #56af57;
 }
 
-.payment-option-inner > .tooltip-circle-image {
-  position: absolute;
-  top: -30px;
-  right: 10px;
-  height: 60px;
-  width: 60px;
-  background: url('../../../../assets/img/processes/tooltip-circle.svg') no-repeat;
-}
-
-.payment-option-inner > .tooltip-circle-image > .tooltip-question-mark-image {
-  position: absolute;
-  right: 10%;
-  top: 13%;
-  height: 39px;
-  width: 39px;
-  background: url('../../../../assets/img/processes/tooltip-question-mark.svg') no-repeat;
-}
-
-.payment-option-inner > .img-fluid {
-  height: 70px;
-}
-
-.payment-option-inner > p {
-  height: 51px;
-  width: 70%;
-  margin: 20px auto 0 auto;
-  border-bottom: 3px solid #00adee;
-}
-
-#startTransmissionButton > span {
-  color: #3b3b39;
-}
-
-#startTransmissionButton > i {
-  color: #fff;
-  vertical-align: middle;
+@media (min-width: 992px) {
+  #processDetails {
+    width: 670px;
+    margin: 50px auto;
+  }
 }
 
 @media (max-width: 992px) {

@@ -2,24 +2,24 @@ import { Component, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MAT_DIALOG_DATA } from '@angular/material';
 
-import { DataTableComponent } from '../../../shared/data-table/data-table.component';
+import { DataTableComponent } from '../../../../shared/data-table/data-table.component';
 
-import { ProcessService } from '../../../shared/_services/http/process.service';
-import { ProcessFileService } from '../../../shared/_services/http/process-file.service';
+import { ProcessService } from '../../../../shared/_services/http/process.service';
+import { ProcessFileService } from '../../../../shared/_services/http/process-file.service';
 
-import { Process } from '../../../shared/_models/process.model';
+import { Process } from '../../../../shared/_models/process.model';
 
 import * as FileSaver from 'file-saver';
-import { NotificationService } from '../../../shared/_services/notification.service';
+import { NotificationService } from '../../../../shared/_services/notification.service';
 
 @Component({
   selector: 'app-process-product-payments',
   templateUrl: './process-product-payments.component.html',
-  styleUrls: ['../../../shared/data-table/data-table.component.css']
+  styleUrls: ['../../../../shared/data-table/data-table.component.css']
 })
 export class ProcessProductPaymentsComponent extends DataTableComponent {
 
-  public spin = false;
+  public isLoading = false;
 
   constructor(@Inject(MAT_DIALOG_DATA) public process: Process, protected route: ActivatedRoute,
               private processService: ProcessService,
@@ -29,10 +29,10 @@ export class ProcessProductPaymentsComponent extends DataTableComponent {
   }
 
   fetchItems(): void {
-    this.spin = true;
+    this.isLoading = true;
     this.processService.getProductPayments(this.process.id).then(response => {
       this.setItems(response);
-      this.spin = false;
+      this.isLoading = false;
     });
   }
 

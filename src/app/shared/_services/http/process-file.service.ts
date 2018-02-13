@@ -24,7 +24,7 @@ export class ProcessFileService extends BaseHttpService {
 
     return this.http.post(this.endPoint + '/file', formData, this.getTokenHeader())
     .toPromise()
-    .then(response => true)
+    .then(response => response['processNumber'])
     .catch(response => false);
   }
 

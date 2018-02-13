@@ -1,4 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { MatDialog } from '@angular/material';
+
+import { ProcessEmployeePaymentsComponent } from './process-employee-payments/process-employee-payments.component';
+import { ProcessProductPaymentsComponent } from './process-product-payments/process-product-payments.component';
 
 import { ProcessService } from '../../../shared/_services/http/process.service';
 import { ProcessMethodService } from '../../../shared/_services/http/process-method.service';
@@ -23,7 +27,7 @@ export class ProcessPaymentComponent implements OnInit {
   @Output() stepChange = new EventEmitter<{ index: number, process: Process }>();
 
   constructor(private processService: ProcessService, private processMethodService: ProcessMethodService,
-              private notificationService: NotificationService) {}
+              private dialog: MatDialog, private notificationService: NotificationService) {}
 
   ngOnInit() {
     if (this.isNew) {
@@ -58,6 +62,22 @@ export class ProcessPaymentComponent implements OnInit {
     this.processMethodService.mailMasab(this.process.id)
     .catch(res => {
       this.notificationService.showResult(res.error.Message, 1);
+    });
+  }
+
+  openEmployeePaymentModal(): void {
+    this.dialog.open(ProcessEmployeePaymentsComponent, {
+      data: this.process,
+      height: '90%',
+      width: '94%'
+    });
+  }
+
+  openProductPaymentModal(): void {
+    this.dialog.open(ProcessProductPaymentsComponent, {
+      data: this.process,
+      height: '90%',
+      width: '94%'
     });
   }
 

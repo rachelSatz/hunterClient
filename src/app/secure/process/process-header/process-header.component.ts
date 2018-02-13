@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material';
 
-import { ProcessProductPaymentsComponent } from '../process-product-payments/process-product-payments.component';
-import { ProcessEmployeePaymentsComponent } from '../process-employee-payments/process-employee-payments.component';
+import { ProcessProductPaymentsComponent } from '../process-payment/process-product-payments/process-product-payments.component';
+import { ProcessEmployeePaymentsComponent } from '../process-payment/process-employee-payments/process-employee-payments.component';
 
 import { Process } from '../../../shared/_models/process.model';
 

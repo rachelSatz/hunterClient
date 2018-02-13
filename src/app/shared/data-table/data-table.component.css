@@ -32,8 +32,6 @@
 .data-table th {
   vertical-align: middle;
   text-align: center !important;
-  background-color: #356cb3;
-  color: #fff;
 }
 
 .headers th {

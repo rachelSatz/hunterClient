@@ -3,20 +3,20 @@ import { ActivatedRoute } from '@angular/router';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { Select2OptionData } from 'ng2-select2';
 
-import { DataTableComponent } from '../../../shared/data-table/data-table.component';
+import { DataTableComponent } from '../../../../shared/data-table/data-table.component';
 
-import { ProcessService } from '../../../shared/_services/http/process.service';
+import { ProcessService } from '../../../../shared/_services/http/process.service';
 
-import { Select2Options } from '../../../shared/_const/select2-options';
-import { Product } from '../../../shared/_models/product.model';
-import { EmployeePayment } from '../../../shared/_models/employee-payment.model';
-import { Process } from '../../../shared/_models/process.model';
-import { productTypeLable, StatusDepositLable, SugTakbulLabel } from '../../../shared/_const/EnumLabels';
+import { Select2Options } from '../../../../shared/_const/select2-options';
+import { Product } from '../../../../shared/_models/product.model';
+import { EmployeePayment } from '../../../../shared/_models/employee-payment.model';
+import { Process } from '../../../../shared/_models/process.model';
+import { productTypeLable, StatusDepositLable, SugTakbulLabel } from '../../../../shared/_const/EnumLabels';
 
 @Component({
   selector: 'app-process-employee-payments',
   templateUrl: './process-employee-payments.component.html',
-  styleUrls: ['../../../shared/data-table/data-table.component.css']
+  styleUrls: ['../../../../shared/data-table/data-table.component.css']
 })
 export class ProcessEmployeePaymentsComponent extends DataTableComponent implements OnInit {
 

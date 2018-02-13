@@ -13,7 +13,7 @@
             <li class="nav-item" *ngFor="let link of menuLinks" [ngClass]="{ 'dropdown': link.subMenuLinks }">
               <a class="nav-link bold" [routerLink]="link.subMenuLinks ? null : '/' + link.url" [attr.data-toggle]="link.subMenuLinks ? 'dropdown' : false" [ngClass]="{ 'dropdown-toggle': link.subMenuLinks }">
                 <img [src]="'/assets/img/menu/' + link.label + '.svg'" [attr.alt]="link.label">
-                <span class="blue">{{ link.label }}</span>
+                <span class="blue-color">{{ link.label }}</span>
               </a>
               <div class="dropdown-menu" *ngIf="link.subMenuLinks">
                 <a class="dropdown-item" *ngFor="let subLink of link.subMenuLinks" [routerLink]="'/' + link.url + '/' + subLink.url" routerLinkActive="active">{{ subLink.label }}</a>
