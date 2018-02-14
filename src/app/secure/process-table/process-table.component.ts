@@ -6,7 +6,7 @@ import { DataTableComponent } from '../../shared/data-table/data-table.component
 import { ProcessService } from '../../shared/_services/http/process.service';
 import { ProcessFileService } from '../../shared/_services/http/process-file.service';
 import { EmployerService } from '../../shared/_services/http/employer.service';
-import { NotificationService } from '../../shared/_services/notification.service';
+import { NotificationService, NotificationType } from '../../shared/_services/notification.service';
 
 import { Employer } from '../../shared/_models/employer.model';
 import { Process, ValidityStatus, StepStatus } from '../../shared/_models/process.model';
@@ -80,7 +80,9 @@ export class ProcessTableComponent extends DataTableComponent implements OnInit 
     this.processFileService.downloadProcessFile(processID).then(response => {
       FileSaver.save(response, 'export.dat');
     })
-    .catch(response => this.notificationService.showResult('הקובץ אינו קיים במערכת', 1));
+    .catch(() =>
+      this.notificationService.showResult('הקובץ אינו קיים במערכת', NotificationType.error)
+    );
   }
 
   openProcessStatusErrorMessageComponent(): void {
@@ -92,20 +94,22 @@ export class ProcessTableComponent extends DataTableComponent implements OnInit 
     });
   }
 
-  handleProcessClick(StepStatus: number, processID: number, month: number, year: number): void {
-    switch (StepStatus) {
+  handleProcessClick(process: Process): void {
+
+    switch (process.stepStatus) {
       case -1:
         this.openProcessStatusErrorMessageComponent();
       break;
       case 1:
-        this.router.navigate(['/process', 'new', processID]);
+        this.router.navigate(['/process', 'new', process.id]);
       break;
       case 2:
-        this.router.navigate(['/process', 'new', processID]);
+        const url = process.pay ? 'transmission' : 'payment';
+        this.router.navigate(['/process', 'new', process.id, url]);
       break;
       default:
         this.router.navigate(['/feedback', 'table', 'files'],
-        <NavigationExtras>{ queryParams: { month: month, year: year, processId: processID}});
+        <NavigationExtras>{ queryParams: { month: process.month, year: process.year, processId: process.id }});
     }
   }
 

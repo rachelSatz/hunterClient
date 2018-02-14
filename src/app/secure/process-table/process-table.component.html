@@ -36,15 +36,15 @@
     <ng-container *ngIf="!isSearching">
       <tr *ngFor="let item of paginatedItems">
         <td>
-          <a (click)="handleProcessClick(item.stepStatus, item.id, item.month, item.year)">{{ item.addToProcessName }}</a>
+          <a (click)="handleProcessClick(item)">{{ item.addToProcessName }}</a>
         </td>
         <td>
-          <a (click)="handleProcessClick(item.stepStatus, item.id, item.month, item.year)">{{ item.id }}</a>
+          <a (click)="handleProcessClick(item)">{{ item.id }}</a>
         </td>
         <td>{{ months[item.month - 1] }}</td>
         <td>{{ item.year }}</td>
         <td>{{ item.codeFile }}</td>
-        <td class="ltr">&#8362; {{ item.totalPaymentFile }} </td>
+        <td class="ltr">&#8362; {{ item.totalPaymentFile | commatize }}</td>
         <td>{{ process.labels.stepStatus[stepStatus[item.stepStatus]] }}</td>
         <td>
           <i class="fa fa-download pointer" (click)="downloadFile(item.id)"></i>

@@ -35,6 +35,7 @@ export const SECURE_ROUTES: Routes = [
       { path: 'payment', component: ProcessPaymentComponent },
       { path: 'payment-table', component: ProcessPaymentTableComponent },
       { path: 'employee-payments', component: ProcessEmployeePaymentsComponent },
+      { path: 'transmission', component: ProcessPaymentComponent },
     ]},
   { path: 'feedback', children: [
     { path: '', redirectTo: 'graph', pathMatch: 'full' },

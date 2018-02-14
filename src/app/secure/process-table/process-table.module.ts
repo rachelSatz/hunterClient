@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { MatFormFieldModule, MatSelectModule, MatProgressSpinnerModule } from '@angular/material';
+import { CommatizeNumberModule } from '../../shared/_pipes/commatize-number.module';
 
 import { DataTableModule } from '../../shared/data-table/data-table.module';
 
@@ -22,7 +23,8 @@ import { UserSessionService } from '../../shared/_services/user-session.service'
     RouterModule,
     FormsModule,
     MatProgressSpinnerModule, MatFormFieldModule, MatSelectModule,
-    DataTableModule
+    DataTableModule,
+    CommatizeNumberModule
   ],
   declarations: [ProcessTableComponent],
   providers: [NotificationService, ProcessService, ProcessFileService,

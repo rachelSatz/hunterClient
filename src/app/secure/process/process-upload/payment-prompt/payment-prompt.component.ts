@@ -6,7 +6,7 @@ import { ProcessService } from '../../../../shared/_services/http/process.servic
 @Component({
   selector: 'app-payment-prompt',
   templateUrl: './payment-prompt.component.html',
-  providerS: [ProcessService]
+  providers: [ProcessService]
 })
 export class PaymentPromptComponent {
 
