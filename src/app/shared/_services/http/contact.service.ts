@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
 
 import { BaseHttpService } from './base-http.service';
+import { UserSessionService } from '../user-session.service';
 
 import { Contact } from '../../_models/contact.model';
 
@@ -11,8 +12,8 @@ export class ContactService extends BaseHttpService {
 
   readonly endPoint = this.apiUrl + '/contact';
 
-  constructor(private http: HttpClient) {
-    super();
+  constructor(userSession: UserSessionService, private http: HttpClient) {
+    super(userSession);
   }
 
   getContacts(searchCriteria?: Object): Promise<Contact[]> {

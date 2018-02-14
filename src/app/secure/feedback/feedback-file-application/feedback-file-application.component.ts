@@ -43,9 +43,9 @@ export class FeedbackFileApplicationComponent implements OnInit {
     this.contactService.getContacts(this.searchCriteria)
       .then(response => {
         this.contacts = response;
-      });
+     });
     this.generalService.getFilesByEmployer(this.employerId)
-      .then(response => this.files = response);
+     .then(response => this.files = response);
   }
 
   onSubmit(): void {

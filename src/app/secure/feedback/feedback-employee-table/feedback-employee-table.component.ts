@@ -34,8 +34,6 @@ export class FeedbackEmployeeTableComponent extends DataTableComponent implement
   feedback = new FileFeedback;
   selectedValue: string;
 
-
-
   activeFilter: 'manufacturerId' | 'employeeID' | 'fileCodeId';
   isLoadingData = false;
   mode: 'standard' | 'rejected' = 'standard';
@@ -116,8 +114,6 @@ export class FeedbackEmployeeTableComponent extends DataTableComponent implement
     if (this.activeFilter !== 'employeeID') {
        this.employees = this.setSelect2Data(response['employees'], 'בחר עובד');
      }
-
-
 
     setTimeout(() => this.isLoadingData = false, 0);
   }
