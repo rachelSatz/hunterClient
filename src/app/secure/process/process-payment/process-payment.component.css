@@ -1,12 +1,3 @@
-#processDetails span {
-  font-size: 18px;
-  font-weight: bold;
-}
-
-#processDetails span:first-child {
-  margin-left: 8px;
-}
-
 .payment-option-container {
   height: 90px;
 }

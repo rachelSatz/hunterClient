@@ -3,7 +3,7 @@
     <ng-container *ngIf="!showPaymentOptions">
       <p class="h4 text-center grey-color bold">הקובץ נטען בהצלחה!</p>
       <p class="h5 text-center grey-color">להלן פרטי הנתונים הפנסיונים לשידור לקופות יש לאשר לפני השידור</p>
-      <div id="processDetails" class="mt-4">
+      <div class="mt-4">
         <app-process-details [process]="process"></app-process-details>
       </div>
       <button class="btn btn-primary float-left mt-5" (click)="showPaymentOptions = true">לביצוע תשלום</button>

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 
-import { TransmissionData } from '../../../shared/_models/transmission-data.model';
+import { TransmissionData } from '../../../../shared/_models/transmission-data.model';
 
 @Component({
   selector: 'app-transmission-intro-form',
@@ -11,7 +11,6 @@ export class TransmissionIntroFormComponent {
 
   data = new TransmissionData();
   date: string;
-  time: string;
 
   constructor(private dialogRef: MatDialogRef<TransmissionIntroFormComponent>) {}
 
@@ -19,8 +18,7 @@ export class TransmissionIntroFormComponent {
     if (isValid) {
       const date = new Date(this.date);
       const formattedDate = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
-
-      this.data.datetime = formattedDate + ' ' + this.time;
+      this.data.date = formattedDate;
 
       this.dialogRef.close(this.data);
     }

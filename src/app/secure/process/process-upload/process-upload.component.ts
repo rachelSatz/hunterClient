@@ -177,7 +177,7 @@ export class ProcessUploadComponent implements OnInit, OnDestroy {
 
     const url = this.process.pay ? 'transmission' : 'payments';
 
-    checkStatus.then(() => this.router.navigate(['../' + url], { relativeTo: this.route }));
+    checkStatus.then(() => this.router.navigate(['..', this.process.id, url], { relativeTo: this.route }));
   }
 
   ngOnDestroy() {

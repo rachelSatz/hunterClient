@@ -1,4 +1,11 @@
-<app-process-details [process]="process" [mode]="'transmission'"></app-process-details>
-<div class="text-center mt-3">
-  <button id="startTransmissionButton" class="btn btn-success" (click)="sendDetails()">שדר</button>
+<div class="container">
+  <div class="container-wide">
+    <p class="h4 text-center grey-color bold">תהליך שידור</p>
+    <p class="h5 text-center grey-color">להלן פרטי הנתונים הפנסיונים לשידור לקופות</p>
+    <div class="mt-4">
+      <app-process-details [process]="process"></app-process-details>
+    </div>
+    <button class="btn btn-success float-left mt-3" (click)="sendDetails()">שידור לקופות</button>
+  </div>
 </div>
+

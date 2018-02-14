@@ -1,4 +1,5 @@
 export class TransmissionData {
-  datetime: string;
+  date: string;
   method: string;
+  isAfterTwo: boolean;
 }

@@ -1,0 +1,8 @@
+span {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+span:first-child {
+  margin-left: 8px;
+}

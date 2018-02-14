@@ -1,7 +1,8 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material';
 
-import { TransmissionIntroFormComponent } from '../transmission-intro-form/transmission-intro-form.component';
+import { TransmissionIntroFormComponent } from './transmission-intro-form/transmission-intro-form.component';
 import { TransmissionProductDetailsComponent } from './transmission-product-details/transmission-product-details.component';
 
 import { ProcessService } from '../../../shared/_services/http/process.service';
@@ -18,14 +19,11 @@ import { NotificationService } from '../../../shared/_services/notification.serv
 
 @Component({
   selector: 'app-process-transmission',
-  templateUrl: './process-transmission.component.html',
-  styleUrls: ['./process-transmission.component.css']
+  templateUrl: './process-transmission.component.html'
 })
 export class ProcessTransmissionComponent implements OnInit {
 
-  @Input() process: Process;
-  @Output() stepChange = new EventEmitter<{ index: number, process: Process }>();
-
+  process: Process;
   payments: SendFile[] = [];
 
   public spin = false;
@@ -34,10 +32,12 @@ export class ProcessTransmissionComponent implements OnInit {
 
   public checkBoxValue = true;
 
-  constructor(private dialog: MatDialog, private processService: ProcessService,
+  constructor(private route: ActivatedRoute, private dialog: MatDialog, private processService: ProcessService,
               private notificationService: NotificationService) { }
 
   ngOnInit() {
+    this.process = this.route.parent.snapshot.data['process'].data.process;
+
     if (this.process.stepStatus !== 1) {
       setTimeout(() => this.setDialog(), 0);
     } else {
@@ -60,11 +60,7 @@ export class ProcessTransmissionComponent implements OnInit {
     });
 
     dialog.afterClosed().subscribe(data => {
-      if (data === false) {
-          this.setPreviousStep();
-      } else {
-          this.launchTransmission(data);
-      }
+      this.launchTransmission(data);
     });
   }
 
@@ -148,9 +144,5 @@ export class ProcessTransmissionComponent implements OnInit {
     .then(response => {
        this.notificationService.showResult(response.Message, response.Success);
     });
-  }
-
-  setPreviousStep(): void {
-    this.stepChange.emit({ index: 1, process: this.process });
   }
 }
