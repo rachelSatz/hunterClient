@@ -8,7 +8,7 @@ export class Process {
   month: number;
   year: number;
   totalPaymentFile?: number;
-  codeFile?: 'positive' | 'negative';
+  codeFile:number ;
   details: ProcessDetails;
   stepStatus: StepStatus;
   validityStatus : ValidityStatus;
@@ -36,7 +36,7 @@ export class Process {
 
   constructor() {
     this.employer = new Employer();
-    this.codeFile = 'positive';
+    this.codeFile = 0;
   }
 }
 
