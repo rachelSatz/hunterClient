@@ -12,7 +12,7 @@ import { PaymentPromptComponent } from './payment-prompt/payment-prompt.componen
 import { EmployerService } from '../../../shared/_services/http/employer.service';
 import { ProcessService } from '../../../shared/_services/http/process.service';
 import { ProcessFileService } from '../../../shared/_services/http/process-file.service';
-import { NotificationService } from '../../../shared/_services/notification.service';
+import { NotificationService, NotificationType } from '../../../shared/_services/notification.service';
 
 import { Process } from '../../../shared/_models/process.model';
 import { Employer } from '../../../shared/_models/employer.model';
@@ -37,7 +37,7 @@ import { MONTHS } from '../../../shared/_const/months';
       transition('active => inactive', animate('400ms ease-out'))
     ])
   ],
-  providers: [ProcessService]
+  providers: [ProcessService, NotificationService]
 })
 export class ProcessUploadComponent implements OnInit, OnDestroy {
 
@@ -52,7 +52,6 @@ export class ProcessUploadComponent implements OnInit, OnDestroy {
 
   fileTypeError = false;
   noFileError = false;
-  genericFileError = false;
 
   activeUploadStep = 1;
   isPaymentTransferred: boolean;
@@ -118,7 +117,6 @@ export class ProcessUploadComponent implements OnInit, OnDestroy {
 
   removeFile(): void {
     this.paymentsFile = null;
-    this.genericFileError = false;
   }
 
   setActiveUploadStep(nextStep: number, processForm: NgForm): void {
@@ -138,10 +136,9 @@ export class ProcessUploadComponent implements OnInit, OnDestroy {
       });
 
       this.paymentDialogSubscription = dialog.afterClosed().subscribe((message) => {
-        if (message) {
-          this.activeUploadStep = nextStep;
-          this.checkFileStatus(message);
-        }
+
+        this.process.pay = message;
+
         this.processFileService.uploadFile(this.process, this.paymentsFile).then(processNumber => {
           this.activeUploadStep = nextStep;
           this.process.id = processNumber;
@@ -150,7 +147,7 @@ export class ProcessUploadComponent implements OnInit, OnDestroy {
               this.activeUploadStep = nextStep;
               this.checkFileStatus(processNumber);
             } else {
-              this.genericFileError = true;
+              this.notificationService.showResult('', NotificationType.error);
             }
         });
       });
@@ -162,7 +159,7 @@ export class ProcessUploadComponent implements OnInit, OnDestroy {
   }
 
   private checkFileStatus(processNumber: number): void {
-    const checkStatus = new Promise<boolean>((resolve, reject) => {
+    const checkStatus = new Promise<boolean>((resolve) => {
       const interval = setInterval(() => {
         this.processFileService.getFileUploadStatus(processNumber).then((response) => {
           if (response['progressPercent'] === 100) {

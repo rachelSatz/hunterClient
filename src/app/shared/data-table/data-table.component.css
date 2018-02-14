@@ -35,10 +35,8 @@
 }
 
 .headers th {
-  font-size: 12px;
   font-weight: bold;
   cursor: pointer;
-  color: #fff;
 }
 
 .headers th > i {

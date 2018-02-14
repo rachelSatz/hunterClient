@@ -7,7 +7,7 @@ import { EmployerService } from '../../../../shared/_services/http/employer.serv
 
 import { Employer } from '../../../../shared/_models/employer.model';
 
-import { NotificationService } from '../../../../shared/_services/notification.service';
+import {NotificationService, NotificationType} from '../../../../shared/_services/notification.service';
 import { Select2OptionData } from 'ng2-select2';
 
 @Component({
@@ -18,9 +18,9 @@ import { Select2OptionData } from 'ng2-select2';
 export class EmployerFormComponent implements OnInit, OnDestroy {
 
   paramSubscription: Subscription;
-  
+
   employer = new Employer();
-  
+
   isSubmitting: boolean;
   isSuccessful: boolean;
 
@@ -48,7 +48,7 @@ export class EmployerFormComponent implements OnInit, OnDestroy {
 
     this.generalHttp.getEmployerTypeSentEnum()
     .then(response => this.typeSentOptions = response);
-    
+
      this.paramSubscription = this.route.params.subscribe(message => {
         if (message['id']) {
           this.employerIdUpdateMode = +message['id'];
@@ -71,7 +71,7 @@ export class EmployerFormComponent implements OnInit, OnDestroy {
       this.generalHttp.getBankBranches(bankID).then(response => {
       this.bankBranches = response.map( x => <Select2OptionData>{id: String(x.id), text : x.text});
       this.bankBranches.unshift({id: '-1', text : 'בחר סניף'});
-      
+
       if (this.employer.bankBranch.id !== 0) {
         this.bankBranchSelected = String(this.employer.bankBranch.id);
       }
@@ -80,7 +80,7 @@ export class EmployerFormComponent implements OnInit, OnDestroy {
   }
 
   submit(isValid: boolean): void {
-    
+
     if (isValid) {
       if ( this.employerIdUpdateMode === -1) {
       this.isSubmitting = true;
@@ -91,8 +91,8 @@ export class EmployerFormComponent implements OnInit, OnDestroy {
         this.isSubmitting = true;
         this.employerService.updateEmployer(this.employer, this.employerIdUpdateMode)
         .then(response => setTimeout(() => {
-          this.notificationService.showResult(response ? 'עדכון הרשומה בוצע בהצלחה' : 'עדכון הרשומה נכשל',
-          response ? 0 : 1);
+          this.notificationService.showResult(response ?
+            'עדכון הרשומה בוצע בהצלחה' : 'עדכון הרשומה נכשל', response ? NotificationType.success : NotificationType.error);
           this.router.navigate(['/settings/employers']);
         }, 2000));
       }
@@ -109,7 +109,7 @@ export class EmployerFormComponent implements OnInit, OnDestroy {
     this.isSuccessful = false;
     this.isSubmitting = false;
   }
-  
+
   setBankBranch(index: string): void {
     this.employer.bankBranch.text = '';
     if(index === '-1') {
@@ -122,7 +122,7 @@ export class EmployerFormComponent implements OnInit, OnDestroy {
 
   setBank(index: string): void {
     this.employer.bankBranch.bank.text = '';
-    
+
     if(index === '-1') {
       this.employer.bankBranch.bank.id = 0;
       this.employer.bankBranch.id = 0;
@@ -138,7 +138,7 @@ export class EmployerFormComponent implements OnInit, OnDestroy {
     this.bankBranches.push({id: '-1', text : 'בחר סניף'});
     this.bankBranchSelected = '-1';
   }
-  
+
   ngOnDestroy() {
     this.paramSubscription.unsubscribe();
   }

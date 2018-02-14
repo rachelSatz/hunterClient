@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ContactService } from '../../../shared/_services/http/contact.service';
 import { FeedbackService } from '../../../shared/_services/http/feedback.service';
 import { GeneralHttpService } from '../../../shared/_services/http/general-http.service';
-import { NotificationService } from '../../../shared/_services/notification.service';
+import {NotificationService, NotificationType} from '../../../shared/_services/notification.service';
 
 import { EmployeeFeedback } from '../../../shared/_models/employee-feedback.model';
 import { Contact } from '../../../shared/_models/contact.model';
@@ -74,7 +74,7 @@ export class FeedbackEmployeeApplicationComponent implements OnInit {
 
     this.feedbackService.createEmployeeApplication(data, this.uploadedFile)
     .then(res => {
-        this.notificationService.showResult(res.message, res.success ? 0 : 1);
+        this.notificationService.showResult(res.message, res.success ? NotificationType.success : NotificationType.error);
     });
   }
 }

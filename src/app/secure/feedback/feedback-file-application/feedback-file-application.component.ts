@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { ContactService } from '../../../shared/_services/http/contact.service';
 import { FeedbackService } from '../../../shared/_services/http/feedback.service';
 import { GeneralHttpService } from '../../../shared/_services/http/general-http.service';
-import { NotificationService } from '../../../shared/_services/notification.service';
+import {NotificationService, NotificationType} from '../../../shared/_services/notification.service';
 
 import { FileFeedback } from '../../../shared/_models/file-feedback.model';
 import { Contact } from '../../../shared/_models/contact.model';
@@ -50,10 +50,11 @@ export class FeedbackFileApplicationComponent implements OnInit {
 
   onSubmit(): void {
     this.feedbackService.createFileApplication(this.feedback, this.uplodedFile, this.selectedFileIds,
-      this.selectedContactIds, this.comments)
-      .then(res => {
-        this.notificationService.showResult(String(res.message), Boolean(res.success) ? 0 : 1);
-      });
+    this.selectedContactIds, this.comments)
+    .then(res => {
+      this.notificationService.showResult(String(res.message),
+      Boolean(res.success) ? NotificationType.success : NotificationType.error);
+    });
   }
 
   onCloseClicked(): void {

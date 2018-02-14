@@ -16,6 +16,7 @@ export class Process {
   processKind: number;
   errorMessage: string;
   KodSochnut: number;
+  pay: boolean;
   labels = {
     stepStatus: {
       error:'שגיאה בשידור נתונים',

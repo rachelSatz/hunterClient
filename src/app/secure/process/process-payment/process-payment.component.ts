@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { ProcessService } from '../../../shared/_services/http/process.service';
 import { ProcessMethodService } from '../../../shared/_services/http/process-method.service';
-import { NotificationService } from '../../../shared/_services/notification.service';
+import { NotificationService, NotificationType } from '../../../shared/_services/notification.service';
 
 import { Process } from '../../../shared/_models/process.model';
 
@@ -38,7 +38,7 @@ export class ProcessPaymentComponent implements OnInit {
     this.processMethodService.downloadExcel(this.process.id)
     .then(response => FileSaver.save(response, 'export.xls'))
     .catch(res => {
-      this.notificationService.showResult(res.error.Message, 1);
+      this.notificationService.showResult(res.error.Message, NotificationType.error);
     });
   }
 
@@ -49,7 +49,7 @@ export class ProcessPaymentComponent implements OnInit {
       FileSaver.save(response, 'export.001');
     })
     .catch(res => {
-     this.notificationService.showResult(res.error.Message, 1);
+     this.notificationService.showResult(res.error.Message, NotificationType.error);
     });
   }
 
@@ -57,7 +57,7 @@ export class ProcessPaymentComponent implements OnInit {
     this.paymentOption = 'mailMasab';
     this.processMethodService.mailMasab(this.process.id)
     .catch(res => {
-      this.notificationService.showResult(res.error.Message, 1);
+      this.notificationService.showResult(res.error.Message, NotificationType.error);
     });
   }
 }

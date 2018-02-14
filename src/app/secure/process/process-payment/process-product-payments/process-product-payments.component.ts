@@ -10,7 +10,7 @@ import { ProcessFileService } from '../../../../shared/_services/http/process-fi
 import { Process } from '../../../../shared/_models/process.model';
 
 import * as FileSaver from 'file-saver';
-import { NotificationService } from '../../../../shared/_services/notification.service';
+import {NotificationService, NotificationType} from '../../../../shared/_services/notification.service';
 
 @Component({
   selector: 'app-process-product-payments',
@@ -29,7 +29,6 @@ export class ProcessProductPaymentsComponent extends DataTableComponent {
   }
 
   fetchItems(): void {
-    console.log('b')
     this.isLoading = true;
     this.processService.getProductPayments(this.process.id).then(response => {
       this.setItems(response);
@@ -43,14 +42,14 @@ export class ProcessProductPaymentsComponent extends DataTableComponent {
        FileSaver.save(response, 'export.csv');
       })
     .catch(response => {
-       this.notificationService.showResult('הקובץ אינו קיים במערכת', 1);
+       this.notificationService.showResult('הקובץ אינו קיים במערכת', NotificationType.error);
     });
   }
 
   closeAll(): void {
     const paysIds: number[] = this.items.map(item => item.id);
     this.processService.closeAllProcess(this.process.id , paysIds , true).then(response => {
-      this.notificationService.showResult(response.Message, response.Success);
+      this.notificationService.showResult(response.Message, NotificationType.success);
     });
   }
 

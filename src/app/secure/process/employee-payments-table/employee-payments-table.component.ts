@@ -6,7 +6,7 @@ import { DataTableComponent } from '../../../shared/data-table/data-table.compon
 import { EmployeePaymentFormComponent } from '../employee-payment-form/employee-payment-form.component';
 
 import { ProcessService } from '../../../shared/_services/http/process.service';
-import { NotificationService } from '../../../shared/_services/notification.service';
+import {NotificationService, NotificationType} from '../../../shared/_services/notification.service';
 import { ManualProcessService } from '../../../shared/_services/http/manual-process.service';
 
 import { Employer} from '../../../shared/_models/employer.model';
@@ -55,7 +55,7 @@ export class EmployeePaymentsTableComponent extends DataTableComponent implement
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result !== 'cancel') {
-        this.notificationService.showResult(result, 0);
+        this.notificationService.showResult(result, NotificationType.error);
         this.fetchItems();
       }
     });
