@@ -1,15 +1,15 @@
 <div class="container d-flex align-items-center justify-content-center mb-3 node-list">
-  <div class="node">
+  <div class="node" [ngClass]="{ 'active': activeStep === 1 }">
     <div class="node-inner">1</div>
     <p>העלאת קובץ שכר</p>
   </div>
   <div class="horizontal-line"></div>
-  <div class="node">
+  <div class="node" [ngClass]="{ 'active': activeStep === 2 }">
     <div class="node-inner">2</div>
     <p>תשלום</p>
   </div>
   <div class="horizontal-line"></div>
-  <div class="node">
+  <div class="node" [ngClass]="{ 'active': activeStep === 3 }">
     <div class="node-inner">3</div>
     <p>שידור נתונים</p>
   </div>

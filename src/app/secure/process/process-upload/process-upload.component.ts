@@ -162,6 +162,11 @@ export class ProcessUploadComponent implements OnInit, OnDestroy {
     const checkStatus = new Promise<boolean>((resolve) => {
       const interval = setInterval(() => {
         this.processFileService.getFileUploadStatus(processNumber).then((response) => {
+          if (!response) {
+            this.notificationService.showResult(response['message'], NotificationType.error);
+            return;
+          }
+
           if (response['progressPercent'] === 100) {
             clearInterval(interval);
             resolve();

@@ -28,7 +28,7 @@ export const SECURE_ROUTES: Routes = [
   { path: 'process/table', component: ProcessTableComponent },
   { path: 'process/new', component: ProcessComponent, children: [
       { path: '', redirectTo: 'upload', pathMatch: 'full' },
-      { path: 'upload', component: ProcessUploadComponent }
+      { path: 'upload', component: ProcessUploadComponent, data: { step: 1 } }
     ]},
   { path: 'process/new/:id', component: ProcessComponent, resolve: { process: ProcessResolve }, children: [
       { path: '', redirectTo: 'upload', pathMatch: 'full' },

@@ -19,7 +19,7 @@
   background-color: #acaaac;
 }
 
-.node-inner.active {
+.node.active > .node-inner {
   background-color: #0f72b6;
 }
 
