@@ -139,7 +139,7 @@ export class ProcessTransmissionComponent implements OnInit {
     });
   }
 
-  SendDetails() {
+  sendDetails() {
     if (this.checklist.length > 0) {
       this.checklist.splice(this.checklist.findIndex(x => x.fileId === 0), 1);
     }

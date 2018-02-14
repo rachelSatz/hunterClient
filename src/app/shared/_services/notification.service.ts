@@ -17,7 +17,7 @@ export class NotificationService {
       type: type === 'success' ? 'success' : 'error',
       confirmButtonText: 'אישור',
       buttonsStyling: false,
-      confirmButtonClass: type === 'success' ? 'btn btn-success' : 'btn btn-warning'
+      confirmButtonClass: type === 'success' ? 'btn btn-success' : 'btn btn-danger'
     };
 
     swal(options);

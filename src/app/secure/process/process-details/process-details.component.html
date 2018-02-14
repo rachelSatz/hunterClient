@@ -1,0 +1,54 @@
+<div class="p-5 box-shadow">
+  <p class="bold underline grey-color">פרטי התהליך</p>
+  <div class="row">
+    <div class="col-12 col-sm-7 mb-3 mb-sm-0">
+      <span class="light-grey-color">שם המעסיק:</span>
+      <span class="grey-color">{{ process.employer.name }}</span>
+    </div>
+    <div class="col-12 col-sm-5 mb-3 mb-sm-0">
+      <span class="light-grey-color">ח.פ:</span>
+      <span class="grey-color">{{ process.employer.businessNumber }}</span>
+    </div>
+  </div>
+  <div class="row my-3">
+    <div class="col-12 col-sm-7 mb-3 mb-sm-0">
+      <span class="light-grey-color">שם התהליך:</span>
+      <span class="grey-color">{{ process.addToProcessName }}</span>
+    </div>
+    <div class="col-12 col-sm-5">
+      <span class="light-grey-color">מספר התהליך:</span>
+      <span class="grey-color">{{ process.id }}</span>
+    </div>
+  </div>
+  <p class="mt-5 bold underline grey-color">פרטי התשלומים</p>
+  <div class="row align-items-center">
+    <div class="col-7">
+      <span class="light-grey-color">סכום לתשלום:</span>
+      <span class="green-color">{{ process.details.paymentSum }} &#8362;</span>
+    </div>
+    <a class="col-5 pointer" routerLink="../payment-table">
+      <span class="align-top ml-2 f-16 blue-color">לפירוט מלא:</span>
+      <i class="fa fa-chevron-left light-grey-color"></i>
+    </a>
+  </div>
+  <div class="row align-items-center mt-4">
+    <div class="col-7">
+      <span class="light-grey-color">מספר רשומות:</span>
+      <span class="blue-color">{{ process.details.recordNumber }}</span>
+    </div>
+    <div class="col-5 pointer" routerLink="../employee-payments">
+      <span class="align-top ml-2 f-16 blue-color">לפירוט מלא:</span>
+      <i class="fa fa-chevron-left light-grey-color"></i>
+    </div>
+  </div>
+  <div class="row align-items-center mt-4" *ngIf="mode === 'transmission'">
+    <div class="col-7">
+      <span class="light-grey-color">תאריך תשלום (ערך):</span>
+      <span class="yellow-color">{{ process.details.recordNumber }}</span>
+    </div>
+    <div class="col-5 pointer" routerLink="../employee-payments">
+      <span class="align-top ml-2 f-16 blue-color">לפירוט מלא:</span>
+      <i class="fa fa-chevron-left light-grey-color"></i>
+    </div>
+  </div>
+</div>

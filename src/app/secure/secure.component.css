@@ -6,7 +6,7 @@
 
 header {
   border-bottom: 4px solid #a9a6a9;
-  box-shadow: 0px 5px 24px 0 rgba(0, 0, 0, 0.36);
+  box-shadow: 0 5px 24px 0 rgba(0, 0, 0, 0.36);
 }
 
 #topHeader {
@@ -25,22 +25,19 @@ header {
   color: #fff !important;
 }
 
-#mainMenu {
-  padding: 10px 20px;
-}
-
 #mainMenu .logo {
-  width: 200px;
+  width: 150px;
 }
 
 #mainMenu > .navbar {
+  padding: 8px;
   background-color: #fff;
 }
 
 #mainMenu .navbar-nav img {
   display: block;
-  height: 37px;
-  width: 39px;
+  height: 27px;
+  width: 29px;
   margin: 0 auto;
 }
 
@@ -56,12 +53,16 @@ header {
 
 #mainMenu .nav-item .arrow-down {
   position: absolute;
-  top: 99px;
+  top: 79px;
   left: 50%;
   transform: translateX(-50%);
   border-right: 20px solid transparent;
   border-left: 20px solid transparent;
   border-top: 10px solid #a9a6a9;
+}
+
+#mainMenu .nav-link > span {
+  font-family: HeeboMedium;
 }
 
 .navbar-brand {
@@ -91,14 +92,12 @@ footer img {
   height: 50px;
 }
 
-
 @media (max-width: 992px) {
   #mainMenu .nav-item {
     text-align: center;
     font-weight: bold;
     border-left: none;
   }
-
 
   #mainMenu .navbar-nav img {
     display: none;

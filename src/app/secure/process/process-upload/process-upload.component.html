@@ -1,6 +1,6 @@
 <form id="processUploadForm" #processForm="ngForm" class="container py-3">
   <div class="d-flex align-items-center mb-3 upload-step-title">
-    <i class="fa fa-chevron-right previous-step-btn" *ngIf="activeUploadStep > 1 && activeUploadStep !== 4" (click)="activeUploadStep = activeUploadStep - 1"></i>
+    <i class="fa fa-chevron-right previous-step-btn" *ngIf="activeUploadStep > 3" (click)="activeUploadStep = activeUploadStep - 1"></i>
     <p class="h3" [ngClass]="{ 'text-center': activeUploadStep === 1 || activeUploadStep === 4 }">{{ getTitle() }}</p>
   </div>
   <div *ngIf="activeUploadStep === 1">

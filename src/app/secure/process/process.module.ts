@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { Select2Module } from 'ng2-select2';
-import {MatDatepickerModule, MatFormFieldModule, MatSelectModule} from '@angular/material';
+import { MatDatepickerModule, MatFormFieldModule, MatSelectModule } from '@angular/material';
 
 import { DataTableModule } from '../../shared/data-table/data-table.module';
 import { ProcessUploadModule } from './process-upload/process-upload.module';
@@ -31,7 +31,7 @@ import { ProcessResolve } from '../../shared/_resolves/process.resolve';
   declarations: [
     ProcessComponent,
     EmployeePaymentsTableComponent,
-    EmployeePaymentFormComponent,
+    EmployeePaymentFormComponent
   ],
   entryComponents: [EmployeePaymentFormComponent],
   providers: [ProcessResolve]

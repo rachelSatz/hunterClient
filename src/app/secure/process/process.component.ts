@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-process',
@@ -8,11 +8,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class ProcessComponent implements OnInit {
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
-    if (this.route.snapshot.params['id']) {
-      
-    }
+    console.log(this.route.firstChild.data['step']);
   }
 }

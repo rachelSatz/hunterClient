@@ -8,6 +8,7 @@ import { MatProgressSpinnerModule, MatCheckboxModule, MatSelectModule, MatRadioM
          MatDatepickerModule } from '@angular/material';
 
 import { DataTableModule } from '../../../shared/data-table/data-table.module';
+import { ProcessDetailsModule } from '../process-details/process-details.module';
 
 import { ProcessTransmissionComponent } from './process-transmission.component';
 import { TransmissionProductDetailsComponent } from './transmission-product-details/transmission-product-details.component';
@@ -23,6 +24,7 @@ import { TransmissionCommentComponent } from '../process-payment/transmission-co
     BrowserAnimationsModule,
     MatProgressSpinnerModule, MatCheckboxModule, MatSelectModule, MatRadioModule,
     MatDatepickerModule,
+    ProcessDetailsModule,
     Select2Module,
     DataTableModule,
   ],

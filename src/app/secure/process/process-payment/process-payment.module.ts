@@ -6,6 +6,7 @@ import { MatFormFieldModule, MatInputModule, MatProgressSpinnerModule, MatSelect
 import { Select2Module } from 'ng2-select2';
 
 import { DataTableModule } from '../../../shared/data-table/data-table.module';
+import { ProcessDetailsModule } from '../process-details/process-details.module';
 import { CommatizeNumberModule } from '../../../shared/_pipes/commatize-number.module';
 
 import { ProcessPaymentComponent } from './process-payment.component';
@@ -20,6 +21,7 @@ import { ProcessPaymentTableComponent } from './process-payment-table/process-pa
     Select2Module,
     MatSelectModule, MatProgressSpinnerModule, MatFormFieldModule, MatInputModule,
     DataTableModule,
+    ProcessDetailsModule,
     CommatizeNumberModule
   ],
   declarations: [

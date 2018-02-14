@@ -5,6 +5,11 @@
   font-family: Heebo;
 }
 
+@font-face {
+  src: url('./assets/fonts/Heebo-Medium.ttf');
+  font-family: HeeboMedium;
+}
+
 html, body {
   height: 100%;
 }
@@ -96,6 +101,10 @@ a:hover{
 
 .blue-color {
   color: #356cb3;
+}
+
+.yellow-color {
+  color: #ebc372;
 }
 
 .grey-color {
